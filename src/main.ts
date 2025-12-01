@@ -9,6 +9,7 @@ import DialogService from 'primevue/dialogservice'
 
 import App from './App.vue'
 import router from './router'
+import './assets/main.css'
 
 // Custom preset extending Aura
 const DhoolPreset = definePreset(Aura, {
