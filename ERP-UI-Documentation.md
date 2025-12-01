@@ -4,7 +4,7 @@
 
 ## Table of Contents
 
-### Part 1: Foundation & Architecture
+### Foundation & Architecture
 1. [Philosophy & Architecture](#philosophy--architecture)
    - [Why Schema-Driven UI?](#why-schema-driven-ui)
    - [The Schema-Driven Solution](#the-schema-driven-solution)
@@ -23,7 +23,7 @@
    - [Core Schema Types](#core-schema-types)
    - [Access Control Types](#access-control-types)
 
-### Part 2: Access Control & Schema Engine
+### Access Control & Schema Engine
 5. [Access Control System](#access-control-system)
    - [Access Service](#access-service)
    - [Access Store](#access-store)
@@ -36,7 +36,7 @@
    - [useNotification Composable](#usenotification-composable)
    - [useDrawer Composable](#usedrawer-composable)
 
-### Part 3: Components
+### Components
 8. [Component Philosophy](#component-philosophy)
    - [When to Create Custom Components](#when-to-create-custom-components)
    - [PrimeVue 4 Component Patterns](#primevue-4-component-patterns)
@@ -57,7 +57,7 @@
     - [Example: Extended DataTable](#example-extended-datatable)
     - [Example: Custom Field Component](#example-custom-field-component)
 
-### Part 4: JSON Schemas & Advanced Patterns
+### JSON Schemas & Advanced Patterns
 13. [JSON Schema Structure](#json-schema-structure)
     - [Schema File Location Strategy](#schema-file-location-strategy)
 14. [Complete Schema Examples](#complete-schema-examples)
@@ -79,7 +79,7 @@
     - [Error Handling](#5-error-handling)
     - [Testing Schema-Driven Components](#6-testing-schema-driven-components)
 
-### Part 5: Integration & Deployment
+### Integration & Deployment
 19. [Application Shell](#application-shell)
     - [App.vue](#appvue)
 20. [Layout Components](#layout-components)
