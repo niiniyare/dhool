@@ -6,6 +6,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import Components from 'unplugin-vue-components/vite'
 import { PrimeVueResolver } from '@primevue/auto-import-resolver'
+import AutoImport from 'unplugin-auto-import/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -14,10 +15,14 @@ export default defineConfig({
     vueJsx(),
     vueDevTools(),
     Components({
-      resolvers: [
-        PrimeVueResolver()
-      ]
+      resolvers: [PrimeVueResolver()],
+      dts: true
     }),
+    AutoImport({
+      imports: ['vue', 'vue-router', 'pinia'],
+      dts: true,
+      dirs: ['./src/composables']
+    })
   ],
   resolve: {
     alias: {
