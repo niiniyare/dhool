@@ -1,0 +1,343 @@
+{
+  "name": "customer",
+  "label": "Customer",
+  "labelPlural": "Customers",
+  "icon": "pi pi-users",
+  "module": "sales",
+  "api": {
+    "baseEndpoint": "/api/v1/customers",
+    "pagination": {
+      "pageSize": 20,
+      "pageSizeOptions": [10, 20, 50, 100]
+    }
+  },
+  "listView": {
+    "columns": [
+      {
+        "field": "name",
+        "header": "Name",
+        "sortable": true,
+        "filter": true,
+        "filterType": "text"
+      },
+      {
+        "field": "email",
+        "header": "Email",
+        "sortable": true,
+        "filter": true,
+        "filterType": "text"
+      },
+      {
+        "field": "phone",
+        "header": "Phone",
+        "sortable": true,
+        "filter": true,
+        "filterType": "text"
+      },
+      {
+        "field": "type",
+        "header": "Type",
+        "sortable": true,
+        "filter": true,
+        "filterType": "select",
+        "filterOptions": [
+          { "label": "Individual", "value": "individual" },
+          { "label": "Company", "value": "company" }
+        ]
+      },
+      {
+        "field": "status",
+        "header": "Status",
+        "sortable": true,
+        "filter": true,
+        "filterType": "select",
+        "filterOptions": [
+          { "label": "Active", "value": "active" },
+          { "label": "Inactive", "value": "inactive" },
+          { "label": "Blocked", "value": "blocked" }
+        ]
+      }
+    ],
+    "searchFields": ["name", "email", "phone"],
+    "toolbarActions": [
+      {
+        "label": "New Customer",
+        "icon": "pi pi-plus",
+        "action": "create",
+        "variant": "primary"
+      },
+      {
+        "label": "Import",
+        "icon": "pi pi-upload",
+        "action": "import"
+      },
+      {
+        "label": "Export",
+        "icon": "pi pi-download",
+        "action": "export"
+      }
+    ],
+    "rowActions": [
+      {
+        "label": "View",
+        "icon": "pi pi-eye",
+        "action": "view"
+      },
+      {
+        "label": "Edit",
+        "icon": "pi pi-pencil",
+        "action": "edit"
+      },
+      {
+        "label": "Delete",
+        "icon": "pi pi-trash",
+        "action": "delete",
+        "variant": "danger",
+        "confirm": true
+      }
+    ]
+  },
+  "formView": {
+    "sections": [
+      {
+        "title": "General Information",
+        "columns": 2,
+        "fields": ["type", "name", "email", "phone", "status"]
+      },
+      {
+        "title": "Contact Details",
+        "columns": 2,
+        "fields": ["contact_person", "alternate_phone", "website", "tax_id"]
+      },
+      {
+        "title": "Address",
+        "columns": 1,
+        "fields": ["address_line1", "address_line2", "city", "state", "postal_code", "country"]
+      },
+      {
+        "title": "Additional Information",
+        "columns": 2,
+        "fields": ["tags", "notes", "credit_limit", "payment_terms"]
+      }
+    ],
+    "fields": [
+      {
+        "name": "type",
+        "label": "Customer Type",
+        "type": "select",
+        "required": true,
+        "options": [
+          { "label": "Individual", "value": "individual" },
+          { "label": "Company", "value": "company" }
+        ],
+        "default": "individual"
+      },
+      {
+        "name": "name",
+        "label": "Name",
+        "type": "text",
+        "required": true,
+        "validation": {
+          "minLength": 2,
+          "maxLength": 100
+        },
+        "placeholder": "Enter customer name"
+      },
+      {
+        "name": "email",
+        "label": "Email",
+        "type": "email",
+        "required": true,
+        "validation": {
+          "pattern": "^[^@]+@[^@]+\\.[^@]+$",
+          "message": "Please enter a valid email address"
+        },
+        "placeholder": "customer@example.com"
+      },
+      {
+        "name": "phone",
+        "label": "Phone",
+        "type": "phone",
+        "required": true,
+        "validation": {
+          "pattern": "^[+]?[0-9\\s-()]+$",
+          "minLength": 10,
+          "maxLength": 20
+        },
+        "placeholder": "+1 (555) 123-4567"
+      },
+      {
+        "name": "status",
+        "label": "Status",
+        "type": "select",
+        "required": true,
+        "options": [
+          { "label": "Active", "value": "active" },
+          { "label": "Inactive", "value": "inactive" },
+          { "label": "Blocked", "value": "blocked" }
+        ],
+        "default": "active"
+      },
+      {
+        "name": "contact_person",
+        "label": "Contact Person",
+        "type": "text",
+        "dependencies": {
+          "field": "type",
+          "value": "company"
+        },
+        "placeholder": "Primary contact name"
+      },
+      {
+        "name": "alternate_phone",
+        "label": "Alternate Phone",
+        "type": "phone",
+        "validation": {
+          "pattern": "^[+]?[0-9\\s-()]+$"
+        },
+        "placeholder": "+1 (555) 987-6543"
+      },
+      {
+        "name": "website",
+        "label": "Website",
+        "type": "text",
+        "validation": {
+          "pattern": "^https?://.*",
+          "message": "Please enter a valid URL starting with http:// or https://"
+        },
+        "placeholder": "https://example.com"
+      },
+      {
+        "name": "tax_id",
+        "label": "Tax ID",
+        "type": "text",
+        "dependencies": {
+          "field": "type",
+          "value": "company"
+        },
+        "placeholder": "Enter tax identification number"
+      },
+      {
+        "name": "address_line1",
+        "label": "Address Line 1",
+        "type": "text",
+        "placeholder": "Street address"
+      },
+      {
+        "name": "address_line2",
+        "label": "Address Line 2",
+        "type": "text",
+        "placeholder": "Apartment, suite, etc."
+      },
+      {
+        "name": "city",
+        "label": "City",
+        "type": "text",
+        "placeholder": "City name"
+      },
+      {
+        "name": "state",
+        "label": "State/Province",
+        "type": "text",
+        "placeholder": "State or province"
+      },
+      {
+        "name": "postal_code",
+        "label": "Postal Code",
+        "type": "text",
+        "validation": {
+          "pattern": "^[A-Za-z0-9\\s-]+$"
+        },
+        "placeholder": "12345"
+      },
+      {
+        "name": "country",
+        "label": "Country",
+        "type": "select",
+        "options": [
+          { "label": "United States", "value": "US" },
+          { "label": "Canada", "value": "CA" },
+          { "label": "United Kingdom", "value": "GB" },
+          { "label": "Australia", "value": "AU" },
+          { "label": "India", "value": "IN" }
+        ],
+        "default": "US"
+      },
+      {
+        "name": "tags",
+        "label": "Tags",
+        "type": "link",
+        "linkType": "tag",
+        "multiple": true,
+        "placeholder": "Add tags..."
+      },
+      {
+        "name": "notes",
+        "label": "Notes",
+        "type": "text",
+        "multiline": true,
+        "rows": 3,
+        "placeholder": "Additional notes about the customer"
+      },
+      {
+        "name": "credit_limit",
+        "label": "Credit Limit",
+        "type": "number",
+        "currency": true,
+        "access": {
+          "subscription": ["professional", "enterprise"]
+        },
+        "validation": {
+          "min": 0,
+          "max": 1000000
+        },
+        "placeholder": "0.00"
+      },
+      {
+        "name": "payment_terms",
+        "label": "Payment Terms",
+        "type": "select",
+        "access": {
+          "subscription": ["professional", "enterprise"]
+        },
+        "options": [
+          { "label": "Net 30", "value": "net30" },
+          { "label": "Net 60", "value": "net60" },
+          { "label": "Due on Receipt", "value": "due_on_receipt" },
+          { "label": "Custom", "value": "custom" }
+        ],
+        "default": "net30"
+      }
+    ]
+  },
+  "access": {
+    "requiredModule": "sales",
+    "permissions": {
+      "create": {
+        "roles": ["admin", "sales_manager", "sales_rep"]
+      },
+      "read": {
+        "roles": ["admin", "sales_manager", "sales_rep", "viewer"],
+        "scope": {
+          "sales_rep": "own",
+          "viewer": "team"
+        }
+      },
+      "update": {
+        "roles": ["admin", "sales_manager", "sales_rep"],
+        "scope": {
+          "sales_rep": "own"
+        }
+      },
+      "delete": {
+        "roles": ["admin", "sales_manager"]
+      },
+      "export": {
+        "roles": ["admin", "sales_manager", "sales_rep"]
+      },
+      "import": {
+        "roles": ["admin", "sales_manager"]
+      }
+    }
+  }
+}
