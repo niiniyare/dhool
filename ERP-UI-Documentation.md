@@ -1,6 +1,6 @@
-# Dhool ERP UI - Complete Documentation
+# DhoolUI - Complete Documentation
 
-> A comprehensive Vue 3 + PrimeVue 4 enterprise ERP user interface with schema-driven UI generation, multi-tenant theming, ABAC security, subscription-based feature access, and module-level permissions.
+> A comprehensive Vue 3 + PrimeVue 4 enterpriseuser interface with schema-driven UI generation, multi-tenant theming, ABAC security, subscription-based feature access, and module-level permissions.
 
 ## Table of Contents
 
@@ -103,7 +103,7 @@
 
 ### Why Schema-Driven UI?
 
-In enterprise ERP systems, you'll have hundreds of similar pages:
+In enterprise ERP systems, we'll have hundreds of similar pages:
 - **Document Lists**: Invoices, Orders, Transactions, Users, Products
 - **Document Forms**: Create/Edit dialogs with validation
 - **Dashboards**: KPIs, charts, activity feeds
@@ -141,7 +141,7 @@ Writing individual Vue components for each is:
 
 ### Multi-Level Access Control
 
-Your SaaS ERP needs three layers of access control:
+Your SaaSneeds three layers of access control:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
@@ -3275,12 +3275,12 @@ export function useDrawer<T = unknown>() {
 <Select v-model="selected" :options="options" />
 ```
 
-**DO create molecules** when you need:
+**DO create molecules** when we need:
 - Combined elements with specific behavior
 - Consistent patterns across the app
 - Business logic encapsulation
 
-**DO create organisms** when you need:
+**DO create organisms** when we need:
 - Complex, reusable sections
 - Schema-driven rendering
 - Self-contained functionality
@@ -5413,19 +5413,19 @@ const handleAction = (action: ActionSchema, data?: Record<string, unknown>) => {
 
 ### When to Extend vs. Wrap
 
-**Extend** when you need to:
+**Extend** when we need to:
 - Add new props/slots to existing component
 - Modify default behavior globally
 - Create a component variant
 
-**Wrap** when you need to:
+**Wrap** when we need to:
 - Combine multiple components
 - Add business logic
 - Standardize patterns
 
 ### Example: Extended DataTable
 
-When PrimeVue's DataTable doesn't have exactly what you need:
+When PrimeVue's DataTable doesn't have exactly what we need:
 
 ```vue
 <!-- src/components/extended/AppDataTable.vue -->
@@ -5505,7 +5505,7 @@ const isEmpty = computed(() => !props.loading && props.value.length === 0)
 
 ### Example: Custom Field Component
 
-When you need a field type PrimeVue doesn't have:
+When we need a field type PrimeVue doesn't have:
 
 ```vue
 <!-- src/components/extended/LinkField.vue -->
@@ -7067,7 +7067,7 @@ src/schemas/
 
 ## Schema Builder UI
 
-For complex ERPs, you might want a visual schema builder. Here's a simplified implementation:
+For complex ERPs, we might want a visual schema builder. Here's a simplified implementation:
 
 ### Schema Builder Store
 
@@ -8816,7 +8816,7 @@ const bottomItems = [
         class="app-sidebar__logo"
       />
       <span v-if="!collapsed" class="app-sidebar__brand">
-        {{ tenantStore.tenant?.name || 'Dhool ERP' }}
+        {{ tenantStore.tenant?.name || 'Dhool' }}
       </span>
     </div>
     
@@ -9438,7 +9438,7 @@ export const useUiStore = defineStore('ui', () => {
   
   const setPageTitle = (title: string) => {
     pageTitle.value = title
-    document.title = title ? `${title} | Dhool ERP` : 'Dhool ERP'
+    document.title = title ? `${title} | Dhool` : 'Dhool'
   }
 
   return {
@@ -9638,9 +9638,9 @@ export function titleGuard(
 ) {
   const title = to.meta.title as string
   if (title) {
-    document.title = `${title} | Dhool ERP`
+    document.title = `${title} | Dhool`
   } else {
-    document.title = 'Dhool ERP'
+    document.title = 'Dhool'
   }
   next()
 }
