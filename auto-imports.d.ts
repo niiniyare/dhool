@@ -67,7 +67,9 @@ declare global {
   const toValue: typeof import('vue').toValue
   const triggerRef: typeof import('vue').triggerRef
   const unref: typeof import('vue').unref
+  const useAccess: typeof import('./src/composables/useAccess').useAccess
   const useAttrs: typeof import('vue').useAttrs
+  const useCrud: typeof import('./src/composables/useCrud').useCrud
   const useCssModule: typeof import('vue').useCssModule
   const useCssVars: typeof import('vue').useCssVars
   const useId: typeof import('vue').useId
@@ -75,6 +77,7 @@ declare global {
   const useModel: typeof import('vue').useModel
   const useRoute: typeof import('vue-router').useRoute
   const useRouter: typeof import('vue-router').useRouter
+  const useSchema: typeof import('./src/composables/useSchema').useSchema
   const useSlots: typeof import('vue').useSlots
   const useTemplateRef: typeof import('vue').useTemplateRef
   const watch: typeof import('vue').watch
@@ -87,4 +90,10 @@ declare global {
   // @ts-ignore
   export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, ShallowRef, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
+  // @ts-ignore
+  export type { ListParams, CrudOperations, UseCrudReturn } from './src/composables/useCrud'
+  import('./src/composables/useCrud')
+  // @ts-ignore
+  export type { UseSchemaReturn } from './src/composables/useSchema'
+  import('./src/composables/useSchema')
 }
