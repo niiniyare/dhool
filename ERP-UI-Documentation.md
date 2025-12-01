@@ -4,11 +4,98 @@
 
 ## Table of Contents
 
+### Part 1: Foundation & Architecture
 1. [Philosophy & Architecture](#philosophy--architecture)
+   - [Why Schema-Driven UI?](#why-schema-driven-ui)
+   - [The Schema-Driven Solution](#the-schema-driven-solution)
+   - [Multi-Level Access Control](#multi-level-access-control)
+   - [Component Architecture (Atomic Design)](#component-architecture-atomic-design)
 2. [Project Setup](#project-setup)
+   - [Prerequisites](#prerequisites)
+   - [Installation](#installation)
+   - [Project Structure](#project-structure)
 3. [PrimeVue 4 Configuration](#primevue-4-configuration)
+   - [Vite Configuration](#vite-configuration)
+   - [Main Entry Point](#main-entry-point)
+   - [Tailwind Configuration](#tailwind-configuration)
+   - [Base CSS](#base-css)
 4. [Type System](#type-system)
-5. [Schema-Driven UI Architecture](#schema-driven-ui-architecture)
+   - [Core Schema Types](#core-schema-types)
+   - [Access Control Types](#access-control-types)
+
+### Part 2: Access Control & Schema Engine
+5. [Access Control System](#access-control-system)
+   - [Access Service](#access-service)
+   - [Access Store](#access-store)
+6. [Schema Engine](#schema-engine)
+   - [Schema Service](#schema-service)
+7. [Composables](#composables)
+   - [useAccess Composable](#useaccess-composable)
+   - [useSchema Composable](#useschema-composable)
+   - [useCrud Composable](#usecrud-composable)
+   - [useNotification Composable](#usenotification-composable)
+   - [useDrawer Composable](#usedrawer-composable)
+
+### Part 3: Components
+8. [Component Philosophy](#component-philosophy)
+   - [When to Create Custom Components](#when-to-create-custom-components)
+   - [PrimeVue 4 Component Patterns](#primevue-4-component-patterns)
+9. [Molecules](#molecules)
+   - [FormField Component](#formfield-component)
+   - [StatCard Component](#statcard-component)
+   - [ActionMenu Component](#actionmenu-component)
+   - [EmptyState Component](#emptystate-component)
+10. [Organisms](#organisms)
+    - [DataTableCrud Component](#datatablecrud-component)
+    - [FormBuilder Component](#formbuilder-component)
+    - [FormDrawer Component](#formdrawer-component)
+11. [Schema Renderers](#schema-renderers)
+    - [FieldRenderer Component](#fieldrenderer-component)
+    - [DocumentPage Renderer](#documentpage-renderer)
+12. [Extending PrimeVue](#extending-primevue)
+    - [When to Extend vs. Wrap](#when-to-extend-vs-wrap)
+    - [Example: Extended DataTable](#example-extended-datatable)
+    - [Example: Custom Field Component](#example-custom-field-component)
+
+### Part 4: JSON Schemas & Advanced Patterns
+13. [JSON Schema Structure](#json-schema-structure)
+    - [Schema File Location Strategy](#schema-file-location-strategy)
+14. [Complete Schema Examples](#complete-schema-examples)
+    - [Customer Schema (Full Example)](#customer-schema-full-example)
+    - [Invoice Schema (Transaction Document)](#invoice-schema-transaction-document)
+    - [Dashboard Schema](#dashboard-schema)
+15. [Schema Builder UI](#schema-builder-ui)
+    - [Schema Builder Store](#schema-builder-store)
+    - [Schema Builder Component (Simplified)](#schema-builder-component-simplified)
+16. [Dynamic Route Generation](#dynamic-route-generation)
+17. [Multi-Tenant Theming](#multi-tenant-theming)
+    - [Theme Configuration Store](#theme-configuration-store)
+    - [Tenant Theme Loader](#tenant-theme-loader)
+18. [Best Practices](#best-practices)
+    - [Schema Design Principles](#1-schema-design-principles)
+    - [Component Organization](#2-component-organization)
+    - [Access Control Strategy](#3-access-control-strategy)
+    - [Performance Optimization](#4-performance-optimization)
+    - [Error Handling](#5-error-handling)
+    - [Testing Schema-Driven Components](#6-testing-schema-driven-components)
+
+### Part 5: Integration & Deployment
+19. [Application Shell](#application-shell)
+    - [App.vue](#appvue)
+20. [Layout Components](#layout-components)
+    - [MainLayout](#mainlayout)
+    - [AppTopbar](#apptopbar)
+    - [AppSidebar](#appsidebar)
+21. [Stores](#stores)
+    - [Auth Store](#auth-store)
+    - [Tenant Store](#tenant-store)
+    - [UI Store](#ui-store)
+22. [API Service](#api-service)
+23. [Router Guards](#router-guards)
+    - [Router Index](#router-index)
+24. [App Initialization](#app-initialization)
+    - [Updated main.ts](#updated-maints)
+25. [Summary](#summary)
 
 ---
 
@@ -1388,18 +1475,6 @@ export type ConditionOperator =
   | 'is_null' | 'is_not_null'
 ```
 
----
-
-Continue to Part 2 for Schema-Driven Components...
-# Dhool ERP UI - Part 2: Access Control & Schema Engine
-
-## Table of Contents
-
-1. [Access Control System](#access-control-system)
-2. [Schema Engine](#schema-engine)
-3. [Composables](#composables)
-
----
 
 ## Access Control System
 
@@ -3187,20 +3262,6 @@ export function useDrawer<T = unknown>() {
 }
 ```
 
----
-
-Continue to Part 3 for Components...
-# Dhool ERP UI - Part 3: Components
-
-## Table of Contents
-
-1. [Component Philosophy](#component-philosophy)
-2. [Molecules](#molecules)
-3. [Organisms](#organisms)
-4. [Schema Renderers](#schema-renderers)
-5. [Extending PrimeVue](#extending-primevue)
-
----
 
 ## Component Philosophy
 
@@ -5608,21 +5669,6 @@ const openQuickCreate = () => {
 </style>
 ```
 
----
-
-Continue to Part 4 for JSON Schema Examples and Best Practices...
-# Dhool ERP UI - Part 4: JSON Schemas & Advanced Patterns
-
-## Table of Contents
-
-1. [JSON Schema Structure](#json-schema-structure)
-2. [Complete Schema Examples](#complete-schema-examples)
-3. [Schema Builder UI](#schema-builder-ui)
-4. [Dynamic Route Generation](#dynamic-route-generation)
-5. [Multi-Tenant Theming](#multi-tenant-theming)
-6. [Best Practices](#best-practices)
-
----
 
 ## JSON Schema Structure
 
@@ -8276,22 +8322,6 @@ describe('DataTableCrud', () => {
 })
 ```
 
----
-
-Continue to Part 5 for complete integration and deployment guide...
-# Dhool ERP UI - Part 5: Integration & Deployment
-
-## Table of Contents
-
-1. [Application Shell](#application-shell)
-2. [Layout Components](#layout-components)
-3. [Module-Based Navigation](#module-based-navigation)
-4. [Stores](#stores)
-5. [API Service](#api-service)
-6. [Router Guards](#router-guards)
-7. [App Initialization](#app-initialization)
-
----
 
 ## Application Shell
 
