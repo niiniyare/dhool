@@ -1,0 +1,504 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dhool-erp-document-schema",
+  "name": "customer",
+  "label": "Customer",
+  "labelPlural": "Customers",
+  "icon": "pi pi-users",
+  "module": "sales",
+  "version": "1.0.0",
+  "description": "Customer master data",
+
+  "api": {
+    "baseUrl": "/api/v1/customers",
+    "listEndpoint": "",
+    "getEndpoint": "/:id",
+    "createEndpoint": "",
+    "updateEndpoint": "/:id",
+    "deleteEndpoint": "/:id",
+    "searchEndpoint": "/search",
+    "defaultParams": {
+      "page": 1,
+      "pageSize": 20,
+      "sortField": "created_at",
+      "sortOrder": "desc"
+    }
+  },
+
+  "listView": {
+    "columns": [
+      {
+        "field": "name",
+        "header": "Name",
+        "sortable": true,
+        "filterable": true,
+        "filterType": "text",
+        "width": "200px",
+        "frozen": true
+      },
+      {
+        "field": "email",
+        "header": "Email",
+        "sortable": true,
+        "filterable": true,
+        "filterType": "text"
+      },
+      {
+        "field": "phone",
+        "header": "Phone",
+        "sortable": false,
+        "filterable": false
+      },
+      {
+        "field": "type",
+        "header": "Type",
+        "sortable": true,
+        "filterable": true,
+        "filterType": "select",
+        "filterOptions": [
+          { "label": "Individual", "value": "individual" },
+          { "label": "Company", "value": "company" }
+        ]
+      },
+      {
+        "field": "status",
+        "header": "Status",
+        "sortable": true,
+        "filterable": true,
+        "filterType": "select",
+        "filterOptions": [
+          { "label": "Active", "value": "active" },
+          { "label": "Inactive", "value": "inactive" }
+        ],
+        "template": "status-badge"
+      },
+      {
+        "field": "created_at",
+        "header": "Created",
+        "sortable": true,
+        "filterable": true,
+        "filterType": "date",
+        "template": "date",
+        "format": "PP"
+      }
+    ],
+    "filters": {
+      "global": {
+        "fields": ["name", "email", "phone"]
+      },
+      "advanced": [
+        { "field": "type", "operator": "eq" },
+        { "field": "status", "operator": "eq" },
+        { "field": "created_at", "operator": "between" }
+      ]
+    },
+    "search": {
+      "enabled": true,
+      "placeholder": "Search customers...",
+      "fields": ["name", "email", "phone"]
+    },
+    "actions": {
+      "toolbar": [
+        {
+          "id": "create",
+          "label": "New Customer",
+          "icon": "pi pi-plus",
+          "severity": "primary",
+          "permission": "create"
+        },
+        {
+          "id": "export",
+          "label": "Export",
+          "icon": "pi pi-download",
+          "severity": "secondary",
+          "permission": "read"
+        }
+      ],
+      "row": [
+        {
+          "id": "edit",
+          "label": "Edit",
+          "icon": "pi pi-pencil",
+          "permission": "update"
+        },
+        {
+          "id": "view",
+          "label": "View",
+          "icon": "pi pi-eye",
+          "permission": "read"
+        },
+        {
+          "id": "delete",
+          "label": "Delete",
+          "icon": "pi pi-trash",
+          "severity": "danger",
+          "permission": "delete",
+          "confirm": {
+            "message": "Are you sure you want to delete this customer?",
+            "header": "Confirm Delete",
+            "icon": "pi pi-exclamation-triangle",
+            "acceptLabel": "Delete",
+            "rejectLabel": "Cancel",
+            "acceptSeverity": "danger"
+          }
+        }
+      ],
+      "bulk": [
+        {
+          "id": "bulk_delete",
+          "label": "Delete Selected",
+          "icon": "pi pi-trash",
+          "severity": "danger",
+          "permission": "delete",
+          "confirm": {
+            "message": "Are you sure you want to delete {count} customers?",
+            "header": "Confirm Bulk Delete"
+          }
+        },
+        {
+          "id": "bulk_export",
+          "label": "Export Selected",
+          "icon": "pi pi-download",
+          "permission": "read"
+        }
+      ]
+    },
+    "selection": "multiple",
+    "pagination": {
+      "enabled": true,
+      "pageSize": 20,
+      "pageSizeOptions": [10, 20, 50, 100]
+    }
+  },
+
+  "formView": {
+    "layout": "single",
+    "sections": [
+      {
+        "id": "general",
+        "title": "General Information",
+        "icon": "pi pi-info-circle",
+        "collapsible": true,
+        "collapsed": false,
+        "columns": 2,
+        "fields": [
+          {
+            "name": "name",
+            "type": "text",
+            "label": "Customer Name",
+            "placeholder": "Enter customer name",
+            "required": true,
+            "validation": {
+              "minLength": 2,
+              "maxLength": 100
+            },
+            "tooltip": "Full name of the customer or company"
+          },
+          {
+            "name": "type",
+            "type": "select",
+            "label": "Customer Type",
+            "required": true,
+            "default": "individual",
+            "options": [
+              { "label": "Individual", "value": "individual" },
+              { "label": "Company", "value": "company" }
+            ]
+          },
+          {
+            "name": "tax_id",
+            "type": "text",
+            "label": "Tax ID / KRA PIN",
+            "placeholder": "Enter tax ID",
+            "depends_on": [
+              {
+                "field": "type",
+                "operator": "eq",
+                "value": "company",
+                "action": "show"
+              }
+            ],
+            "validation": {
+              "pattern": "^[A-Z][0-9]{9}[A-Z]$",
+              "patternMessage": "Invalid KRA PIN format"
+            }
+          },
+          {
+            "name": "status",
+            "type": "select",
+            "label": "Status",
+            "required": true,
+            "default": "active",
+            "options": [
+              { "label": "Active", "value": "active" },
+              { "label": "Inactive", "value": "inactive" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "contact",
+        "title": "Contact Information",
+        "icon": "pi pi-phone",
+        "collapsible": true,
+        "collapsed": false,
+        "columns": 2,
+        "fields": [
+          {
+            "name": "email",
+            "type": "email",
+            "label": "Email Address",
+            "placeholder": "customer@example.com",
+            "required": true,
+            "validation": {
+              "email": true
+            }
+          },
+          {
+            "name": "phone",
+            "type": "phone",
+            "label": "Phone Number",
+            "placeholder": "+254 7XX XXX XXX",
+            "mask": "+254 999 999 999"
+          },
+          {
+            "name": "website",
+            "type": "url",
+            "label": "Website",
+            "placeholder": "https://example.com",
+            "depends_on": [
+              {
+                "field": "type",
+                "operator": "eq",
+                "value": "company",
+                "action": "show"
+              }
+            ]
+          },
+          {
+            "name": "contact_person",
+            "type": "text",
+            "label": "Contact Person",
+            "placeholder": "Primary contact name",
+            "depends_on": [
+              {
+                "field": "type",
+                "operator": "eq",
+                "value": "company",
+                "action": "show"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "address",
+        "title": "Address",
+        "icon": "pi pi-map-marker",
+        "collapsible": true,
+        "collapsed": true,
+        "columns": 2,
+        "fields": [
+          {
+            "name": "address_line1",
+            "type": "text",
+            "label": "Address Line 1",
+            "placeholder": "Street address",
+            "fullWidth": true
+          },
+          {
+            "name": "address_line2",
+            "type": "text",
+            "label": "Address Line 2",
+            "placeholder": "Apartment, suite, etc.",
+            "fullWidth": true
+          },
+          {
+            "name": "city",
+            "type": "text",
+            "label": "City",
+            "placeholder": "City"
+          },
+          {
+            "name": "county",
+            "type": "select",
+            "label": "County",
+            "options": [
+              { "label": "Nairobi", "value": "nairobi" },
+              { "label": "Mombasa", "value": "mombasa" },
+              { "label": "Kisumu", "value": "kisumu" },
+              { "label": "Nakuru", "value": "nakuru" }
+            ]
+          },
+          {
+            "name": "postal_code",
+            "type": "text",
+            "label": "Postal Code",
+            "placeholder": "00100"
+          },
+          {
+            "name": "country",
+            "type": "select",
+            "label": "Country",
+            "default": "KE",
+            "options": [
+              { "label": "Kenya", "value": "KE" },
+              { "label": "Uganda", "value": "UG" },
+              { "label": "Tanzania", "value": "TZ" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "billing",
+        "title": "Billing & Credit",
+        "icon": "pi pi-credit-card",
+        "collapsible": true,
+        "collapsed": true,
+        "columns": 2,
+        "access": {
+          "requiredPlan": ["professional", "enterprise"],
+          "readRoles": ["admin", "accountant", "sales_manager"],
+          "writeRoles": ["admin", "accountant"]
+        },
+        "fields": [
+          {
+            "name": "payment_terms",
+            "type": "select",
+            "label": "Payment Terms",
+            "default": "net_30",
+            "options": [
+              { "label": "Due on Receipt", "value": "due_on_receipt" },
+              { "label": "Net 15", "value": "net_15" },
+              { "label": "Net 30", "value": "net_30" },
+              { "label": "Net 60", "value": "net_60" }
+            ]
+          },
+          {
+            "name": "credit_limit",
+            "type": "currency",
+            "label": "Credit Limit",
+            "default": 0,
+            "currency": "KES",
+            "validation": {
+              "min": 0,
+              "max": 10000000
+            },
+            "access": {
+              "writeRoles": ["admin", "accountant"]
+            }
+          },
+          {
+            "name": "tax_exempt",
+            "type": "switch",
+            "label": "Tax Exempt",
+            "default": false
+          },
+          {
+            "name": "discount_percent",
+            "type": "percent",
+            "label": "Default Discount %",
+            "default": 0,
+            "validation": {
+              "min": 0,
+              "max": 50
+            }
+          }
+        ]
+      },
+      {
+        "id": "notes",
+        "title": "Notes",
+        "icon": "pi pi-comment",
+        "collapsible": true,
+        "collapsed": true,
+        "columns": 1,
+        "fields": [
+          {
+            "name": "notes",
+            "type": "textarea",
+            "label": "Internal Notes",
+            "placeholder": "Add any notes about this customer...",
+            "rows": 4,
+            "fullWidth": true
+          },
+          {
+            "name": "tags",
+            "type": "tags",
+            "label": "Tags",
+            "placeholder": "Add tags...",
+            "fullWidth": true
+          }
+        ]
+      }
+    ]
+  },
+
+  "access": {
+    "requiredModule": "sales",
+    "requiredPlan": ["starter", "professional", "enterprise"],
+    "permissions": {
+      "create": {
+        "roles": ["admin", "sales_manager", "sales_rep"],
+        "scope": "all"
+      },
+      "read": {
+        "roles": ["admin", "sales_manager", "sales_rep", "accountant"],
+        "scope": "all"
+      },
+      "update": {
+        "roles": ["admin", "sales_manager", "sales_rep"],
+        "scope": {
+          "admin": "all",
+          "sales_manager": "department",
+          "sales_rep": "own"
+        }
+      },
+      "delete": {
+        "roles": ["admin", "sales_manager"],
+        "scope": {
+          "admin": "all",
+          "sales_manager": "department"
+        }
+      }
+    },
+    "fieldAccess": {
+      "credit_limit": {
+        "readRoles": ["admin", "accountant", "sales_manager"],
+        "writeRoles": ["admin", "accountant"]
+      },
+      "discount_percent": {
+        "readRoles": ["admin", "accountant", "sales_manager"],
+        "writeRoles": ["admin", "sales_manager"]
+      }
+    }
+  },
+
+  "hooks": {
+    "beforeCreate": ["validate_tax_id", "check_duplicate_email"],
+    "afterCreate": ["send_welcome_email", "create_default_address"],
+    "beforeUpdate": ["validate_credit_limit_change"],
+    "afterUpdate": ["sync_to_accounting"],
+    "beforeDelete": ["check_pending_invoices"]
+  },
+
+  "relations": {
+    "invoices": {
+      "type": "hasMany",
+      "docType": "invoice",
+      "foreignKey": "customer_id",
+      "displayField": "invoice_number"
+    },
+    "addresses": {
+      "type": "hasMany",
+      "docType": "address",
+      "foreignKey": "customer_id"
+    },
+    "sales_rep": {
+      "type": "belongsTo",
+      "docType": "user",
+      "foreignKey": "sales_rep_id",
+      "displayField": "full_name"
+    }
+  }
+}

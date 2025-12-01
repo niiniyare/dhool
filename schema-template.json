@@ -1,0 +1,237 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Dhool ERP Document Schema Template",
+  
+  "name": "document_name",
+  "label": "Document",
+  "labelPlural": "Documents",
+  "icon": "pi pi-file",
+  "description": "Description of this document type",
+  "module": "core",
+  "version": "1.0.0",
+  "updatedAt": "2024-01-01T00:00:00Z",
+
+  "api": {
+    "baseEndpoint": "/api/v1/documents",
+    "endpoints": {
+      "list": "/api/v1/documents",
+      "get": "/api/v1/documents/:id",
+      "create": "/api/v1/documents",
+      "update": "/api/v1/documents/:id",
+      "delete": "/api/v1/documents/:id"
+    },
+    "defaultParams": {},
+    "idField": "id",
+    "pagination": {
+      "pageParam": "page",
+      "limitParam": "limit",
+      "defaultLimit": 20
+    }
+  },
+
+  "listView": {
+    "columns": [
+      {
+        "field": "name",
+        "header": "Name",
+        "type": "text",
+        "sortable": true,
+        "filterable": true,
+        "linkTo": "document_name"
+      },
+      {
+        "field": "status",
+        "header": "Status",
+        "type": "select",
+        "sortable": true,
+        "filterable": true
+      },
+      {
+        "field": "createdAt",
+        "header": "Created",
+        "type": "date",
+        "sortable": true
+      }
+    ],
+
+    "defaultSort": {
+      "field": "createdAt",
+      "order": "desc"
+    },
+
+    "searchable": true,
+    "searchFields": ["name"],
+
+    "filters": [
+      {
+        "field": "status",
+        "label": "Status",
+        "type": "select",
+        "options": [
+          { "value": "active", "label": "Active" },
+          { "value": "inactive", "label": "Inactive" }
+        ]
+      }
+    ],
+
+    "selectable": true,
+
+    "toolbarActions": [
+      {
+        "name": "create",
+        "label": "New Document",
+        "icon": "pi pi-plus",
+        "type": "button",
+        "variant": "primary",
+        "action": "create",
+        "access": {
+          "requiredPermissions": ["document:create"]
+        }
+      }
+    ],
+
+    "rowActions": [
+      {
+        "name": "edit",
+        "label": "Edit",
+        "icon": "pi pi-pencil",
+        "type": "button",
+        "action": "edit",
+        "access": {
+          "requiredPermissions": ["document:update"]
+        }
+      },
+      {
+        "name": "delete",
+        "label": "Delete",
+        "icon": "pi pi-trash",
+        "type": "button",
+        "variant": "danger",
+        "action": "delete",
+        "confirm": {
+          "title": "Delete Document",
+          "message": "Are you sure you want to delete this document?",
+          "severity": "danger"
+        },
+        "access": {
+          "requiredPermissions": ["document:delete"]
+        }
+      }
+    ],
+
+    "bulkActions": [
+      {
+        "name": "bulkDelete",
+        "label": "Delete Selected",
+        "icon": "pi pi-trash",
+        "type": "button",
+        "variant": "danger",
+        "action": "delete",
+        "confirm": {
+          "title": "Delete Documents",
+          "message": "Delete all selected documents?",
+          "severity": "danger"
+        }
+      }
+    ]
+  },
+
+  "formView": {
+    "sections": [
+      {
+        "name": "basic",
+        "label": "Basic Information",
+        "columns": 2
+      },
+      {
+        "name": "details",
+        "label": "Details",
+        "columns": 2,
+        "collapsible": true
+      }
+    ],
+
+    "fields": [
+      {
+        "name": "name",
+        "label": "Name",
+        "type": "text",
+        "section": "basic",
+        "width": "half",
+        "required": true,
+        "minLength": 2,
+        "maxLength": 100,
+        "placeholder": "Enter name",
+        "order": 1
+      },
+      {
+        "name": "status",
+        "label": "Status",
+        "type": "select",
+        "section": "basic",
+        "width": "half",
+        "required": true,
+        "defaultValue": "active",
+        "options": [
+          { "value": "active", "label": "Active", "color": "green" },
+          { "value": "inactive", "label": "Inactive", "color": "gray" }
+        ],
+        "order": 2
+      },
+      {
+        "name": "description",
+        "label": "Description",
+        "type": "textarea",
+        "section": "details",
+        "width": "full",
+        "maxLength": 500,
+        "order": 10
+      }
+    ],
+
+    "layout": "vertical",
+    "validateOnBlur": true
+  },
+
+  "access": {
+    "requiredModule": "core",
+    "permissions": {
+      "create": {
+        "roles": ["admin", "manager"]
+      },
+      "read": {
+        "roles": ["admin", "manager", "user"],
+        "owner": true
+      },
+      "update": {
+        "roles": ["admin", "manager"],
+        "owner": true
+      },
+      "delete": {
+        "roles": ["admin"]
+      }
+    }
+  },
+
+  "workflow": {
+    "statusField": "status",
+    "states": [
+      { "name": "active", "label": "Active", "color": "green" },
+      { "name": "inactive", "label": "Inactive", "color": "gray" }
+    ],
+    "transitions": [
+      {
+        "from": ["active"],
+        "to": "inactive",
+        "label": "Deactivate",
+        "roles": ["admin", "manager"]
+      },
+      {
+        "from": ["inactive"],
+        "to": "active",
+        "label": "Activate",
+        "roles": ["admin", "manager"]
+      }
+    ]
+  }
+}
