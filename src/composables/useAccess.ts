@@ -1,128 +1,181 @@
-import { computed, type ComputedRef } from 'vue'
-import { useAccessStore, type FieldAccess, type SubscriptionInfo } from '@/stores/access'
-import type { CrudAction } from '@/types/access'
-
 /**
- * Composable for handling access control throughout the application
- * Provides permission checking for documents, fields, and modules
+ * Access control composable for Dhool ERP system
+ * Provides reactive access control functionality with CRUD permissions and field-level access
  */
+
+import { ref, computed, type Ref } from 'vue'
+import { accessService } from '@/services/access'
+import type {
+  AccessContext,
+  SubscriptionPlan,
+  CrudAction,
+  FieldAccess,
+  DocumentAccess,
+  ModuleAccess
+} from '@/types/access'
+
+// Global reactive state
+const currentContext = ref<AccessContext | null>(null)
+const subscription = ref<SubscriptionPlan | null>(null)
+
 export function useAccess() {
-  const accessStore = useAccessStore()
-
   /**
-   * Check if user can create documents of the given type
+   * Set the current access context (user, subscription, document)
    */
-  const canCreate = (docType: string): boolean => {
-    return accessStore.hasPermission(docType, 'create')
+  const setContext = (context: AccessContext) => {
+    currentContext.value = context
+    subscription.value = context.subscription.plan
   }
 
   /**
-   * Check if user can read documents of the given type
+   * Check if user can perform a CRUD action on a document type
    */
-  const canRead = (docType: string): boolean => {
-    return accessStore.hasPermission(docType, 'read')
-  }
+  const canCreate = computed(() => (docType: string) => {
+    if (!currentContext.value) return false
+    return accessService.checkPermission(currentContext.value, docType, 'create').allowed
+  })
 
-  /**
-   * Check if user can update documents of the given type
-   */
-  const canUpdate = (docType: string): boolean => {
-    return accessStore.hasPermission(docType, 'update')
-  }
+  const canRead = computed(() => (docType: string) => {
+    if (!currentContext.value) return false
+    return accessService.checkPermission(currentContext.value, docType, 'read').allowed
+  })
 
-  /**
-   * Check if user can delete documents of the given type
-   */
-  const canDelete = (docType: string): boolean => {
-    return accessStore.hasPermission(docType, 'delete')
-  }
+  const canUpdate = computed(() => (docType: string) => {
+    if (!currentContext.value) return false
+    return accessService.checkPermission(currentContext.value, docType, 'update').allowed
+  })
 
-  /**
-   * Get field-level access permissions for a specific field in a document type
-   */
-  const canAccessField = (docType: string, field: string): FieldAccess => {
-    return accessStore.getFieldAccess(docType, field)
-  }
-
-  /**
-   * Check if user has access to a specific module
-   */
-  const hasModule = (moduleId: string): boolean => {
-    return accessStore.canAccessModule(moduleId)
-  }
-
-  /**
-   * Reactive subscription information
-   */
-  const subscription: ComputedRef<SubscriptionInfo> = computed(() => {
-    return accessStore.subscription || {
-      plan: {
-        id: '',
-        name: 'Free',
-        modules: [],
-        limits: {},
-        features: []
-      },
-      status: 'inactive',
-      usage: {}
-    }
+  const canDelete = computed(() => (docType: string) => {
+    if (!currentContext.value) return false
+    return accessService.checkPermission(currentContext.value, docType, 'delete').allowed
   })
 
   /**
-   * Check multiple permissions at once for a document type
+   * Check if user can access a specific field
    */
-  const getDocumentPermissions = (docType: string) => {
-    return {
-      canCreate: canCreate(docType),
-      canRead: canRead(docType),
-      canUpdate: canUpdate(docType),
-      canDelete: canDelete(docType)
-    }
+  const canAccessField = computed(() => (docType: string, field: string, mode: 'read' | 'write' = 'read') => {
+    if (!currentContext.value) return false
+    
+    const fieldAccess = accessService.evaluateABAC(currentContext.value, docType, field)
+    return mode === 'read' ? fieldAccess.readable : fieldAccess.writable
+  })
+
+  /**
+   * Check if user has access to a module
+   */
+  const hasModule = computed(() => (moduleId: string) => {
+    if (!currentContext.value) return false
+    return accessService.hasModuleAccess(currentContext.value, moduleId)
+  })
+
+  /**
+   * Get field access details for a specific field
+   */
+  const getFieldAccess = (docType: string, field: string): FieldAccess | null => {
+    if (!currentContext.value) return null
+    return accessService.evaluateABAC(currentContext.value, docType, field)
   }
 
   /**
-   * Check if user can perform any CRUD action on a document type
+   * Get complete document access information
    */
-  const hasAnyPermission = (docType: string): boolean => {
-    const permissions = getDocumentPermissions(docType)
-    return Object.values(permissions).some(permission => permission)
+  const getDocumentAccess = (docType: string, fields: string[]): DocumentAccess | null => {
+    if (!currentContext.value) return null
+    return accessService.getDocumentAccess(currentContext.value, docType, fields)
   }
 
   /**
-   * Filter a list of actions based on user permissions
+   * Filter fields based on access permissions
+   */
+  const filterFields = (docType: string, fields: string[], mode: 'read' | 'write' = 'read'): string[] => {
+    if (!currentContext.value) return []
+    return accessService.filterFields(currentContext.value, docType, fields, mode)
+  }
+
+  /**
+   * Filter actions based on user permissions
    */
   const filterActions = (docType: string, actions: string[]): string[] => {
-    const actionMap: Record<string, () => boolean> = {
-      'create': () => canCreate(docType),
-      'read': () => canRead(docType),
-      'update': () => canUpdate(docType),
-      'delete': () => canDelete(docType),
-      'edit': () => canUpdate(docType),
-      'view': () => canRead(docType)
-    }
+    if (!currentContext.value) return []
+    return accessService.filterActions(currentContext.value, docType, actions)
+  }
 
-    return actions.filter(action => {
-      const checker = actionMap[action.toLowerCase()]
-      return checker ? checker() : true // Allow non-CRUD actions by default
-    })
+  /**
+   * Check if user can perform a specific action
+   */
+  const canPerformAction = (docType: string, action: CrudAction): boolean => {
+    if (!currentContext.value) return false
+    return accessService.checkPermission(currentContext.value, docType, action).allowed
+  }
+
+  /**
+   * Get the data scope for a specific action
+   */
+  const getDataScope = (docType: string, action: CrudAction) => {
+    if (!currentContext.value) return 'own'
+    return accessService.checkPermission(currentContext.value, docType, action).scope
+  }
+
+  /**
+   * Check subscription plan access
+   */
+  const checkSubscriptionAccess = (moduleId: string, feature?: string): boolean => {
+    if (!currentContext.value) return false
+    return accessService.checkSubscription(currentContext.value, moduleId, feature)
+  }
+
+  /**
+   * Initialize access service with configuration data
+   */
+  const loadAccessConfig = async (config: {
+    subscriptionPlans?: any[]
+    userRoles?: any[]
+    abacPolicies?: any[]
+    moduleConfig?: ModuleAccess[]
+  }) => {
+    if (config.subscriptionPlans) {
+      accessService.loadSubscriptionPlans(config.subscriptionPlans)
+    }
+    if (config.userRoles) {
+      accessService.loadUserRoles(config.userRoles)
+    }
+    if (config.abacPolicies) {
+      accessService.loadABACPolicies(config.abacPolicies)
+    }
+    if (config.moduleConfig) {
+      accessService.loadModuleConfig(config.moduleConfig)
+    }
   }
 
   return {
-    // Primary permission methods
+    // Reactive state
+    subscription: subscription as Ref<SubscriptionPlan | null>,
+    
+    // Context management
+    setContext,
+    
+    // CRUD permissions (reactive)
     canCreate,
     canRead,
     canUpdate,
     canDelete,
+    
+    // Field access (reactive)
     canAccessField,
+    
+    // Module access (reactive)
     hasModule,
-    subscription,
-
-    // Additional utility methods
-    getDocumentPermissions,
-    hasAnyPermission,
+    
+    // Non-reactive methods for more detailed access information
+    getFieldAccess,
+    getDocumentAccess,
+    filterFields,
     filterActions,
-
-    // Store access for advanced usage
-    store: accessStore
+    canPerformAction,
+    getDataScope,
+    checkSubscriptionAccess,
+    
+    // Configuration
+    loadAccessConfig
   }
 }

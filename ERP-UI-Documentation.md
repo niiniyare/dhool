@@ -1,119 +1,76 @@
-# DhoolUI - Complete Documentation
+# DhoolUI - Complete Documentation V1.0
 
-> A comprehensive Vue 3 + PrimeVue 4 enterpriseuser interface with schema-driven UI generation, multi-tenant theming, ABAC security, subscription-based feature access, and module-level permissions.
-
-## Table of Contents
-
-### Foundation & Architecture
-1. [Philosophy & Architecture](#philosophy--architecture)
-   - [Why Schema-Driven UI?](#why-schema-driven-ui)
-   - [The Schema-Driven Solution](#the-schema-driven-solution)
-   - [Multi-Level Access Control](#multi-level-access-control)
-   - [Component Architecture (Atomic Design)](#component-architecture-atomic-design)
-2. [Project Setup](#project-setup)
-   - [Prerequisites](#prerequisites)
-   - [Installation](#installation)
-   - [Project Structure](#project-structure)
-3. [PrimeVue 4 Configuration](#primevue-4-configuration)
-   - [Vite Configuration](#vite-configuration)
-   - [Main Entry Point](#main-entry-point)
-   - [Tailwind Configuration](#tailwind-configuration)
-   - [Base CSS](#base-css)
-4. [Type System](#type-system)
-   - [Core Schema Types](#core-schema-types)
-   - [Access Control Types](#access-control-types)
-
-### Access Control & Schema Engine
-5. [Access Control System](#access-control-system)
-   - [Access Service](#access-service)
-   - [Access Store](#access-store)
-6. [Schema Engine](#schema-engine)
-   - [Schema Service](#schema-service)
-7. [Composables](#composables)
-   - [useAccess Composable](#useaccess-composable)
-   - [useSchema Composable](#useschema-composable)
-   - [useCrud Composable](#usecrud-composable)
-   - [useNotification Composable](#usenotification-composable)
-   - [useDrawer Composable](#usedrawer-composable)
-
-### Components
-8. [Component Philosophy](#component-philosophy)
-   - [When to Create Custom Components](#when-to-create-custom-components)
-   - [PrimeVue 4 Component Patterns](#primevue-4-component-patterns)
-9. [Molecules](#molecules)
-   - [FormField Component](#formfield-component)
-   - [StatCard Component](#statcard-component)
-   - [ActionMenu Component](#actionmenu-component)
-   - [EmptyState Component](#emptystate-component)
-10. [Organisms](#organisms)
-    - [DataTableCrud Component](#datatablecrud-component)
-    - [FormBuilder Component](#formbuilder-component)
-    - [FormDrawer Component](#formdrawer-component)
-11. [Schema Renderers](#schema-renderers)
-    - [FieldRenderer Component](#fieldrenderer-component)
-    - [DocumentPage Renderer](#documentpage-renderer)
-12. [Extending PrimeVue](#extending-primevue)
-    - [When to Extend vs. Wrap](#when-to-extend-vs-wrap)
-    - [Example: Extended DataTable](#example-extended-datatable)
-    - [Example: Custom Field Component](#example-custom-field-component)
-
-### JSON Schemas & Advanced Patterns
-13. [JSON Schema Structure](#json-schema-structure)
-    - [Schema File Location Strategy](#schema-file-location-strategy)
-14. [Complete Schema Examples](#complete-schema-examples)
-    - [Customer Schema (Full Example)](#customer-schema-full-example)
-    - [Invoice Schema (Transaction Document)](#invoice-schema-transaction-document)
-    - [Dashboard Schema](#dashboard-schema)
-15. [Schema Builder UI](#schema-builder-ui)
-    - [Schema Builder Store](#schema-builder-store)
-    - [Schema Builder Component (Simplified)](#schema-builder-component-simplified)
-16. [Dynamic Route Generation](#dynamic-route-generation)
-17. [Multi-Tenant Theming](#multi-tenant-theming)
-    - [Theme Configuration Store](#theme-configuration-store)
-    - [Tenant Theme Loader](#tenant-theme-loader)
-18. [Best Practices](#best-practices)
-    - [Schema Design Principles](#1-schema-design-principles)
-    - [Component Organization](#2-component-organization)
-    - [Access Control Strategy](#3-access-control-strategy)
-    - [Performance Optimization](#4-performance-optimization)
-    - [Error Handling](#5-error-handling)
-    - [Testing Schema-Driven Components](#6-testing-schema-driven-components)
-
-### Integration & Deployment
-19. [Application Shell](#application-shell)
-    - [App.vue](#appvue)
-20. [Layout Components](#layout-components)
-    - [MainLayout](#mainlayout)
-    - [AppTopbar](#apptopbar)
-    - [AppSidebar](#appsidebar)
-21. [Stores](#stores)
-    - [Auth Store](#auth-store)
-    - [Tenant Store](#tenant-store)
-    - [UI Store](#ui-store)
-22. [API Service](#api-service)
-23. [Router Guards](#router-guards)
-    - [Router Index](#router-index)
-24. [App Initialization](#app-initialization)
-    - [Updated main.ts](#updated-maints)
-25. [Summary](#summary)
+> A comprehensive Vue 3 + PrimeVue 4 enterprise UI framework with schema-driven UI generation, multi-tenant theming, ABAC security, subscription-based feature access, and module-level permissions. Designed to integrate seamlessly with Go backend condition evaluation engine.
 
 ---
 
-## Philosophy & Architecture
+## Table of Contents
 
-### Why Schema-Driven UI?
+### Part 1: Philosophy & Architecture
+1. [Why Schema-Driven UI?](#why-schema-driven-ui)
+2. [Architecture Overview](#architecture-overview)
+3. [Backend vs Frontend Processing](#backend-vs-frontend-processing)
+4. [Multi-Level Access Control](#multi-level-access-control)
+5. [Component Architecture (Atomic Design)](#component-architecture-atomic-design)
 
-In enterprise ERP systems, we'll have hundreds of similar pages:
+### Part 2: Schema System Design V1.0
+6. [Schema Design Principles](#schema-design-principles)
+7. [Go Backend Condition Package Alignment](#go-backend-condition-package-alignment)
+8. [Type System with Full Documentation](#type-system-with-full-documentation)
+
+### Part 3: Project Setup & Configuration
+9. [Project Setup](#project-setup)
+10. [PrimeVue 4 Configuration](#primevue-4-configuration)
+11. [Tailwind Configuration](#tailwind-configuration)
+
+### Part 4: Services & State Management
+12. [Access Control System](#access-control-system)
+13. [Schema Engine](#schema-engine)
+14. [Composables](#composables)
+15. [Stores](#stores)
+
+### Part 5: Component Library
+16. [PrimeVue Component Integration Strategy](#primevue-component-integration-strategy)
+17. [Required PrimeVue Components](#required-primevue-components)
+18. [Molecules](#molecules)
+19. [Organisms](#organisms)
+20. [Schema Renderers](#schema-renderers)
+
+### Part 6: Advanced Features
+21. [JSON Schema Examples](#json-schema-examples)
+22. [Schema Builder UI](#schema-builder-ui)
+23. [Dynamic Route Generation](#dynamic-route-generation)
+24. [Multi-Tenant Theming](#multi-tenant-theming)
+
+### Part 7: Application Shell
+25. [Layout Components](#layout-components)
+26. [API Service](#api-service)
+27. [Router Configuration](#router-configuration)
+28. [App Initialization](#app-initialization)
+
+### Part 8: Best Practices
+29. [Schema Design Best Practices](#schema-design-best-practices)
+30. [Component Organization Best Practices](#component-organization-best-practices)
+31. [Performance Optimization](#performance-optimization)
+32. [Testing Strategy](#testing-strategy)
+
+---
+
+# Part 1: Philosophy & Architecture
+
+## Why Schema-Driven UI?
+
+In enterprise ERP systems, you'll encounter hundreds of similar pages:
 - **Document Lists**: Invoices, Orders, Transactions, Users, Products
 - **Document Forms**: Create/Edit dialogs with validation
 - **Dashboards**: KPIs, charts, activity feeds
 - **Reports**: Filtered data exports
 
 Writing individual Vue components for each is:
-- **Time-consuming**: 80% of code is repetitive
-- **Error-prone**: Inconsistent implementations
+- **Time-consuming**: 80% of code is repetitive CRUD boilerplate
+- **Error-prone**: Inconsistent implementations across developers
 - **Hard to maintain**: Changes require touching many files
-- **Inflexible**: Backend developers can't modify UI
+- **Inflexible**: Backend developers can't modify UI without frontend expertise
 
 ### The Schema-Driven Solution
 
@@ -129,44 +86,169 @@ Writing individual Vue components for each is:
 │          │                    │                    │                     │
 │          ▼                    ▼                    ▼                     │
 │   ┌──────────────┐     ┌──────────────┐     ┌──────────────┐            │
-│   │ - Fields     │     │ - Access     │     │ - DataTable  │            │
-│   │ - Actions    │     │   Control    │     │ - Forms      │            │
-│   │ - API Config │     │ - Feature    │     │ - Actions    │            │
-│   │ - Permissions│     │   Flags      │     │ - Validation │            │
+│   │ - Fields     │     │ - Condition  │     │ - DataTable  │            │
+│   │ - Conditions │     │   Evaluation │     │ - Forms      │            │
+│   │ - API Config │     │ - Access     │     │ - Actions    │            │
+│   │ - Permissions│     │   Control    │     │ - Validation │            │
 │   │ - Layout     │     │ - Theming    │     │              │            │
 │   └──────────────┘     └──────────────┘     └──────────────┘            │
 │                                                                          │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-### Multi-Level Access Control
+---
 
-Your SaaSneeds three layers of access control:
+## Architecture Overview
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                          DHOOLUI ARCHITECTURE                            │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│  ┌─────────────────────────────────────────────────────────────────┐    │
+│  │                        GO BACKEND                                │    │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐  │    │
+│  │  │   Schema    │  │  Condition  │  │       ABAC Policy       │  │    │
+│  │  │   Storage   │  │   Engine    │  │       Evaluator         │  │    │
+│  │  └─────────────┘  └─────────────┘  └─────────────────────────┘  │    │
+│  │         │                │                      │                │    │
+│  │         └────────────────┼──────────────────────┘                │    │
+│  │                          │                                       │    │
+│  │                    REST API                                      │    │
+│  └──────────────────────────┼──────────────────────────────────────┘    │
+│                             │                                            │
+│  ┌──────────────────────────┼──────────────────────────────────────┐    │
+│  │                    VUE FRONTEND                                  │    │
+│  │                          │                                       │    │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐  │    │
+│  │  │   Schema    │  │  Condition  │  │       Access            │  │    │
+│  │  │   Service   │  │  Evaluator  │  │       Service           │  │    │
+│  │  │  (Client)   │  │  (Client)   │  │                         │  │    │
+│  │  └─────────────┘  └─────────────┘  └─────────────────────────┘  │    │
+│  │         │                │                      │                │    │
+│  │         └────────────────┼──────────────────────┘                │    │
+│  │                          │                                       │    │
+│  │  ┌───────────────────────┴───────────────────────────────────┐  │    │
+│  │  │                  SCHEMA RENDERERS                          │  │    │
+│  │  │  DocumentPage | DashboardPage | FormBuilder | DataTable    │  │    │
+│  │  └───────────────────────────────────────────────────────────┘  │    │
+│  │                                                                  │    │
+│  └──────────────────────────────────────────────────────────────────┘    │
+│                                                                          │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Backend vs Frontend Processing
+
+Understanding what happens where is critical for proper implementation:
+
+### Backend Responsibilities (Go)
+
+| Concern | Backend Processing | Notes |
+|---------|-------------------|-------|
+| **Schema Storage** | Stores, versions, and retrieves schemas | PostgreSQL with JSON columns |
+| **Schema Validation** | Validates schema structure on save | JSON Schema validation |
+| **ABAC Policy Evaluation** | Evaluates complex access conditions | Uses condition package |
+| **Data-Level Security** | Applies Row-Level Security | PostgreSQL RLS policies |
+| **API Authorization** | Checks if user can perform action | Middleware layer |
+| **Workflow Transitions** | Validates state machine transitions | Business logic layer |
+| **Condition Evaluation** | Evaluates complex business rules | Full condition engine |
+| **Field-Level Permissions** | Returns which fields user can see/edit | Part of API response |
+| **Default Value Generation** | Server-generated defaults (IDs, codes) | Business logic layer |
+
+### Frontend Responsibilities (Vue)
+
+| Concern | Frontend Processing | Notes |
+|---------|-------------------|-------|
+| **Schema Parsing** | Reads and interprets schema | TypeScript types |
+| **UI Rendering** | Generates components from schema | PrimeVue components |
+| **Client Validation** | Real-time form validation | UX enhancement only |
+| **Simple Conditions** | Field dependencies (show/hide/enable) | Local state only |
+| **Optimistic UI** | Immediate UI updates | Rollback on error |
+| **Caching** | Schema and data caching | Vue Query |
+| **Theme Application** | CSS variable injection | Multi-tenant theming |
+| **Layout Management** | Responsive grid, sections | CSS/Tailwind |
+
+### Condition Evaluation Split
+
+```typescript
+/**
+ * CRITICAL: Conditions are evaluated in TWO places
+ * 
+ * BACKEND (Authoritative):
+ * - ABAC policy conditions (can user access this resource?)
+ * - Workflow transition conditions (can this state change happen?)
+ * - Complex business rules with database lookups
+ * - Field-level access based on user attributes
+ * 
+ * FRONTEND (UX Enhancement Only):
+ * - Field visibility (show/hide based on other field values)
+ * - Field enabling (disable inputs based on form state)
+ * - Required field toggling (make field required conditionally)
+ * - Value setting (auto-fill based on selections)
+ * 
+ * The frontend condition evaluator is a SUBSET of the backend's
+ * capability. Never trust frontend for security decisions.
+ */
+```
+
+### What the Frontend Condition Evaluator Should NOT Do
+
+```typescript
+// ❌ NEVER evaluate security conditions on frontend
+const canDeleteInvoice = evaluateCondition({
+  attribute: 'user.role',
+  operator: 'eq',
+  value: 'admin'
+}); // WRONG - this should come from backend
+
+// ✅ Frontend should only handle UI state
+const showCompanyFields = evaluateCondition({
+  field: 'customerType',
+  operator: 'eq',
+  value: 'company'
+}); // CORRECT - simple UI logic
+```
+
+---
+
+## Multi-Level Access Control
+
+Your SaaS needs three layers of access control:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                        ACCESS CONTROL HIERARCHY                          │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                          │
-│  LAYER 1: SUBSCRIPTION (Tenant Level)                                   │
-│  ├── Which MODULES are available?                                       │
-│  ├── Which FEATURES within modules?                                     │
-│  └── What LIMITS apply? (users, records, storage)                       │
+│  LAYER 1: SUBSCRIPTION (Tenant Level) ─────────────────────────────────│
+│  ├── Which MODULES are available? (Evaluated on Backend)               │
+│  ├── Which FEATURES within modules? (Evaluated on Backend)             │
+│  └── What LIMITS apply? (users, records, storage)                      │
 │                                                                          │
-│  LAYER 2: MODULE ACCESS (Role Level)                                    │
-│  ├── Which modules can this ROLE access?                                │
-│  ├── What ACTIONS within each module?                                   │
-│  └── What DATA SCOPE? (own, department, all)                            │
+│  LAYER 2: MODULE ACCESS (Role Level) ──────────────────────────────────│
+│  ├── Which modules can this ROLE access? (Evaluated on Backend)        │
+│  ├── What ACTIONS within each module? (Evaluated on Backend)           │
+│  └── What DATA SCOPE? (own, department, all)                           │
 │                                                                          │
-│  LAYER 3: FIELD ACCESS (ABAC - Attribute Level)                         │
-│  ├── Which FIELDS can user see?                                         │
-│  ├── Which FIELDS can user edit?                                        │
-│  └── What VALUES can user set?                                          │
+│  LAYER 3: FIELD ACCESS (ABAC - Attribute Level) ───────────────────────│
+│  ├── Which FIELDS can user see? (Backend sends filtered schema)        │
+│  ├── Which FIELDS can user edit? (Backend marks as readonly)           │
+│  └── What VALUES can user set? (Backend validates on submit)           │
+│                                                                          │
+│  LAYER 4: UI CONDITIONS (Frontend Only) ───────────────────────────────│
+│  ├── Which FIELDS are visible? (Based on form values)                  │
+│  ├── Which FIELDS are enabled? (Based on form state)                   │
+│  └── Which FIELDS are required? (Conditional requirements)             │
 │                                                                          │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-### Component Architecture (Atomic Design)
+---
+
+## Component Architecture (Atomic Design)
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
@@ -178,24 +260,1900 @@ Your SaaSneeds three layers of access control:
 │      └── These read JSON and render appropriate components              │
 │                                                                          │
 │  TEMPLATES (Page Layouts)                                                │
-│  └── ListPageTemplate, FormPageTemplate, DashboardTemplate              │
+│  └── MainLayout, AuthLayout, BlankLayout                                │
 │      └── Define regions: header, content, sidebar, footer               │
 │                                                                          │
 │  ORGANISMS (Complex Components - Composed of Molecules)                  │
-│  └── DataTableCrud, FormBuilder, ChartWidget, TreeNav                   │
+│  └── DataTableCrud, FormBuilder, FormDrawer, ChartWidget                │
 │      └── Full-featured, self-contained functionality                    │
+│      └── Use PrimeVue components internally                             │
 │                                                                          │
 │  MOLECULES (Simple Compositions - PrimeVue + Custom Logic)              │
-│  └── FormField, SearchBar, StatCard, ActionMenu                         │
-│      └── Combine atoms with specific behavior                           │
+│  └── FormField, SearchBar, StatCard, ActionMenu, EmptyState             │
+│      └── Combine PrimeVue atoms with specific behavior                  │
 │                                                                          │
-│  ATOMS (Base Elements - Mostly PrimeVue Wrappers)                       │
-│  └── Usually just use PrimeVue directly, extend when needed             │
+│  ATOMS (Base Elements - USE PRIMEVUE DIRECTLY)                          │
+│  └── Button, InputText, Select, DataTable, Dialog, etc.                 │
+│      └── DON'T wrap PrimeVue atoms unless adding real value             │
 │                                                                          │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
+
+# Part 2: Schema System Design V1.0
+
+## Schema Design Principles
+
+### V1.0 Design Goals
+
+1. **Parseable**: Schema Builder can easily read/write schemas
+2. **Typed**: Clear discriminated unions for type-specific properties
+3. **Grouped**: Related properties organized into logical groups
+4. **Aligned**: Condition structures match Go backend exactly
+5. **Minimal**: Start with essential features, add complexity later
+6. **Documented**: Every property has clear purpose and constraints
+
+### Schema Structure Overview
+
+```typescript
+/**
+ * Schema V1.0 Structure:
+ * 
+ * DocumentSchema
+ * ├── identity (name, label, icon, module)
+ * ├── api (endpoints, pagination, response format)
+ * ├── listView
+ * │   ├── columns[]
+ * │   ├── filters[]
+ * │   ├── actions (toolbar, row, bulk)
+ * │   └── features (search, select, export)
+ * ├── formView
+ * │   ├── sections[]
+ * │   ├── fields[]
+ * │   └── actions[]
+ * ├── access (permissions by action)
+ * ├── workflow (optional state machine)
+ * └── meta (version, timestamps)
+ */
+```
+
+---
+
+## Go Backend Condition Package Alignment
+
+Your Go condition package uses specific operators and structures. The frontend schema MUST align exactly.
+
+### Operator Mapping
+
+```typescript
+/**
+ * These operators MUST match your Go condition package exactly.
+ * See: github.com/niiniyare/erp/pkg/condition
+ * 
+ * The frontend uses these for UI conditions (field dependencies).
+ * The backend uses these for ABAC policies and business rules.
+ */
+export type ConditionOperator =
+  // Comparison Operators
+  | 'eq'              // Equal (exact match)
+  | 'neq'             // Not equal
+  | 'gt'              // Greater than
+  | 'gte'             // Greater than or equal (alias: greater_or_equal)
+  | 'lt'              // Less than
+  | 'lte'             // Less than or equal (alias: less_or_equal)
+  
+  // Range Operators
+  | 'between'         // Within range (inclusive): [min, max]
+  | 'not_between'     // Outside range
+  
+  // String Operators
+  | 'contains'        // Substring match
+  | 'not_contains'    // Substring not present
+  | 'starts_with'     // Prefix match
+  | 'ends_with'       // Suffix match
+  | 'match_regexp'    // Regex pattern match (use sparingly - ReDoS risk)
+  
+  // Membership Operators
+  | 'in'              // Value in array (alias: select_any_in)
+  | 'nin'             // Value not in array (alias: select_not_any_in)
+  
+  // Null/Empty Operators
+  | 'is_empty'        // Value is null, undefined, or empty string
+  | 'is_not_empty'    // Value has content
+```
+
+### Condition Structure (Aligned with Go)
+
+```typescript
+/**
+ * Single condition matching Go's ConditionRule structure.
+ * 
+ * Go equivalent:
+ * type ConditionRule struct {
+ *     ID    string
+ *     Left  Expression
+ *     Op    OperatorType
+ *     Right any
+ * }
+ */
+export interface Condition {
+  /**
+   * The field or attribute to evaluate.
+   * - For UI conditions: field name in form (e.g., "customerType")
+   * - For ABAC: dot-notation path (e.g., "user.department", "resource.status")
+   */
+  field: string;
+  
+  /**
+   * Comparison operator from ConditionOperator type.
+   * Must match Go backend's supported operators exactly.
+   */
+  operator: ConditionOperator;
+  
+  /**
+   * Value to compare against.
+   * Type depends on operator:
+   * - 'eq', 'neq': any single value
+   * - 'gt', 'gte', 'lt', 'lte': number or date string
+   * - 'between': [min, max] tuple
+   * - 'in', 'nin': array of values
+   * - 'is_empty', 'is_not_empty': value ignored
+   */
+  value?: unknown;
+  
+  /**
+   * Optional: Reference another field instead of literal value.
+   * Matches Go's ValueTypeField expression type.
+   * Example: { field: "salary", operator: "lte", fieldRef: "budget" }
+   */
+  fieldRef?: string;
+}
+
+/**
+ * Condition group with logical conjunction.
+ * 
+ * Go equivalent:
+ * type ConditionGroup struct {
+ *     Conjunction ConjunctionType // AND or OR
+ *     Not         bool            // Negate result
+ *     Conditions  []ConditionRule
+ *     SubGroups   []ConditionGroup
+ * }
+ */
+export interface ConditionGroup {
+  /**
+   * How to combine conditions in this group.
+   * - 'and': All conditions must be true (default)
+   * - 'or': At least one condition must be true
+   */
+  conjunction: 'and' | 'or';
+  
+  /**
+   * Negate the entire group result.
+   * Equivalent to wrapping in NOT().
+   */
+  not?: boolean;
+  
+  /**
+   * List of conditions to evaluate.
+   */
+  conditions: Condition[];
+  
+  /**
+   * Nested condition groups for complex logic.
+   * Example: (A AND B) OR (C AND D)
+   */
+  groups?: ConditionGroup[];
+}
+```
+
+### UI-Specific Condition Actions
+
+```typescript
+/**
+ * Actions that can be triggered by conditions in the UI.
+ * These are FRONTEND-ONLY and do not affect security.
+ */
+export type UIConditionAction = 
+  | 'show'        // Make field visible
+  | 'hide'        // Hide field
+  | 'enable'      // Enable input
+  | 'disable'     // Disable input
+  | 'require'     // Make field required
+  | 'unrequire'   // Make field optional
+  | 'set_value';  // Set field to specific value
+
+/**
+ * Field dependency for conditional UI behavior.
+ * Evaluated entirely on frontend for UX.
+ */
+export interface FieldDependency {
+  /**
+   * Conditions that trigger this dependency.
+   * Can be single condition or complex group.
+   */
+  conditions: Condition[] | ConditionGroup;
+  
+  /**
+   * How to combine conditions if array is provided.
+   * @default 'and'
+   */
+  logic?: 'and' | 'or';
+  
+  /**
+   * What action to take when conditions are met.
+   */
+  action: UIConditionAction;
+  
+  /**
+   * Value to set when action is 'set_value'.
+   */
+  actionValue?: unknown;
+}
+```
+
+---
+
+## Type System with Full Documentation
+
+### Core Field Types
+
+```typescript
+// src/types/schema.ts
+
+/**
+ * =============================================================================
+ * FIELD TYPES
+ * =============================================================================
+ * 
+ * V1.0 includes 15 essential field types. Additional types can be added
+ * in future versions as needed. Each type maps to specific PrimeVue
+ * components and validation rules.
+ */
+
+/**
+ * Essential field types for V1.0.
+ * Each type determines:
+ * - Which PrimeVue component to render
+ * - What validation rules apply
+ * - How data is formatted for display
+ * - How data is serialized for API
+ */
+export type FieldType =
+  // Text Input Types
+  | 'text'          // Single-line text → InputText
+  | 'textarea'      // Multi-line text → Textarea
+  | 'email'         // Email with validation → InputText + pattern
+  | 'phone'         // Phone with mask → InputMask
+  | 'password'      // Masked input → Password
+  
+  // Numeric Types
+  | 'number'        // Integer/float → InputNumber
+  | 'currency'      // Money with formatting → InputNumber (mode=currency)
+  
+  // Date/Time Types
+  | 'date'          // Date only → DatePicker
+  | 'datetime'      // Date and time → DatePicker (showTime)
+  
+  // Selection Types
+  | 'select'        // Single selection → Select
+  | 'multiselect'   // Multiple selection → MultiSelect
+  
+  // Boolean Types
+  | 'checkbox'      // Checkbox with label → Checkbox
+  | 'switch'        // Toggle switch → ToggleSwitch
+  
+  // Reference Types
+  | 'link'          // Reference to another document → AutoComplete/Select
+  | 'table'         // Child table (one-to-many) → DataTable (editable)
+  
+  // Display Types
+  | 'readonly';     // Computed/display only → static text
+```
+
+### Field Schema (Core Interface)
+
+```typescript
+/**
+ * =============================================================================
+ * FIELD SCHEMA
+ * =============================================================================
+ * 
+ * Defines a single field in a document form. Organized into logical groups
+ * for easier parsing by Schema Builder.
+ */
+export interface FieldSchema {
+  // ─────────────────────────────────────────────────────────────────────────
+  // IDENTITY (Required)
+  // ─────────────────────────────────────────────────────────────────────────
+  
+  /**
+   * Unique field identifier within the document.
+   * Used as form data key and API payload key.
+   * Convention: snake_case (e.g., "customer_name", "billing_address")
+   * 
+   * @pattern ^[a-z][a-z0-9_]*$
+   * @minLength 1
+   * @maxLength 64
+   */
+  name: string;
+  
+  /**
+   * Human-readable label displayed in UI.
+   * Should be concise but descriptive.
+   * 
+   * @minLength 1
+   * @maxLength 100
+   */
+  label: string;
+  
+  /**
+   * Field data type determining component and validation.
+   * See FieldType for available options.
+   */
+  type: FieldType;
+  
+  // ─────────────────────────────────────────────────────────────────────────
+  // LAYOUT
+  // ─────────────────────────────────────────────────────────────────────────
+  
+  /**
+   * Layout configuration for form display.
+   * Determines field positioning and visibility.
+   */
+  layout?: {
+    /**
+     * Field width in form grid.
+     * - 'full': Spans entire row (12 columns)
+     * - 'half': Spans half row (6 columns)
+     * - 'third': Spans one-third (4 columns)
+     * - 'quarter': Spans quarter (3 columns)
+     * 
+     * @default 'half'
+     */
+    width?: 'full' | 'half' | 'third' | 'quarter';
+    
+    /**
+     * Section this field belongs to.
+     * Must match a section.name in formView.sections.
+     * Fields without section go to 'default'.
+     */
+    section?: string;
+    
+    /**
+     * Display order within section.
+     * Lower numbers appear first.
+     * 
+     * @default 0
+     */
+    order?: number;
+    
+    /**
+     * Always hide this field in forms.
+     * Use for computed fields that shouldn't be shown.
+     * Different from conditional hiding via dependencies.
+     * 
+     * @default false
+     */
+    hidden?: boolean;
+  };
+  
+  // ─────────────────────────────────────────────────────────────────────────
+  // VALIDATION
+  // ─────────────────────────────────────────────────────────────────────────
+  
+  /**
+   * Validation rules for this field.
+   * Validated on both frontend (UX) and backend (authoritative).
+   */
+  validation?: {
+    /**
+     * Field must have a value.
+     * Empty string, null, undefined, and empty array fail.
+     * 
+     * @default false
+     */
+    required?: boolean;
+    
+    /**
+     * Minimum value for numbers.
+     * For dates, use ISO string.
+     */
+    min?: number;
+    
+    /**
+     * Maximum value for numbers.
+     * For dates, use ISO string.
+     */
+    max?: number;
+    
+    /**
+     * Minimum string length.
+     */
+    minLength?: number;
+    
+    /**
+     * Maximum string length.
+     */
+    maxLength?: number;
+    
+    /**
+     * Regex pattern for validation.
+     * Used for custom formats (e.g., postal codes).
+     * 
+     * WARNING: Keep patterns simple to avoid ReDoS.
+     * Backend will enforce timeout on pattern matching.
+     */
+    pattern?: string;
+    
+    /**
+     * Custom error message when validation fails.
+     * If not provided, generates default message.
+     */
+    message?: string;
+  };
+  
+  // ─────────────────────────────────────────────────────────────────────────
+  // BEHAVIOR
+  // ─────────────────────────────────────────────────────────────────────────
+  
+  /**
+   * Behavioral configuration affecting interactivity.
+   */
+  behavior?: {
+    /**
+     * Field is read-only (visible but not editable).
+     * Different from disabled (which is often visually different).
+     * 
+     * @default false
+     */
+    readonly?: boolean;
+    
+    /**
+     * Field is disabled (greyed out, not interactive).
+     * 
+     * @default false
+     */
+    disabled?: boolean;
+    
+    /**
+     * Placeholder text shown when field is empty.
+     */
+    placeholder?: string;
+    
+    /**
+     * Conditional dependencies that affect this field.
+     * Evaluated on frontend for immediate UI response.
+     */
+    dependsOn?: FieldDependency[];
+    
+    /**
+     * Name of handler function to call on value change.
+     * Must be registered in component's handler registry.
+     * Used for cascading updates, calculations, etc.
+     */
+    onChange?: string;
+  };
+  
+  // ─────────────────────────────────────────────────────────────────────────
+  // DATA
+  // ─────────────────────────────────────────────────────────────────────────
+  
+  /**
+   * Data-related configuration.
+   */
+  data?: {
+    /**
+     * Default value when creating new document.
+     * Type should match field type.
+     * Special values:
+     * - "{{today}}": Current date
+     * - "{{now}}": Current datetime
+     * - "{{user.id}}": Current user's ID
+     */
+    defaultValue?: unknown;
+    
+    /**
+     * Static options for select/multiselect fields.
+     * For dynamic options, use optionsSource.
+     */
+    options?: FieldOption[];
+    
+    /**
+     * Dynamic options configuration.
+     * Fetches options from API or store.
+     */
+    optionsSource?: OptionsSource;
+  };
+  
+  // ─────────────────────────────────────────────────────────────────────────
+  // DISPLAY
+  // ─────────────────────────────────────────────────────────────────────────
+  
+  /**
+   * Display formatting configuration.
+   */
+  display?: {
+    /**
+     * Prefix shown before value (e.g., "$" for currency).
+     */
+    prefix?: string;
+    
+    /**
+     * Suffix shown after value (e.g., "%" for percent).
+     */
+    suffix?: string;
+    
+    /**
+     * Format string for dates/numbers.
+     * Dates: "yyyy-MM-dd", "MMM dd, yyyy", etc.
+     * Numbers: "0,0.00", etc.
+     */
+    format?: string;
+    
+    /**
+     * Help text shown below field.
+     */
+    description?: string;
+    
+    /**
+     * Tooltip shown on hover/focus.
+     */
+    tooltip?: string;
+  };
+  
+  // ─────────────────────────────────────────────────────────────────────────
+  // TYPE-SPECIFIC CONFIG
+  // ─────────────────────────────────────────────────────────────────────────
+  
+  /**
+   * Configuration specific to certain field types.
+   * Use discriminated union pattern for type safety.
+   */
+  typeConfig?: FieldTypeConfig;
+  
+  // ─────────────────────────────────────────────────────────────────────────
+  // ACCESS CONTROL
+  // ─────────────────────────────────────────────────────────────────────────
+  
+  /**
+   * Field-level access control.
+   * This is SUPPLEMENTARY to backend access control.
+   * Backend is authoritative - this is for UI hints.
+   */
+  access?: FieldAccessControl;
+}
+```
+
+### Field Type-Specific Configuration
+
+```typescript
+/**
+ * =============================================================================
+ * TYPE-SPECIFIC CONFIGURATION
+ * =============================================================================
+ * 
+ * Discriminated union for type-specific properties.
+ * This pattern provides type safety when accessing type-specific config.
+ */
+
+/**
+ * Configuration for 'link' field type.
+ * References another document type.
+ */
+export interface LinkFieldConfig {
+  type: 'link';
+  
+  /**
+   * Target document type to link to.
+   * Must be a valid document name in the system.
+   */
+  linkTo: string;
+  
+  /**
+   * Filters to apply when fetching link options.
+   * Example: { status: "active" } to only show active customers.
+   */
+  filters?: Record<string, unknown>;
+  
+  /**
+   * Field to display in dropdown/autocomplete.
+   * @default "name"
+   */
+  displayField?: string;
+  
+  /**
+   * Fields to search when typing in autocomplete.
+   * @default ["name"]
+   */
+  searchFields?: string[];
+  
+  /**
+   * Allow creating new linked document inline.
+   * Shows "+" button to open quick-create dialog.
+   * 
+   * @default false
+   */
+  allowCreate?: boolean;
+}
+
+/**
+ * Configuration for 'table' field type.
+ * Child table for one-to-many relationships.
+ */
+export interface TableFieldConfig {
+  type: 'table';
+  
+  /**
+   * Schema for rows in the table.
+   * Each row follows this field structure.
+   */
+  rowSchema: FieldSchema[];
+  
+  /**
+   * Minimum number of rows required.
+   * @default 0
+   */
+  minRows?: number;
+  
+  /**
+   * Maximum number of rows allowed.
+   * null = unlimited
+   */
+  maxRows?: number | null;
+  
+  /**
+   * Allow reordering rows via drag-and-drop.
+   * @default false
+   */
+  reorderable?: boolean;
+  
+  /**
+   * Show row numbers in first column.
+   * @default true
+   */
+  showRowNumbers?: boolean;
+}
+
+/**
+ * Configuration for 'select' and 'multiselect' field types.
+ */
+export interface SelectFieldConfig {
+  type: 'select' | 'multiselect';
+  
+  /**
+   * Allow searching/filtering options.
+   * @default true for more than 10 options
+   */
+  searchable?: boolean;
+  
+  /**
+   * Allow clearing selection.
+   * @default true unless field is required
+   */
+  clearable?: boolean;
+  
+  /**
+   * For multiselect: max number of selections shown.
+   * Beyond this, shows "+N more".
+   * @default 3
+   */
+  maxSelectedLabels?: number;
+  
+  /**
+   * Group options by this field.
+   * Options must have this property.
+   */
+  groupBy?: string;
+}
+
+/**
+ * Configuration for 'currency' field type.
+ */
+export interface CurrencyFieldConfig {
+  type: 'currency';
+  
+  /**
+   * Currency code (ISO 4217).
+   * @default "USD"
+   */
+  currency?: string;
+  
+  /**
+   * Locale for formatting.
+   * @default "en-US"
+   */
+  locale?: string;
+  
+  /**
+   * Number of decimal places.
+   * @default 2
+   */
+  precision?: number;
+}
+
+/**
+ * Union type for all type-specific configs.
+ * Add new config types here as field types are added.
+ */
+export type FieldTypeConfig =
+  | LinkFieldConfig
+  | TableFieldConfig
+  | SelectFieldConfig
+  | CurrencyFieldConfig;
+```
+
+### Options and Options Source
+
+```typescript
+/**
+ * =============================================================================
+ * OPTIONS CONFIGURATION
+ * =============================================================================
+ */
+
+/**
+ * Static option for select/multiselect/radio fields.
+ */
+export interface FieldOption {
+  /**
+   * Value stored when option is selected.
+   */
+  value: string | number | boolean;
+  
+  /**
+   * Text displayed to user.
+   */
+  label: string;
+  
+  /**
+   * Disable this specific option.
+   * @default false
+   */
+  disabled?: boolean;
+  
+  /**
+   * Icon to show before label (PrimeIcon name).
+   */
+  icon?: string;
+  
+  /**
+   * Color indicator (for status-like options).
+   */
+  color?: string;
+  
+  /**
+   * Group this option belongs to.
+   * Used with groupBy in SelectFieldConfig.
+   */
+  group?: string;
+}
+
+/**
+ * Dynamic options configuration.
+ * Fetches options from API or store at runtime.
+ */
+export interface OptionsSource {
+  /**
+   * Source type:
+   * - 'api': Fetch from REST endpoint
+   * - 'store': Read from Pinia store
+   * - 'static': Use options array (for completeness)
+   */
+  type: 'api' | 'store' | 'static';
+  
+  /**
+   * API endpoint to fetch options.
+   * Required when type is 'api'.
+   */
+  endpoint?: string;
+  
+  /**
+   * Store path for Pinia store.
+   * Required when type is 'store'.
+   * Format: "storeName.propertyPath" (e.g., "settings.currencies")
+   */
+  storePath?: string;
+  
+  /**
+   * Field in response to use as option value.
+   * @default "id"
+   */
+  valueField?: string;
+  
+  /**
+   * Field in response to use as option label.
+   * @default "name"
+   */
+  labelField?: string;
+  
+  /**
+   * Query parameters to send with API request.
+   */
+  params?: Record<string, unknown>;
+  
+  /**
+   * Field names that, when changed, trigger re-fetch.
+   * Used for cascading dropdowns.
+   * 
+   * Example: Country field changes → reload states
+   */
+  dependsOn?: string[];
+  
+  /**
+   * Cache configuration.
+   * - true: Cache forever (until page refresh)
+   * - false: No caching
+   * - number: Cache duration in seconds
+   * 
+   * @default true
+   */
+  cache?: boolean | number;
+  
+  /**
+   * Text to show when no options found.
+   */
+  emptyText?: string;
+  
+  /**
+   * Enable server-side search.
+   * Sends search query to API.
+   * 
+   * @default false
+   */
+  searchable?: boolean;
+  
+  /**
+   * Minimum characters before triggering search.
+   * Only applies when searchable is true.
+   * 
+   * @default 2
+   */
+  minSearchLength?: number;
+}
+```
+
+### Field Access Control
+
+```typescript
+/**
+ * =============================================================================
+ * FIELD ACCESS CONTROL
+ * =============================================================================
+ * 
+ * IMPORTANT: This is for UI hints only.
+ * Backend is authoritative for all access decisions.
+ * These settings help the frontend hide/disable fields
+ * without making unnecessary API calls.
+ */
+export interface FieldAccessControl {
+  /**
+   * Plans required to see this field.
+   * Field hidden if user's plan not in list.
+   * 
+   * Example: ["professional", "enterprise"]
+   */
+  requiredPlan?: string[];
+  
+  /**
+   * Module required to see this field.
+   * Field hidden if module not enabled for tenant.
+   */
+  requiredModule?: string;
+  
+  /**
+   * Roles that can view this field.
+   * Empty array = no role restriction.
+   */
+  readRoles?: string[];
+  
+  /**
+   * Roles that can edit this field.
+   * If user can read but not write, field is readonly.
+   */
+  writeRoles?: string[];
+  
+  /**
+   * Additional ABAC conditions for field access.
+   * Sent to backend for evaluation.
+   * Frontend uses these as hints only.
+   */
+  conditions?: Condition[];
+}
+```
+
+### Document Schema (Top Level)
+
+```typescript
+/**
+ * =============================================================================
+ * DOCUMENT SCHEMA
+ * =============================================================================
+ * 
+ * Top-level schema defining a document type (e.g., Invoice, Customer).
+ * This is what the Schema Builder creates and edits.
+ */
+export interface DocumentSchema {
+  // ─────────────────────────────────────────────────────────────────────────
+  // IDENTITY
+  // ─────────────────────────────────────────────────────────────────────────
+  
+  /**
+   * Unique document type identifier.
+   * Convention: snake_case singular (e.g., "sales_invoice", "customer")
+   * 
+   * @pattern ^[a-z][a-z0-9_]*$
+   * @minLength 1
+   * @maxLength 64
+   */
+  name: string;
+  
+  /**
+   * Singular display name.
+   * Example: "Sales Invoice", "Customer"
+   */
+  label: string;
+  
+  /**
+   * Plural display name.
+   * Example: "Sales Invoices", "Customers"
+   */
+  labelPlural: string;
+  
+  /**
+   * PrimeIcon name for this document type.
+   * Example: "pi pi-file", "pi pi-users"
+   */
+  icon?: string;
+  
+  /**
+   * Description of this document type.
+   * Shown in documentation and Schema Builder.
+   */
+  description?: string;
+  
+  /**
+   * Module this document belongs to.
+   * Users must have access to this module to see the document.
+   */
+  module: string;
+  
+  // ─────────────────────────────────────────────────────────────────────────
+  // API CONFIGURATION
+  // ─────────────────────────────────────────────────────────────────────────
+  
+  /**
+   * API endpoint configuration.
+   */
+  api: ApiConfig;
+  
+  // ─────────────────────────────────────────────────────────────────────────
+  // LIST VIEW
+  // ─────────────────────────────────────────────────────────────────────────
+  
+  /**
+   * Configuration for list/table view of documents.
+   */
+  listView: ListViewConfig;
+  
+  // ─────────────────────────────────────────────────────────────────────────
+  // FORM VIEW
+  // ─────────────────────────────────────────────────────────────────────────
+  
+  /**
+   * Configuration for create/edit form view.
+   */
+  formView: FormViewConfig;
+  
+  // ─────────────────────────────────────────────────────────────────────────
+  // ACCESS CONTROL
+  // ─────────────────────────────────────────────────────────────────────────
+  
+  /**
+   * Document-level access control configuration.
+   */
+  access: DocumentAccessControl;
+  
+  // ─────────────────────────────────────────────────────────────────────────
+  // WORKFLOW (Optional)
+  // ─────────────────────────────────────────────────────────────────────────
+  
+  /**
+   * State machine configuration for documents with status workflow.
+   */
+  workflow?: WorkflowConfig;
+  
+  // ─────────────────────────────────────────────────────────────────────────
+  // METADATA
+  // ─────────────────────────────────────────────────────────────────────────
+  
+  /**
+   * Schema version for migrations.
+   * Increment when making breaking changes.
+   */
+  version: string;
+  
+  /**
+   * Last update timestamp (ISO 8601).
+   */
+  updatedAt: string;
+  
+  /**
+   * Handler functions referenced by this schema.
+   * Documents which handlers exist for validation.
+   */
+  handlers?: {
+    [name: string]: {
+      /**
+       * Description of what handler does.
+       */
+      description: string;
+      
+      /**
+       * Parameters handler expects.
+       */
+      params?: string[];
+    };
+  };
+}
+```
+
+### API Configuration
+
+```typescript
+/**
+ * =============================================================================
+ * API CONFIGURATION
+ * =============================================================================
+ */
+export interface ApiConfig {
+  /**
+   * Base endpoint for CRUD operations.
+   * Example: "/api/v1/invoices"
+   */
+  baseEndpoint: string;
+  
+  /**
+   * Override default endpoint patterns.
+   * Default patterns use baseEndpoint with standard REST conventions.
+   */
+  endpoints?: {
+    /**
+     * List endpoint.
+     * @default "{baseEndpoint}"
+     */
+    list?: string;
+    
+    /**
+     * Get single item endpoint.
+     * Use :id as placeholder.
+     * @default "{baseEndpoint}/:id"
+     */
+    get?: string;
+    
+    /**
+     * Create endpoint.
+     * @default "{baseEndpoint}"
+     */
+    create?: string;
+    
+    /**
+     * Update endpoint.
+     * Use :id as placeholder.
+     * @default "{baseEndpoint}/:id"
+     */
+    update?: string;
+    
+    /**
+     * Delete endpoint.
+     * Use :id as placeholder.
+     * @default "{baseEndpoint}/:id"
+     */
+    delete?: string;
+    
+    /**
+     * Custom endpoints for specific actions.
+     */
+    [key: string]: string | undefined;
+  };
+  
+  /**
+   * Default query parameters for all requests.
+   */
+  defaultParams?: Record<string, unknown>;
+  
+  /**
+   * Field name for document ID.
+   * @default "id"
+   */
+  idField?: string;
+  
+  /**
+   * Pagination configuration.
+   */
+  pagination?: {
+    /**
+     * Query parameter for page number.
+     * @default "page"
+     */
+    pageParam?: string;
+    
+    /**
+     * Query parameter for page size.
+     * @default "limit"
+     */
+    limitParam?: string;
+    
+    /**
+     * Default items per page.
+     * @default 20
+     */
+    defaultLimit?: number;
+  };
+  
+  /**
+   * Response format mapping.
+   * Configure how to extract data from Go backend responses.
+   */
+  responseFormat?: {
+    /**
+     * JSON path to data array in list response.
+     * @default "data"
+     */
+    dataPath?: string;
+    
+    /**
+     * JSON path to pagination metadata.
+     * @default "meta"
+     */
+    metaPath?: string;
+    
+    /**
+     * Field name for total count in meta.
+     * @default "total"
+     */
+    totalField?: string;
+  };
+  
+  /**
+   * Error response format mapping.
+   */
+  errorFormat?: {
+    /**
+     * JSON path to error message.
+     * @default "error.message"
+     */
+    messagePath?: string;
+    
+    /**
+     * JSON path to validation errors object.
+     * @default "errors"
+     */
+    validationPath?: string;
+  };
+}
+```
+
+### List View Configuration
+
+```typescript
+/**
+ * =============================================================================
+ * LIST VIEW CONFIGURATION
+ * =============================================================================
+ */
+export interface ListViewConfig {
+  /**
+   * Column definitions for DataTable.
+   */
+  columns: ColumnSchema[];
+  
+  /**
+   * Default sort configuration.
+   */
+  defaultSort?: {
+    field: string;
+    order: 'asc' | 'desc';
+  };
+  
+  /**
+   * Enable global search across searchFields.
+   * @default true
+   */
+  searchable?: boolean;
+  
+  /**
+   * Fields to include in global search.
+   * @default First text column
+   */
+  searchFields?: string[];
+  
+  /**
+   * Filter definitions for filter panel.
+   */
+  filters?: FilterConfig[];
+  
+  /**
+   * Enable row selection checkboxes.
+   * @default false
+   */
+  selectable?: boolean;
+  
+  /**
+   * Actions for bulk operations on selected rows.
+   */
+  bulkActions?: ActionSchema[];
+  
+  /**
+   * Actions shown in toolbar.
+   */
+  toolbarActions?: ActionSchema[];
+  
+  /**
+   * Actions shown for each row.
+   */
+  rowActions?: ActionSchema[];
+  
+  /**
+   * Enable export functionality.
+   * @default false
+   */
+  exportable?: boolean;
+  
+  /**
+   * Enable print functionality.
+   * @default false
+   */
+  printable?: boolean;
+}
+```
+
+### Column Schema
+
+```typescript
+/**
+ * =============================================================================
+ * COLUMN SCHEMA
+ * =============================================================================
+ */
+export interface ColumnSchema {
+  /**
+   * Data field path (supports dot notation).
+   * Example: "customer.name", "status"
+   */
+  field: string;
+  
+  /**
+   * Column header text.
+   */
+  header: string;
+  
+  /**
+   * Field type for rendering and formatting.
+   */
+  type: FieldType;
+  
+  /**
+   * CSS width (e.g., "120px", "10%").
+   */
+  width?: string;
+  
+  /**
+   * Text alignment.
+   * @default 'left'
+   */
+  align?: 'left' | 'center' | 'right';
+  
+  /**
+   * Freeze column during horizontal scroll.
+   * @default false
+   */
+  frozen?: boolean;
+  
+  /**
+   * Enable sorting on this column.
+   * @default true
+   */
+  sortable?: boolean;
+  
+  /**
+   * Enable filtering on this column.
+   * @default false
+   */
+  filterable?: boolean;
+  
+  /**
+   * Filter input type.
+   */
+  filterType?: 'text' | 'select' | 'date' | 'number' | 'boolean';
+  
+  /**
+   * Filter options for select filter type.
+   */
+  filterOptions?: FieldOption[];
+  
+  /**
+   * Format string for dates/numbers.
+   */
+  format?: string;
+  
+  /**
+   * Custom template name for cell rendering.
+   * Must be registered in component.
+   */
+  template?: string;
+  
+  /**
+   * Make column value a link.
+   * Navigates to this document type's detail page.
+   */
+  linkTo?: string;
+  
+  /**
+   * Route pattern for links.
+   * Use :id as placeholder.
+   * @default "/{linkTo}/:id"
+   */
+  linkRoute?: string;
+  
+  /**
+   * Column-level access control.
+   */
+  access?: FieldAccessControl;
+}
+```
+
+### Action Schema
+
+```typescript
+/**
+ * =============================================================================
+ * ACTION SCHEMA
+ * =============================================================================
+ */
+
+/**
+ * Action types available in the system.
+ */
+export type ActionType =
+  | 'create'      // Open create form
+  | 'edit'        // Open edit form
+  | 'delete'      // Delete document(s)
+  | 'duplicate'   // Copy document
+  | 'export'      // Export data
+  | 'import'      // Import data
+  | 'print'       // Print document
+  | 'email'       // Send email
+  | 'api'         // Generic API call
+  | 'navigate'    // Route navigation
+  | 'workflow'    // Workflow transition
+  | 'custom';     // Custom handler
+
+/**
+ * Action definition for buttons, menus, and context actions.
+ */
+export interface ActionSchema {
+  /**
+   * Unique action identifier within the document.
+   */
+  name: string;
+  
+  /**
+   * Display label for button/menu item.
+   */
+  label: string;
+  
+  /**
+   * PrimeIcon name.
+   */
+  icon?: string;
+  
+  /**
+   * How to render this action:
+   * - 'button': Standalone button
+   * - 'menu': Item in dropdown menu
+   * - 'split': Primary action with dropdown for secondary
+   */
+  type: 'button' | 'menu' | 'split';
+  
+  /**
+   * Button severity/color.
+   */
+  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info' | 'text' | 'outlined';
+  
+  /**
+   * What this action does.
+   */
+  action: ActionType;
+  
+  /**
+   * Confirmation dialog before executing.
+   */
+  confirm?: {
+    title: string;
+    message: string;
+    acceptLabel?: string;
+    rejectLabel?: string;
+    severity?: 'warning' | 'danger' | 'info';
+  };
+  
+  /**
+   * Conditions that must be met to show this action.
+   * Evaluated against current row data.
+   */
+  showWhen?: Condition[];
+  
+  /**
+   * Conditions that disable this action.
+   * Action visible but not clickable.
+   */
+  disableWhen?: Condition[];
+  
+  /**
+   * Access control for this action.
+   */
+  access?: {
+    requiredPlan?: string[];
+    requiredModule?: string;
+    requiredPermissions?: string[];
+    requiredRoles?: string[];
+  };
+  
+  // Action-type-specific properties
+  
+  /**
+   * API endpoint for 'api' and 'workflow' actions.
+   * Use :id as placeholder.
+   */
+  endpoint?: string;
+  
+  /**
+   * HTTP method for API actions.
+   * @default "POST"
+   */
+  method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+  
+  /**
+   * Static payload for API actions.
+   */
+  payload?: Record<string, unknown>;
+  
+  /**
+   * Route path for 'navigate' actions.
+   */
+  route?: string;
+  
+  /**
+   * Route params for navigation.
+   */
+  routeParams?: Record<string, string>;
+  
+  /**
+   * Handler function name for 'custom' actions.
+   * Must be registered in component's handler registry.
+   */
+  handler?: string;
+  
+  /**
+   * Child actions for 'split' type.
+   */
+  children?: ActionSchema[];
+}
+```
+
+### Form View Configuration
+
+```typescript
+/**
+ * =============================================================================
+ * FORM VIEW CONFIGURATION
+ * =============================================================================
+ */
+export interface FormViewConfig {
+  /**
+   * Form sections for organizing fields.
+   */
+  sections: FormSection[];
+  
+  /**
+   * Field definitions.
+   */
+  fields: FieldSchema[];
+  
+  /**
+   * Form layout style.
+   * @default 'vertical'
+   */
+  layout?: 'vertical' | 'horizontal' | 'grid';
+  
+  /**
+   * Form-level actions (Save, Cancel, etc.).
+   */
+  actions?: ActionSchema[];
+  
+  /**
+   * Validate fields on blur.
+   * @default true
+   */
+  validateOnBlur?: boolean;
+  
+  /**
+   * Validate fields on change.
+   * @default false
+   */
+  validateOnChange?: boolean;
+}
+
+/**
+ * Form section for grouping related fields.
+ */
+export interface FormSection {
+  /**
+   * Unique section identifier.
+   * Referenced by field.layout.section.
+   */
+  name: string;
+  
+  /**
+   * Section header text.
+   */
+  label: string;
+  
+  /**
+   * Section description/help text.
+   */
+  description?: string;
+  
+  /**
+   * Allow collapsing this section.
+   * @default false
+   */
+  collapsible?: boolean;
+  
+  /**
+   * Start collapsed.
+   * Only applies if collapsible is true.
+   * @default false
+   */
+  collapsed?: boolean;
+  
+  /**
+   * Number of columns in this section's grid.
+   * @default 2
+   */
+  columns?: 1 | 2 | 3 | 4;
+  
+  /**
+   * Section-level access control.
+   * Hide entire section if not accessible.
+   */
+  access?: FieldAccessControl;
+}
+```
+
+### Filter Configuration
+
+```typescript
+/**
+ * =============================================================================
+ * FILTER CONFIGURATION
+ * =============================================================================
+ */
+export interface FilterConfig {
+  /**
+   * Field to filter on.
+   */
+  field: string;
+  
+  /**
+   * Filter label.
+   */
+  label: string;
+  
+  /**
+   * Filter input type.
+   */
+  type: 'select' | 'multiselect' | 'date' | 'daterange' | 'number' | 'boolean' | 'text';
+  
+  /**
+   * Static options for select filters.
+   */
+  options?: FieldOption[];
+  
+  /**
+   * Dynamic options source.
+   */
+  optionsSource?: OptionsSource;
+  
+  /**
+   * Default filter value.
+   */
+  defaultValue?: unknown;
+  
+  /**
+   * Operator to use for this filter.
+   * @default 'eq'
+   */
+  operator?: ConditionOperator;
+}
+```
+
+### Document Access Control
+
+```typescript
+/**
+ * =============================================================================
+ * DOCUMENT ACCESS CONTROL
+ * =============================================================================
+ */
+export interface DocumentAccessControl {
+  /**
+   * Plan required to access this document type.
+   */
+  requiredPlan?: string[];
+  
+  /**
+   * Module required for this document.
+   */
+  requiredModule?: string;
+  
+  /**
+   * Permission configuration by action.
+   */
+  permissions: {
+    create?: PermissionConfig;
+    read?: PermissionConfig;
+    update?: PermissionConfig;
+    delete?: PermissionConfig;
+    export?: PermissionConfig;
+    import?: PermissionConfig;
+    [key: string]: PermissionConfig | undefined;
+  };
+}
+
+/**
+ * Permission configuration for a specific action.
+ */
+export interface PermissionConfig {
+  /**
+   * Roles allowed to perform this action.
+   */
+  roles?: string[];
+  
+  /**
+   * Owner of document always has this permission.
+   * @default false
+   */
+  owner?: boolean;
+  
+  /**
+   * Additional ABAC conditions.
+   * Evaluated by backend condition engine.
+   */
+  conditions?: Condition[];
+}
+```
+
+### Workflow Configuration
+
+```typescript
+/**
+ * =============================================================================
+ * WORKFLOW CONFIGURATION
+ * =============================================================================
+ */
+export interface WorkflowConfig {
+  /**
+   * Field that stores current status.
+   */
+  statusField: string;
+  
+  /**
+   * Available workflow states.
+   */
+  states: WorkflowState[];
+  
+  /**
+   * Valid transitions between states.
+   */
+  transitions: WorkflowTransition[];
+}
+
+/**
+ * Workflow state definition.
+ */
+export interface WorkflowState {
+  /**
+   * State identifier (stored in statusField).
+   */
+  name: string;
+  
+  /**
+   * Display label.
+   */
+  label: string;
+  
+  /**
+   * Color for status badges.
+   * Can be named color (green, red) or hex (#00FF00).
+   */
+  color: string;
+  
+  /**
+   * Is this a terminal state?
+   * Terminal states often have different behavior.
+   */
+  isFinal?: boolean;
+}
+
+/**
+ * Workflow transition definition.
+ */
+export interface WorkflowTransition {
+  /**
+   * States from which this transition is available.
+   */
+  from: string[];
+  
+  /**
+   * Target state.
+   */
+  to: string;
+  
+  /**
+   * Button label for this transition.
+   */
+  label: string;
+  
+  /**
+   * Roles allowed to make this transition.
+   */
+  roles?: string[];
+  
+  /**
+   * Conditions that must be met for transition.
+   * Evaluated by backend condition engine.
+   */
+  conditions?: ConditionGroup;
+  
+  /**
+   * API action to call on transition.
+   */
+  action?: {
+    endpoint: string;
+    method: 'POST' | 'PUT' | 'PATCH';
+    payload?: Record<string, unknown>;
+  };
+}
+```
+
+### Dashboard Schema
+
+```typescript
+/**
+ * =============================================================================
+ * DASHBOARD SCHEMA
+ * =============================================================================
+ */
+export interface DashboardSchema {
+  /**
+   * Unique dashboard identifier.
+   */
+  name: string;
+  
+  /**
+   * Display name.
+   */
+  label: string;
+  
+  /**
+   * Grid layout configuration.
+   */
+  layout: {
+    type: 'grid';
+    columns: number;
+    gap?: string;
+  };
+  
+  /**
+   * Widget definitions.
+   */
+  widgets: WidgetSchema[];
+  
+  /**
+   * Dashboard access control.
+   */
+  access?: {
+    requiredPlan?: string[];
+    requiredModule?: string;
+    roles?: string[];
+  };
+}
+
+/**
+ * Dashboard widget definition.
+ */
+export interface WidgetSchema {
+  /**
+   * Unique widget ID within dashboard.
+   */
+  id: string;
+  
+  /**
+   * Widget type.
+   */
+  type: 'stat' | 'chart' | 'table' | 'list' | 'calendar' | 'custom';
+  
+  /**
+   * Widget title.
+   */
+  title: string;
+  
+  /**
+   * Position in grid.
+   */
+  position: {
+    row: number;
+    col: number;
+    width: number;  // columns to span
+    height: number; // rows to span
+  };
+  
+  /**
+   * Data source configuration.
+   */
+  dataSource: {
+    type: 'api' | 'store' | 'static';
+    endpoint?: string;
+    params?: Record<string, unknown>;
+    refreshInterval?: number; // seconds
+  };
+  
+  /**
+   * Widget-type-specific configuration.
+   */
+  config: StatWidgetConfig | ChartWidgetConfig | TableWidgetConfig | CustomWidgetConfig;
+  
+  /**
+   * Widget access control.
+   */
+  access?: FieldAccessControl;
+}
+
+export interface StatWidgetConfig {
+  valueField: string;
+  format?: 'number' | 'currency' | 'percent';
+  icon?: string;
+  color?: 'blue' | 'green' | 'orange' | 'red' | 'purple';
+  trend?: {
+    field: string;
+    compareLabel?: string;
+  };
+}
+
+export interface ChartWidgetConfig {
+  chartType: 'line' | 'bar' | 'pie' | 'doughnut' | 'area';
+  xField: string;
+  yField: string | string[];
+  colors?: string[];
+}
+
+export interface TableWidgetConfig {
+  columns: ColumnSchema[];
+  limit?: number;
+  linkTo?: string;
+}
+
+export interface CustomWidgetConfig {
+  component: string;
+  props?: Record<string, unknown>;
+}
+```
+
+---
+
+# Part 3: Project Setup & Configuration
 
 ## Project Setup
 
@@ -203,6 +2161,8 @@ Your SaaSneeds three layers of access control:
 
 - Node.js 20+
 - pnpm 9+
+- Go 1.22+ (backend)
+- PostgreSQL 15+ (backend)
 
 ### Installation
 
@@ -249,64 +2209,61 @@ dhool-erp/
 │   ├── assets/
 │   │   └── styles/
 │   │       ├── main.css              # Entry CSS
-│   │       ├── primevue-theme.css    # PrimeVue customizations
 │   │       └── components.css        # Component-specific styles
 │   │
 │   ├── components/
-│   │   ├── atoms/                    # Rarely needed - use PrimeVue
-│   │   ├── molecules/
+│   │   ├── molecules/                # Simple compositions
 │   │   │   ├── FormField.vue
-│   │   │   ├── SearchBar.vue
 │   │   │   ├── StatCard.vue
 │   │   │   ├── ActionMenu.vue
 │   │   │   └── EmptyState.vue
-│   │   ├── organisms/
-│   │   │   ├── DataTableCrud.vue     # Schema-driven CRUD table
-│   │   │   ├── FormBuilder.vue       # Schema-driven form
-│   │   │   ├── FormDrawer.vue        # Form in drawer/dialog
+│   │   ├── organisms/                # Complex components
+│   │   │   ├── DataTableCrud.vue
+│   │   │   ├── FormBuilder.vue
+│   │   │   ├── FormDrawer.vue
 │   │   │   ├── AppSidebar.vue
-│   │   │   ├── AppTopbar.vue
-│   │   │   └── ChartWidget.vue
-│   │   ├── templates/
+│   │   │   └── AppTopbar.vue
+│   │   ├── templates/                # Page layouts
 │   │   │   ├── MainLayout.vue
 │   │   │   ├── AuthLayout.vue
 │   │   │   └── BlankLayout.vue
 │   │   └── renderers/                # Schema renderers
-│   │       ├── DocumentPage.vue      # Renders document list/form
-│   │       ├── DashboardPage.vue     # Renders dashboard
-│   │       └── FieldRenderer.vue     # Renders form fields
+│   │       ├── DocumentPage.vue
+│   │       ├── DashboardPage.vue
+│   │       └── FieldRenderer.vue
 │   │
 │   ├── composables/
-│   │   ├── useAccess.ts              # Unified access control
-│   │   ├── useSchema.ts              # Schema loading & parsing
-│   │   ├── useCrud.ts                # CRUD operations
-│   │   ├── useDrawer.ts              # Drawer state
-│   │   └── useNotification.ts        # Toast notifications
+│   │   ├── useAccess.ts
+│   │   ├── useSchema.ts
+│   │   ├── useCrud.ts
+│   │   ├── useCondition.ts           # Frontend condition evaluator
+│   │   ├── useDrawer.ts
+│   │   └── useNotification.ts
 │   │
 │   ├── schemas/                      # JSON UI Schemas
 │   │   ├── documents/
 │   │   │   ├── invoice.json
 │   │   │   ├── customer.json
-│   │   │   ├── product.json
-│   │   │   └── user.json
+│   │   │   └── product.json
 │   │   ├── dashboards/
 │   │   │   └── main.json
 │   │   └── meta/
-│   │       └── field-types.json      # Field type definitions
+│   │       └── modules.json
 │   │
 │   ├── services/
-│   │   ├── api.ts                    # Axios instance
-│   │   ├── schemaService.ts          # Schema fetching
-│   │   └── accessService.ts          # Access control engine
+│   │   ├── api.ts
+│   │   ├── schemaService.ts
+│   │   ├── accessService.ts
+│   │   └── conditionService.ts       # Frontend condition evaluator
 │   │
 │   ├── stores/
 │   │   ├── authStore.ts
-│   │   ├── tenantStore.ts            # Subscription & modules
-│   │   ├── accessStore.ts            # ABAC state
-│   │   └── uiStore.ts                # UI state (sidebar, theme)
+│   │   ├── tenantStore.ts
+│   │   ├── accessStore.ts
+│   │   └── uiStore.ts
 │   │
 │   ├── types/
-│   │   ├── schema.ts                 # Schema type definitions
+│   │   ├── schema.ts                 # All schema types
 │   │   ├── access.ts                 # Access control types
 │   │   ├── api.ts                    # API types
 │   │   └── tenant.ts                 # Tenant & subscription
@@ -318,9 +2275,6 @@ dhool-erp/
 │   ├── App.vue
 │   └── main.ts
 │
-├── schemas/                          # Source schemas (if using builder)
-├── .env
-├── .env.development
 ├── index.html
 ├── package.json
 ├── tailwind.config.ts
@@ -347,7 +2301,7 @@ export default defineConfig({
   plugins: [
     vue(),
     
-    // Auto-import PrimeVue components
+    // Auto-import PrimeVue components - no manual imports needed
     Components({
       resolvers: [PrimeVueResolver()],
       dirs: ['src/components'],
@@ -390,7 +2344,7 @@ import PrimeVue from 'primevue/config'
 import Aura from '@primevue/themes/aura'
 import { definePreset } from '@primevue/themes'
 
-// PrimeVue Services
+// PrimeVue Services - these provide app-wide functionality
 import ToastService from 'primevue/toastservice'
 import ConfirmationService from 'primevue/confirmationservice'
 import DialogService from 'primevue/dialogservice'
@@ -408,160 +2362,199 @@ import router from './router'
 import 'primeicons/primeicons.css'
 import './assets/styles/main.css'
 
-const app = createApp(App)
+async function bootstrap() {
+  const app = createApp(App)
 
-// ============================================
-// PRIMEVUE 4 CONFIGURATION
-// ============================================
+  // ============================================
+  // PINIA (State Management)
+  // ============================================
+  const pinia = createPinia()
+  app.use(pinia)
 
-// Custom theme preset extending Aura
-const DhoolPreset = definePreset(Aura, {
-  semantic: {
-    // Primary color palette
-    primary: {
-      50: '{blue.50}',
-      100: '{blue.100}',
-      200: '{blue.200}',
-      300: '{blue.300}',
-      400: '{blue.400}',
-      500: '{blue.500}',
-      600: '{blue.600}',
-      700: '{blue.700}',
-      800: '{blue.800}',
-      900: '{blue.900}',
-      950: '{blue.950}',
-    },
-    
-    // Color scheme tokens
-    colorScheme: {
-      light: {
-        primary: {
-          color: '{primary.500}',
-          contrastColor: '#ffffff',
-          hoverColor: '{primary.600}',
-          activeColor: '{primary.700}',
+  // ============================================
+  // PRIMEVUE 4 CONFIGURATION
+  // ============================================
+
+  /**
+   * Custom theme preset extending Aura.
+   * Defines semantic color tokens that cascade throughout the app.
+   */
+  const DhoolPreset = definePreset(Aura, {
+    semantic: {
+      // Primary color palette - used for buttons, links, active states
+      primary: {
+        50: '{blue.50}',
+        100: '{blue.100}',
+        200: '{blue.200}',
+        300: '{blue.300}',
+        400: '{blue.400}',
+        500: '{blue.500}',
+        600: '{blue.600}',
+        700: '{blue.700}',
+        800: '{blue.800}',
+        900: '{blue.900}',
+        950: '{blue.950}',
+      },
+      
+      // Color scheme tokens for light/dark mode
+      colorScheme: {
+        light: {
+          primary: {
+            color: '{primary.500}',
+            contrastColor: '#ffffff',
+            hoverColor: '{primary.600}',
+            activeColor: '{primary.700}',
+          },
+          surface: {
+            0: '#ffffff',
+            50: '{slate.50}',
+            100: '{slate.100}',
+            200: '{slate.200}',
+            300: '{slate.300}',
+            400: '{slate.400}',
+            500: '{slate.500}',
+            600: '{slate.600}',
+            700: '{slate.700}',
+            800: '{slate.800}',
+            900: '{slate.900}',
+            950: '{slate.950}',
+          },
         },
-        surface: {
-          0: '#ffffff',
-          50: '{slate.50}',
-          100: '{slate.100}',
-          200: '{slate.200}',
-          300: '{slate.300}',
-          400: '{slate.400}',
-          500: '{slate.500}',
-          600: '{slate.600}',
-          700: '{slate.700}',
-          800: '{slate.800}',
-          900: '{slate.900}',
-          950: '{slate.950}',
+        dark: {
+          primary: {
+            color: '{primary.400}',
+            contrastColor: '{surface.900}',
+            hoverColor: '{primary.300}',
+            activeColor: '{primary.200}',
+          },
+          surface: {
+            0: '{slate.950}',
+            50: '{slate.900}',
+            100: '{slate.800}',
+            200: '{slate.700}',
+            300: '{slate.600}',
+            400: '{slate.500}',
+            500: '{slate.400}',
+            600: '{slate.300}',
+            700: '{slate.200}',
+            800: '{slate.100}',
+            900: '{slate.50}',
+            950: '#ffffff',
+          },
         },
       },
-      dark: {
-        primary: {
-          color: '{primary.400}',
-          contrastColor: '{surface.900}',
-          hoverColor: '{primary.300}',
-          activeColor: '{primary.200}',
-        },
-        surface: {
-          0: '{slate.950}',
-          50: '{slate.900}',
-          100: '{slate.800}',
-          200: '{slate.700}',
-          300: '{slate.600}',
-          400: '{slate.500}',
-          500: '{slate.400}',
-          600: '{slate.300}',
-          700: '{slate.200}',
-          800: '{slate.100}',
-          900: '{slate.50}',
-          950: '#ffffff',
+    },
+  })
+
+  app.use(PrimeVue, {
+    theme: {
+      preset: DhoolPreset,
+      options: {
+        prefix: 'p',
+        darkModeSelector: '.dark',
+        cssLayer: {
+          name: 'primevue',
+          // This order ensures Tailwind utilities can override PrimeVue
+          order: 'tailwind-base, primevue, tailwind-utilities',
         },
       },
     },
-  },
-})
-
-app.use(PrimeVue, {
-  theme: {
-    preset: DhoolPreset,
-    options: {
-      prefix: 'p',
-      darkModeSelector: '.dark',
-      cssLayer: {
-        name: 'primevue',
-        order: 'tailwind-base, primevue, tailwind-utilities',
+    ripple: true,
+    
+    /**
+     * Pass-Through (PT) API for global component customization.
+     * This applies to ALL instances of these components.
+     * For component-specific styling, use :pt prop on the component.
+     */
+    pt: {
+      // DataTable global styling
+      datatable: {
+        root: { 
+          class: 'border border-surface-200 dark:border-surface-700 rounded-lg overflow-hidden' 
+        },
+        header: { 
+          class: 'bg-surface-50 dark:bg-surface-800 border-b border-surface-200 dark:border-surface-700' 
+        },
+        tbody: { 
+          class: 'divide-y divide-surface-200 dark:divide-surface-700' 
+        },
+      },
+      
+      // Card global styling
+      card: {
+        root: { 
+          class: 'border border-surface-200 dark:border-surface-700 shadow-sm' 
+        },
+      },
+      
+      // Button global styling
+      button: {
+        root: { 
+          class: 'font-medium' 
+        },
+      },
+      
+      // Dialog global styling
+      dialog: {
+        root: { 
+          class: 'border border-surface-200 dark:border-surface-700' 
+        },
+        header: { 
+          class: 'border-b border-surface-200 dark:border-surface-700' 
+        },
+        footer: { 
+          class: 'border-t border-surface-200 dark:border-surface-700' 
+        },
       },
     },
-  },
-  ripple: true,
-  
-  // Pass-Through (PT) API for global component customization
-  pt: {
-    // Global DataTable styling
-    datatable: {
-      root: { class: 'border border-surface-200 dark:border-surface-700 rounded-lg overflow-hidden' },
-      header: { class: 'bg-surface-50 dark:bg-surface-800 border-b border-surface-200 dark:border-surface-700' },
-      tbody: { class: 'divide-y divide-surface-200 dark:divide-surface-700' },
-    },
-    
-    // Global Card styling
-    card: {
-      root: { class: 'border border-surface-200 dark:border-surface-700 shadow-sm' },
-    },
-    
-    // Global Button styling
-    button: {
-      root: { class: 'font-medium' },
-    },
-    
-    // Global Dialog styling
-    dialog: {
-      root: { class: 'border border-surface-200 dark:border-surface-700' },
-      header: { class: 'border-b border-surface-200 dark:border-surface-700' },
-      footer: { class: 'border-t border-surface-200 dark:border-surface-700' },
-    },
-  },
-})
+  })
 
-// Register services
-app.use(ToastService)
-app.use(ConfirmationService)
-app.use(DialogService)
+  // Register services
+  app.use(ToastService)
+  app.use(ConfirmationService)
+  app.use(DialogService)
 
-// Register directives
-app.directive('tooltip', Tooltip)
-app.directive('ripple', Ripple)
-app.directive('badge', BadgeDirective)
-app.directive('focustrap', FocusTrap)
+  // Register directives
+  app.directive('tooltip', Tooltip)
+  app.directive('ripple', Ripple)
+  app.directive('badge', BadgeDirective)
+  app.directive('focustrap', FocusTrap)
 
-// ============================================
-// OTHER PLUGINS
-// ============================================
-
-// Pinia state management
-const pinia = createPinia()
-app.use(pinia)
-
-// Vue Query
-app.use(VueQueryPlugin, {
-  queryClientConfig: {
-    defaultOptions: {
-      queries: {
-        staleTime: 5 * 60 * 1000,
-        retry: 1,
+  // ============================================
+  // VUE QUERY (Data Fetching)
+  // ============================================
+  app.use(VueQueryPlugin, {
+    queryClientConfig: {
+      defaultOptions: {
+        queries: {
+          staleTime: 5 * 60 * 1000, // 5 minutes
+          retry: 1,
+        },
       },
     },
-  },
-})
+  })
 
-// Router
-app.use(router)
+  // ============================================
+  // ROUTER
+  // ============================================
+  app.use(router)
 
-app.mount('#app')
+  // ============================================
+  // INITIALIZE APP
+  // ============================================
+  // Load user, tenant, access policies before mounting
+  const { initializeApp } = await import('./init')
+  await initializeApp()
+
+  app.mount('#app')
+}
+
+bootstrap()
 ```
 
-### Tailwind Configuration
+---
+
+## Tailwind Configuration
 
 ```typescript
 // tailwind.config.ts
@@ -578,9 +2571,12 @@ export default {
   
   theme: {
     extend: {
-      // Use PrimeVue's CSS variables for consistency
+      /**
+       * Map Tailwind colors to PrimeVue CSS variables.
+       * This allows using Tailwind utilities with PrimeVue's semantic colors.
+       * Example: bg-primary, text-surface-500
+       */
       colors: {
-        // These map to PrimeVue's semantic tokens
         primary: {
           DEFAULT: 'var(--p-primary-color)',
           hover: 'var(--p-primary-hover-color)',
@@ -644,7 +2640,7 @@ export default {
 }
 
 /* ============================================
-   COMPONENT LAYER - Custom component styles
+   COMPONENT LAYER - Custom patterns
    ============================================ */
 @layer components {
   /* Page layouts */
@@ -678,11 +2674,6 @@ export default {
 /* ============================================
    PRIMEVUE OVERRIDES
    ============================================ */
-
-/* Fix for icons in buttons */
-.p-button .p-button-icon {
-  font-size: 1rem;
-}
 
 /* DataTable row hover */
 .p-datatable .p-datatable-tbody > tr:hover {
@@ -731,787 +2722,208 @@ export default {
 
 ---
 
-## Type System
-
-### Core Schema Types
-
-```typescript
-// src/types/schema.ts
-
-// ============================================
-// FIELD TYPES
-// ============================================
-
-export type FieldType =
-  | 'text'
-  | 'textarea'
-  | 'number'
-  | 'currency'
-  | 'percent'
-  | 'date'
-  | 'datetime'
-  | 'time'
-  | 'select'
-  | 'multiselect'
-  | 'checkbox'
-  | 'switch'
-  | 'radio'
-  | 'link'          // Reference to another document
-  | 'table'         // Child table
-  | 'image'
-  | 'file'
-  | 'color'
-  | 'rating'
-  | 'tags'
-  | 'password'
-  | 'email'
-  | 'phone'
-  | 'url'
-  | 'json'
-  | 'html'
-  | 'markdown'
-  | 'signature'
-  | 'geolocation'
-  | 'duration'
-  | 'readonly'      // Computed/display only
-  | 'custom'        // Custom component
-
-// ============================================
-// FIELD SCHEMA
-// ============================================
-
-export interface FieldSchema {
-  // Identity
-  name: string                    // Field key (e.g., "customer_name")
-  label: string                   // Display label
-  type: FieldType
-  
-  // Data
-  defaultValue?: unknown
-  placeholder?: string
-  options?: FieldOption[]         // For select/radio
-  optionsSource?: OptionsSource   // Dynamic options from API
-  
-  // Layout
-  width?: 'full' | 'half' | 'third' | 'quarter' | 'auto'
-  section?: string                // Group fields into sections
-  order?: number
-  hidden?: boolean                // Always hidden (use for computed fields)
-  
-  // Validation
-  required?: boolean
-  minLength?: number
-  maxLength?: number
-  min?: number
-  max?: number
-  pattern?: string                // Regex pattern
-  customValidator?: string        // Reference to custom validator function
-  
-  // Display
-  prefix?: string                 // e.g., "$" for currency
-  suffix?: string                 // e.g., "%" for percent
-  format?: string                 // Date format, number format
-  
-  // Behavior
-  readonly?: boolean              // Read-only (but visible)
-  disabled?: boolean
-  depends_on?: FieldDependency[]  // Conditional visibility/value
-  onChange?: string               // Reference to change handler
-  
-  // Access Control (evaluated at runtime)
-  access?: FieldAccessControl
-  
-  // Link field specific
-  linkTo?: string                 // Target doctype for link fields
-  linkFilters?: Record<string, unknown>  // Filters for linked records
-  
-  // Table field specific
-  tableSchema?: FieldSchema[]     // Schema for child table rows
-  minRows?: number
-  maxRows?: number
-  
-  // Custom component
-  component?: string              // Vue component name for custom type
-  componentProps?: Record<string, unknown>
-  
-  // Help
-  description?: string            // Help text
-  tooltip?: string
-}
-
-export interface FieldOption {
-  value: string | number | boolean
-  label: string
-  disabled?: boolean
-  icon?: string
-  color?: string
-}
-
-export interface OptionsSource {
-  type: 'api' | 'store' | 'static'
-  endpoint?: string               // For API type
-  storePath?: string              // For store type
-  valueField?: string             // Field to use as value
-  labelField?: string             // Field to use as label
-  params?: Record<string, unknown> // Query params
-  dependsOn?: string[]            // Re-fetch when these fields change
-}
-
-export interface FieldDependency {
-  field: string                   // Field to watch
-  operator: 'eq' | 'neq' | 'in' | 'nin' | 'gt' | 'lt' | 'gte' | 'lte' | 'empty' | 'not_empty'
-  value?: unknown                 // Value to compare
-  action: 'show' | 'hide' | 'enable' | 'disable' | 'require' | 'set_value'
-  actionValue?: unknown           // Value to set (for set_value action)
-}
-
-export interface FieldAccessControl {
-  // Subscription level - hide field if not in plan
-  requiredPlan?: string[]         // ['pro', 'enterprise']
-  requiredModule?: string         // Module that must be enabled
-  
-  // Permission level
-  readRoles?: string[]            // Roles that can view
-  writeRoles?: string[]           // Roles that can edit
-  
-  // ABAC conditions
-  conditions?: AccessCondition[]
-}
-
-// ============================================
-// ACTION SCHEMA
-// ============================================
-
-export interface ActionSchema {
-  name: string                    // Action identifier
-  label: string                   // Display label
-  icon?: string                   // PrimeIcon name
-  type: 'button' | 'menu' | 'split'
-  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info' | 'text' | 'outlined'
-  
-  // Behavior
-  action: ActionType
-  confirm?: ConfirmConfig         // Confirmation dialog
-  
-  // Conditions
-  showWhen?: ActionCondition[]    // When to show this action
-  disableWhen?: ActionCondition[] // When to disable
-  
-  // Access
-  access?: ActionAccessControl
-  
-  // For API actions
-  endpoint?: string
-  method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
-  payload?: Record<string, unknown>
-  
-  // For navigation
-  route?: string
-  routeParams?: Record<string, string>
-  
-  // For custom handlers
-  handler?: string                // Reference to handler function
-  
-  // Children (for menu type)
-  children?: ActionSchema[]
-}
-
-export type ActionType =
-  | 'create'
-  | 'edit'
-  | 'delete'
-  | 'duplicate'
-  | 'export'
-  | 'import'
-  | 'print'
-  | 'email'
-  | 'api'           // Generic API call
-  | 'navigate'
-  | 'workflow'      // Workflow transition
-  | 'custom'
-
-export interface ConfirmConfig {
-  title: string
-  message: string
-  acceptLabel?: string
-  rejectLabel?: string
-  severity?: 'warning' | 'danger' | 'info'
-}
-
-export interface ActionCondition {
-  field: string
-  operator: 'eq' | 'neq' | 'in' | 'nin' | 'empty' | 'not_empty'
-  value?: unknown
-}
-
-export interface ActionAccessControl {
-  requiredPlan?: string[]
-  requiredModule?: string
-  requiredPermissions?: string[]
-  requiredRoles?: string[]
-}
-
-// ============================================
-// COLUMN SCHEMA (DataTable)
-// ============================================
-
-export interface ColumnSchema {
-  field: string                   // Data field path
-  header: string                  // Column header
-  type: FieldType                 // Affects rendering
-  
-  // Display
-  width?: string                  // CSS width
-  align?: 'left' | 'center' | 'right'
-  frozen?: boolean
-  
-  // Features
-  sortable?: boolean
-  filterable?: boolean
-  filterType?: 'text' | 'select' | 'date' | 'number' | 'boolean'
-  filterOptions?: FieldOption[]
-  
-  // Formatting
-  format?: string                 // Date/number format
-  template?: string               // Custom template name
-  
-  // Link behavior
-  linkTo?: string                 // Make column a link
-  linkRoute?: string              // Route for link
-  
-  // Actions column
-  actions?: ActionSchema[]        // Row-level actions
-  
-  // Access
-  access?: FieldAccessControl
-}
-
-// ============================================
-// DOCUMENT SCHEMA
-// ============================================
-
-export interface DocumentSchema {
-  // Identity
-  name: string                    // Document type identifier
-  label: string                   // Display name
-  labelPlural: string             // Plural display name
-  icon?: string
-  description?: string
-  
-  // Module assignment
-  module: string                  // Module this doc belongs to
-  
-  // API Configuration
-  api: ApiConfig
-  
-  // List View
-  listView: ListViewConfig
-  
-  // Form View
-  formView: FormViewConfig
-  
-  // Access Control
-  access: DocumentAccessControl
-  
-  // Workflow (optional)
-  workflow?: WorkflowConfig
-  
-  // Versioning
-  version: string
-  updatedAt: string
-}
-
-export interface ApiConfig {
-  baseEndpoint: string            // e.g., "/api/v1/invoices"
-  
-  // Override default endpoints if needed
-  endpoints?: {
-    list?: string
-    get?: string
-    create?: string
-    update?: string
-    delete?: string
-    [key: string]: string | undefined
-  }
-  
-  // Default query params
-  defaultParams?: Record<string, unknown>
-  
-  // ID field name
-  idField?: string                // Default: 'id'
-  
-  // Pagination
-  pagination?: {
-    pageParam?: string            // Default: 'page'
-    limitParam?: string           // Default: 'limit'
-    defaultLimit?: number         // Default: 20
-  }
-}
-
-export interface ListViewConfig {
-  // Columns
-  columns: ColumnSchema[]
-  
-  // Default sorting
-  defaultSort?: {
-    field: string
-    order: 'asc' | 'desc'
-  }
-  
-  // Global search
-  searchable?: boolean
-  searchFields?: string[]         // Fields to search in
-  
-  // Filters
-  filters?: FilterConfig[]
-  
-  // Bulk actions
-  selectable?: boolean            // Enable row selection
-  bulkActions?: ActionSchema[]
-  
-  // Toolbar actions
-  toolbarActions?: ActionSchema[]
-  
-  // Row actions
-  rowActions?: ActionSchema[]
-  
-  // Features
-  exportable?: boolean
-  printable?: boolean
-}
-
-export interface FilterConfig {
-  field: string
-  label: string
-  type: 'select' | 'multiselect' | 'date' | 'daterange' | 'number' | 'boolean' | 'text'
-  options?: FieldOption[]
-  optionsSource?: OptionsSource
-  defaultValue?: unknown
-}
-
-export interface FormViewConfig {
-  // Sections
-  sections: FormSection[]
-  
-  // Fields (flat list, sections group them)
-  fields: FieldSchema[]
-  
-  // Form layout
-  layout?: 'vertical' | 'horizontal' | 'grid'
-  
-  // Actions
-  actions?: ActionSchema[]
-  
-  // Validation
-  validateOnBlur?: boolean
-  validateOnChange?: boolean
-}
-
-export interface FormSection {
-  name: string
-  label: string
-  description?: string
-  collapsible?: boolean
-  collapsed?: boolean
-  columns?: 1 | 2 | 3 | 4         // Grid columns for this section
-  access?: FieldAccessControl     // Section-level access
-}
-
-export interface DocumentAccessControl {
-  // Required plan to access this document type
-  requiredPlan?: string[]
-  
-  // Required module
-  requiredModule?: string
-  
-  // Default permissions
-  permissions: {
-    create?: PermissionConfig
-    read?: PermissionConfig
-    update?: PermissionConfig
-    delete?: PermissionConfig
-    export?: PermissionConfig
-    import?: PermissionConfig
-    [key: string]: PermissionConfig | undefined
-  }
-}
-
-export interface PermissionConfig {
-  roles?: string[]                // Allowed roles
-  owner?: boolean                 // Owner always has access
-  conditions?: AccessCondition[]  // ABAC conditions
-}
-
-export interface AccessCondition {
-  attribute: string               // user.department, resource.status
-  operator: 'eq' | 'neq' | 'in' | 'nin' | 'gt' | 'lt' | 'contains'
-  value: unknown
-}
-
-export interface WorkflowConfig {
-  statusField: string             // Field that holds status
-  states: WorkflowState[]
-  transitions: WorkflowTransition[]
-}
-
-export interface WorkflowState {
-  name: string
-  label: string
-  color: string
-}
-
-export interface WorkflowTransition {
-  from: string[]
-  to: string
-  label: string
-  roles?: string[]
-  action?: ActionSchema
-}
-
-// ============================================
-// DASHBOARD SCHEMA
-// ============================================
-
-export interface DashboardSchema {
-  name: string
-  label: string
-  
-  // Layout
-  layout: DashboardLayout
-  
-  // Widgets
-  widgets: WidgetSchema[]
-  
-  // Access
-  access?: {
-    requiredPlan?: string[]
-    requiredModule?: string
-    roles?: string[]
-  }
-}
-
-export interface DashboardLayout {
-  type: 'grid' | 'flex'
-  columns?: number                // For grid
-  gap?: string
-}
-
-export interface WidgetSchema {
-  id: string
-  type: 'stat' | 'chart' | 'table' | 'list' | 'calendar' | 'custom'
-  title: string
-  
-  // Position
-  position: {
-    row: number
-    col: number
-    width: number                 // Columns to span
-    height: number                // Rows to span
-  }
-  
-  // Data source
-  dataSource: WidgetDataSource
-  
-  // Type-specific config
-  config: StatWidgetConfig | ChartWidgetConfig | TableWidgetConfig | CustomWidgetConfig
-  
-  // Access
-  access?: FieldAccessControl
-}
-
-export interface WidgetDataSource {
-  type: 'api' | 'store' | 'static'
-  endpoint?: string
-  params?: Record<string, unknown>
-  refreshInterval?: number        // Auto-refresh in seconds
-}
-
-export interface StatWidgetConfig {
-  valueField: string
-  format?: 'number' | 'currency' | 'percent'
-  icon?: string
-  color?: 'blue' | 'green' | 'orange' | 'red' | 'purple'
-  trend?: {
-    field: string
-    compareLabel?: string
-  }
-}
-
-export interface ChartWidgetConfig {
-  chartType: 'line' | 'bar' | 'pie' | 'doughnut' | 'area'
-  xField: string
-  yField: string | string[]       // Multiple for stacked/grouped
-  colors?: string[]
-}
-
-export interface TableWidgetConfig {
-  columns: ColumnSchema[]
-  limit?: number
-  linkTo?: string                 // Link to full list
-}
-
-export interface CustomWidgetConfig {
-  component: string
-  props?: Record<string, unknown>
-}
-```
-
-### Access Control Types
-
-```typescript
-// src/types/access.ts
-
-// ============================================
-// SUBSCRIPTION & TENANT
-// ============================================
-
-export type PlanTier = 'free' | 'starter' | 'professional' | 'enterprise'
-
-export interface Subscription {
-  id: string
-  tenantId: string
-  plan: PlanTier
-  status: 'active' | 'trialing' | 'past_due' | 'canceled' | 'expired'
-  
-  // What's included
-  modules: string[]               // Enabled module IDs
-  features: string[]              // Enabled feature flags
-  
-  // Limits
-  limits: {
-    users: number
-    records: number | null        // null = unlimited
-    storage: number               // In MB
-    apiCalls: number | null       // Per month
-    [key: string]: number | null | undefined
-  }
-  
-  // Usage
-  usage: {
-    users: number
-    records: number
-    storage: number
-    apiCalls: number
-    [key: string]: number | undefined
-  }
-  
-  // Dates
-  startDate: string
-  endDate: string | null
-  trialEndsAt?: string
-}
-
-export interface Module {
-  id: string
-  name: string
-  icon: string
-  description: string
-  requiredPlan: PlanTier[]
-  documents: string[]             // Document types in this module
-  features: string[]              // Features within module
-  order: number
-}
-
-// ============================================
-// USER & AUTHENTICATION
-// ============================================
-
-export interface User {
-  id: string
-  tenantId: string
-  email: string
-  firstName: string
-  lastName: string
-  avatar?: string
-  
-  // Roles & Permissions
-  roles: string[]
-  permissions: string[]
-  
-  // Attributes for ABAC
-  department?: string
-  team?: string
-  location?: string
-  jobTitle?: string
-  manager?: string
-  clearanceLevel?: number
-  
-  // Custom attributes
-  attributes?: Record<string, unknown>
-  
-  // Status
-  status: 'active' | 'inactive' | 'pending'
-  emailVerified: boolean
-  lastLoginAt?: string
-  
-  // Timestamps
-  createdAt: string
-  updatedAt: string
-}
-
-export interface Role {
-  id: string
-  name: string
-  displayName: string
-  description?: string
-  
-  // Permissions bundled in this role
-  permissions: string[]
-  
-  // Module access
-  modules: {
-    [moduleId: string]: ModuleAccess
-  }
-  
-  // Is this a system role?
-  isSystem: boolean
-  
-  // Hierarchy
-  parentRole?: string             // For role inheritance
-}
-
-export interface ModuleAccess {
-  enabled: boolean
-  
-  documents: {
-    [docType: string]: DocumentAccess
-  }
-}
-
-export interface DocumentAccess {
-  create: boolean
-  read: DataScope
-  update: DataScope
-  delete: DataScope
-  export: boolean
-  import: boolean
-  
-  // Field-level
-  hiddenFields?: string[]
-  readonlyFields?: string[]
-}
-
-export type DataScope = 
-  | 'none'        // No access
-  | 'own'         // Only own records
-  | 'team'        // Own team's records
-  | 'department'  // Own department's records
-  | 'all'         // All records
-
-// ============================================
-// ACCESS EVALUATION
-// ============================================
-
-export interface AccessContext {
-  user: User
-  subscription: Subscription
-  resource?: {
-    type: string
-    id?: string
-    ownerId?: string
-    department?: string
-    status?: string
-    [key: string]: unknown
-  }
-  action?: string
-  field?: string
-}
-
-export interface AccessResult {
-  allowed: boolean
-  reason?: AccessDenialReason
-  scope?: DataScope               // For read/update actions
-  hiddenFields?: string[]
-  readonlyFields?: string[]
-}
-
-export type AccessDenialReason =
-  | 'subscription_expired'
-  | 'module_not_enabled'
-  | 'plan_upgrade_required'
-  | 'limit_exceeded'
-  | 'role_not_allowed'
-  | 'permission_denied'
-  | 'abac_condition_failed'
-  | 'field_access_denied'
-
-// ============================================
-// ABAC POLICY
-// ============================================
-
-export interface ABACPolicy {
-  id: string
-  name: string
-  description?: string
-  priority: number                // Lower = higher priority
-  effect: 'permit' | 'deny'
-  
-  // Target
-  target: {
-    actions?: string[]
-    resources?: string[]
-    subjects?: PolicyCondition[]
-  }
-  
-  // Conditions
-  conditions: PolicyCondition[]
-}
-
-export interface PolicyCondition {
-  attribute: string               // Dot notation: user.department, resource.status
-  operator: ConditionOperator
-  value: unknown
-  valueRef?: string               // Reference to another attribute
-}
-
-export type ConditionOperator =
-  | 'eq' | 'neq'
-  | 'gt' | 'gte' | 'lt' | 'lte'
-  | 'in' | 'nin'
-  | 'contains' | 'not_contains'
-  | 'starts_with' | 'ends_with'
-  | 'matches'                     // Regex
-  | 'between'
-  | 'is_null' | 'is_not_null'
-```
-
+# Part 4: Services & State Management
 
 ## Access Control System
+
+### Condition Service (Frontend)
+
+```typescript
+// src/services/conditionService.ts
+/**
+ * Frontend condition evaluator - a SUBSET of Go backend's capability.
+ * Used ONLY for UI state (show/hide/enable/disable fields).
+ * 
+ * NEVER use this for security decisions - backend is authoritative.
+ */
+
+import type { Condition, ConditionGroup, ConditionOperator } from '@/types/schema'
+
+/**
+ * Evaluate a single condition against data.
+ * Matches Go backend's condition package operators.
+ */
+export function evaluateCondition(
+  condition: Condition,
+  data: Record<string, unknown>
+): boolean {
+  // Get the value to test
+  const value = getNestedValue(data, condition.field)
+  
+  // Get the compare value (literal or field reference)
+  const compareValue = condition.fieldRef
+    ? getNestedValue(data, condition.fieldRef)
+    : condition.value
+
+  // Apply operator
+  return applyOperator(condition.operator, value, compareValue)
+}
+
+/**
+ * Evaluate a condition group (with AND/OR logic).
+ */
+export function evaluateConditionGroup(
+  group: ConditionGroup,
+  data: Record<string, unknown>
+): boolean {
+  // Evaluate all conditions
+  const conditionResults = group.conditions.map(c => evaluateCondition(c, data))
+  
+  // Evaluate nested groups
+  const groupResults = (group.groups || []).map(g => evaluateConditionGroup(g, data))
+  
+  // Combine all results
+  const allResults = [...conditionResults, ...groupResults]
+  
+  // Apply conjunction
+  let result: boolean
+  if (group.conjunction === 'or') {
+    result = allResults.some(r => r)
+  } else {
+    result = allResults.every(r => r)
+  }
+  
+  // Apply negation if set
+  return group.not ? !result : result
+}
+
+/**
+ * Apply comparison operator.
+ * Must match Go backend's operator implementations.
+ */
+function applyOperator(
+  operator: ConditionOperator,
+  value: unknown,
+  compareValue: unknown
+): boolean {
+  switch (operator) {
+    // Equality
+    case 'eq':
+      return value === compareValue
+    case 'neq':
+      return value !== compareValue
+    
+    // Numeric comparison
+    case 'gt':
+      return toNumber(value) > toNumber(compareValue)
+    case 'gte':
+      return toNumber(value) >= toNumber(compareValue)
+    case 'lt':
+      return toNumber(value) < toNumber(compareValue)
+    case 'lte':
+      return toNumber(value) <= toNumber(compareValue)
+    
+    // Range
+    case 'between':
+      if (!Array.isArray(compareValue) || compareValue.length !== 2) return false
+      const num = toNumber(value)
+      return num >= toNumber(compareValue[0]) && num <= toNumber(compareValue[1])
+    case 'not_between':
+      if (!Array.isArray(compareValue) || compareValue.length !== 2) return true
+      const n = toNumber(value)
+      return n < toNumber(compareValue[0]) || n > toNumber(compareValue[1])
+    
+    // String operations
+    case 'contains':
+      return String(value).includes(String(compareValue))
+    case 'not_contains':
+      return !String(value).includes(String(compareValue))
+    case 'starts_with':
+      return String(value).startsWith(String(compareValue))
+    case 'ends_with':
+      return String(value).endsWith(String(compareValue))
+    case 'match_regexp':
+      try {
+        return new RegExp(String(compareValue)).test(String(value))
+      } catch {
+        return false
+      }
+    
+    // Membership
+    case 'in':
+      return Array.isArray(compareValue) && compareValue.includes(value)
+    case 'nin':
+      return !Array.isArray(compareValue) || !compareValue.includes(value)
+    
+    // Null/Empty
+    case 'is_empty':
+      return isEmpty(value)
+    case 'is_not_empty':
+      return !isEmpty(value)
+    
+    default:
+      console.warn(`Unknown operator: ${operator}`)
+      return false
+  }
+}
+
+/**
+ * Get nested value using dot notation.
+ */
+function getNestedValue(obj: Record<string, unknown>, path: string): unknown {
+  return path.split('.').reduce((acc: any, key) => acc?.[key], obj)
+}
+
+/**
+ * Convert value to number for comparison.
+ */
+function toNumber(value: unknown): number {
+  if (typeof value === 'number') return value
+  if (typeof value === 'string') {
+    const parsed = parseFloat(value)
+    return isNaN(parsed) ? 0 : parsed
+  }
+  if (value instanceof Date) return value.getTime()
+  return 0
+}
+
+/**
+ * Check if value is empty.
+ */
+function isEmpty(value: unknown): boolean {
+  if (value === null || value === undefined) return true
+  if (typeof value === 'string') return value.trim() === ''
+  if (Array.isArray(value)) return value.length === 0
+  if (typeof value === 'object') return Object.keys(value).length === 0
+  return false
+}
+```
 
 ### Access Service
 
 ```typescript
 // src/services/accessService.ts
+/**
+ * Access control service implementing three-layer access model.
+ * 
+ * Layer 1: Subscription (tenant capabilities)
+ * Layer 2: Role (user permissions)
+ * Layer 3: ABAC (attribute-based conditions)
+ * 
+ * IMPORTANT: This is for UI hints. Backend is authoritative.
+ */
+
 import type {
   AccessContext,
   AccessResult,
   User,
   Subscription,
   Role,
-  ABACPolicy,
-  PolicyCondition,
   DataScope,
-  AccessDenialReason,
 } from '@/types/access'
-import type { FieldSchema, ActionSchema, FieldAccessControl } from '@/types/schema'
+import type { FieldSchema, ActionSchema, Condition } from '@/types/schema'
+import { evaluateCondition } from './conditionService'
 
 class AccessService {
-  private policies: ABACPolicy[] = []
   private roles: Map<string, Role> = new Map()
   
   // Cache for performance
   private cache = new Map<string, { result: AccessResult; timestamp: number }>()
   private cacheTimeout = 60 * 1000 // 1 minute
 
-  // ============================================
-  // INITIALIZATION
-  // ============================================
-
-  loadPolicies(policies: ABACPolicy[]) {
-    this.policies = policies.sort((a, b) => a.priority - b.priority)
-    this.clearCache()
-  }
-
+  /**
+   * Load roles from API response.
+   */
   loadRoles(roles: Role[]) {
     this.roles.clear()
     for (const role of roles) {
@@ -1520,13 +2932,8 @@ class AccessService {
     this.clearCache()
   }
 
-  // ============================================
-  // MAIN ACCESS CHECK
-  // ============================================
-
   /**
-   * Main entry point for access checks
-   * Evaluates all three layers: Subscription → Role → ABAC
+   * Main access check - evaluates all layers.
    */
   checkAccess(context: AccessContext): AccessResult {
     const cacheKey = this.getCacheKey(context)
@@ -1548,18 +2955,12 @@ class AccessService {
       if (!roleResult.allowed) {
         result = roleResult
       } else {
-        // Layer 3: ABAC check
-        const abacResult = this.evaluateABAC(context)
-        if (!abacResult.allowed) {
-          result = abacResult
-        } else {
-          // Merge results
-          result = {
-            allowed: true,
-            scope: roleResult.scope,
-            hiddenFields: [...(roleResult.hiddenFields || []), ...(abacResult.hiddenFields || [])],
-            readonlyFields: [...(roleResult.readonlyFields || []), ...(abacResult.readonlyFields || [])],
-          }
+        // Layer 3: Basic client-side conditions (UI hints only)
+        result = {
+          allowed: true,
+          scope: roleResult.scope,
+          hiddenFields: roleResult.hiddenFields || [],
+          readonlyFields: roleResult.readonlyFields || [],
         }
       }
     }
@@ -1568,10 +2969,9 @@ class AccessService {
     return result
   }
 
-  // ============================================
-  // LAYER 1: SUBSCRIPTION CHECK
-  // ============================================
-
+  /**
+   * Layer 1: Check subscription/tenant capabilities.
+   */
   private checkSubscription(context: AccessContext): AccessResult {
     const { subscription } = context
 
@@ -1580,23 +2980,12 @@ class AccessService {
       return { allowed: false, reason: 'subscription_expired' }
     }
 
-    // Check if resource requires a module
-    if (context.resource?.type) {
-      const modulesWithDoc = this.getModulesForDocType(context.resource.type)
-      const hasModule = modulesWithDoc.some(m => subscription.modules.includes(m))
-      
-      if (modulesWithDoc.length > 0 && !hasModule) {
-        return { allowed: false, reason: 'module_not_enabled' }
-      }
-    }
-
     return { allowed: true }
   }
 
-  // ============================================
-  // LAYER 2: ROLE CHECK
-  // ============================================
-
+  /**
+   * Layer 2: Check role-based permissions.
+   */
   private checkRole(context: AccessContext): AccessResult {
     const { user, resource, action } = context
 
@@ -1618,20 +3007,17 @@ class AccessService {
       const role = this.roles.get(roleName)
       if (!role) continue
 
-      // Check document access in any module
       for (const moduleAccess of Object.values(role.modules)) {
         if (!moduleAccess.enabled) continue
 
         const docAccess = moduleAccess.documents[resource.type]
         if (!docAccess) continue
 
-        // Map action to access property
         const actionScope = this.getActionScope(docAccess, action)
         if (actionScope && this.isBetterScope(actionScope, bestScope)) {
           bestScope = actionScope
         }
 
-        // Collect field restrictions
         if (docAccess.hiddenFields) {
           hiddenFields.push(...docAccess.hiddenFields)
         }
@@ -1643,11 +3029,6 @@ class AccessService {
 
     if (bestScope === 'none') {
       return { allowed: false, reason: 'role_not_allowed' }
-    }
-
-    // Check data scope
-    if (!this.isWithinScope(bestScope, context)) {
-      return { allowed: false, reason: 'permission_denied' }
     }
 
     return {
@@ -1670,10 +3051,6 @@ class AccessService {
         return docAccess.update
       case 'delete':
         return docAccess.delete
-      case 'export':
-        return docAccess.export ? 'all' : 'none'
-      case 'import':
-        return docAccess.import ? 'all' : 'none'
       default:
         return null
     }
@@ -1684,175 +3061,14 @@ class AccessService {
     return order.indexOf(newScope) > order.indexOf(currentScope)
   }
 
-  private isWithinScope(scope: DataScope, context: AccessContext): boolean {
-    if (scope === 'all' || scope === 'none') {
-      return scope === 'all'
-    }
-
-    const { user, resource } = context
-    if (!resource) return true
-
-    switch (scope) {
-      case 'own':
-        return resource.ownerId === user.id
-      case 'team':
-        return resource.ownerId === user.id || 
-               (resource.team && resource.team === user.team)
-      case 'department':
-        return resource.ownerId === user.id ||
-               (resource.department && resource.department === user.department)
-      default:
-        return false
-    }
-  }
-
-  // ============================================
-  // LAYER 3: ABAC EVALUATION
-  // ============================================
-
-  private evaluateABAC(context: AccessContext): AccessResult {
-    for (const policy of this.policies) {
-      // Check if policy applies to this request
-      if (!this.policyApplies(policy, context)) {
-        continue
-      }
-
-      // Evaluate conditions
-      const conditionsMet = policy.conditions.every(
-        condition => this.evaluateCondition(condition, context)
-      )
-
-      if (conditionsMet) {
-        if (policy.effect === 'deny') {
-          return { allowed: false, reason: 'abac_condition_failed' }
-        }
-        // Permit - continue to check other policies
-      }
-    }
-
-    return { allowed: true }
-  }
-
-  private policyApplies(policy: ABACPolicy, context: AccessContext): boolean {
-    const { target } = policy
-
-    // Check actions
-    if (target.actions && context.action) {
-      if (!target.actions.includes(context.action) && !target.actions.includes('*')) {
-        return false
-      }
-    }
-
-    // Check resources
-    if (target.resources && context.resource?.type) {
-      if (!target.resources.includes(context.resource.type) && !target.resources.includes('*')) {
-        return false
-      }
-    }
-
-    // Check subject conditions
-    if (target.subjects) {
-      const subjectMatch = target.subjects.every(
-        condition => this.evaluateCondition(condition, context)
-      )
-      if (!subjectMatch) return false
-    }
-
-    return true
-  }
-
-  private evaluateCondition(condition: PolicyCondition, context: AccessContext): boolean {
-    const value = this.getAttributeValue(condition.attribute, context)
-    const compareValue = condition.valueRef
-      ? this.getAttributeValue(condition.valueRef, context)
-      : condition.value
-
-    switch (condition.operator) {
-      case 'eq':
-        return value === compareValue
-      case 'neq':
-        return value !== compareValue
-      case 'gt':
-        return Number(value) > Number(compareValue)
-      case 'gte':
-        return Number(value) >= Number(compareValue)
-      case 'lt':
-        return Number(value) < Number(compareValue)
-      case 'lte':
-        return Number(value) <= Number(compareValue)
-      case 'in':
-        return Array.isArray(compareValue) && compareValue.includes(value)
-      case 'nin':
-        return Array.isArray(compareValue) && !compareValue.includes(value)
-      case 'contains':
-        if (Array.isArray(value)) return value.includes(compareValue)
-        if (typeof value === 'string') return value.includes(String(compareValue))
-        return false
-      case 'not_contains':
-        if (Array.isArray(value)) return !value.includes(compareValue)
-        if (typeof value === 'string') return !value.includes(String(compareValue))
-        return true
-      case 'starts_with':
-        return typeof value === 'string' && value.startsWith(String(compareValue))
-      case 'ends_with':
-        return typeof value === 'string' && value.endsWith(String(compareValue))
-      case 'matches':
-        try {
-          return new RegExp(String(compareValue)).test(String(value))
-        } catch {
-          return false
-        }
-      case 'between':
-        if (Array.isArray(compareValue) && compareValue.length === 2) {
-          const num = Number(value)
-          return num >= compareValue[0] && num <= compareValue[1]
-        }
-        return false
-      case 'is_null':
-        return value === null || value === undefined
-      case 'is_not_null':
-        return value !== null && value !== undefined
-      default:
-        return false
-    }
-  }
-
-  private getAttributeValue(path: string, context: AccessContext): unknown {
-    const parts = path.split('.')
-    let current: any = context
-
-    // Map common prefixes
-    if (parts[0] === 'user') {
-      current = context.user
-      parts.shift()
-    } else if (parts[0] === 'resource') {
-      current = context.resource
-      parts.shift()
-    } else if (parts[0] === 'subscription') {
-      current = context.subscription
-      parts.shift()
-    }
-
-    for (const part of parts) {
-      if (current === null || current === undefined) return undefined
-      current = current[part]
-    }
-
-    return current
-  }
-
-  // ============================================
-  // FIELD-LEVEL ACCESS
-  // ============================================
-
   /**
-   * Check if a specific field is accessible
+   * Check field-level access (UI hints).
    */
   checkFieldAccess(
     field: FieldSchema,
     context: AccessContext,
     mode: 'read' | 'write' = 'read'
-  ): { visible: boolean; editable: boolean; reason?: AccessDenialReason } {
+  ): { visible: boolean; editable: boolean; reason?: string } {
     const access = field.access
 
     if (!access) {
@@ -1890,21 +3106,11 @@ class AccessService {
       }
     }
 
-    // Check ABAC conditions
-    if (access.conditions && access.conditions.length > 0) {
-      const conditionsMet = access.conditions.every(
-        condition => this.evaluateCondition(condition as PolicyCondition, context)
-      )
-      if (!conditionsMet) {
-        return { visible: false, editable: false, reason: 'abac_condition_failed' }
-      }
-    }
-
     return { visible: true, editable }
   }
 
   /**
-   * Check if an action is available
+   * Check action-level access.
    */
   checkActionAccess(action: ActionSchema, context: AccessContext): boolean {
     const access = action.access
@@ -1942,23 +3148,12 @@ class AccessService {
     return true
   }
 
-  // ============================================
-  // UTILITIES
-  // ============================================
-
-  private getModulesForDocType(docType: string): string[] {
-    // This would typically come from your module registry
-    // For now, return empty array
-    return []
-  }
-
   private getCacheKey(context: AccessContext): string {
     return JSON.stringify({
       userId: context.user.id,
       resourceType: context.resource?.type,
       resourceId: context.resource?.id,
       action: context.action,
-      field: context.field,
     })
   }
 
@@ -1970,276 +3165,21 @@ class AccessService {
 export const accessService = new AccessService()
 ```
 
-### Access Store
-
-```typescript
-// src/stores/accessStore.ts
-import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
-import { accessService } from '@/services/accessService'
-import { useAuthStore } from './authStore'
-import { useTenantStore } from './tenantStore'
-import type { AccessContext, AccessResult, ABACPolicy, Role } from '@/types/access'
-import type { FieldSchema, ActionSchema } from '@/types/schema'
-import api from '@/services/api'
-
-export const useAccessStore = defineStore('access', () => {
-  const authStore = useAuthStore()
-  const tenantStore = useTenantStore()
-
-  // State
-  const policies = ref<ABACPolicy[]>([])
-  const roles = ref<Role[]>([])
-  const isLoading = ref(false)
-  const isInitialized = ref(false)
-
-  // ============================================
-  // COMPUTED CONTEXT
-  // ============================================
-
-  const currentContext = computed<Omit<AccessContext, 'resource' | 'action' | 'field'>>(() => ({
-    user: authStore.user!,
-    subscription: tenantStore.subscription!,
-  }))
-
-  // ============================================
-  // INITIALIZATION
-  // ============================================
-
-  const initialize = async () => {
-    if (isInitialized.value) return
-
-    isLoading.value = true
-    try {
-      // Load policies and roles from API
-      const [policiesRes, rolesRes] = await Promise.all([
-        api.get<{ policies: ABACPolicy[] }>('/api/v1/access/policies'),
-        api.get<{ roles: Role[] }>('/api/v1/access/roles'),
-      ])
-
-      policies.value = policiesRes.data.policies
-      roles.value = rolesRes.data.roles
-
-      accessService.loadPolicies(policies.value)
-      accessService.loadRoles(roles.value)
-
-      isInitialized.value = true
-    } catch (error) {
-      console.error('Failed to initialize access store:', error)
-    } finally {
-      isLoading.value = false
-    }
-  }
-
-  // ============================================
-  // ACCESS CHECKS
-  // ============================================
-
-  /**
-   * Check if user can perform action on resource
-   */
-  const can = (
-    action: string,
-    resourceType: string,
-    resourceAttributes?: Record<string, unknown>
-  ): boolean => {
-    if (!authStore.user || !tenantStore.subscription) {
-      return false
-    }
-
-    const context: AccessContext = {
-      ...currentContext.value,
-      action,
-      resource: {
-        type: resourceType,
-        ...resourceAttributes,
-      },
-    }
-
-    return accessService.checkAccess(context).allowed
-  }
-
-  /**
-   * Check if user can perform any of the given actions
-   */
-  const canAny = (
-    actions: string[],
-    resourceType: string,
-    resourceAttributes?: Record<string, unknown>
-  ): boolean => {
-    return actions.some(action => can(action, resourceType, resourceAttributes))
-  }
-
-  /**
-   * Check if user can perform all of the given actions
-   */
-  const canAll = (
-    actions: string[],
-    resourceType: string,
-    resourceAttributes?: Record<string, unknown>
-  ): boolean => {
-    return actions.every(action => can(action, resourceType, resourceAttributes))
-  }
-
-  /**
-   * Get full access result with scope and field restrictions
-   */
-  const getAccess = (
-    action: string,
-    resourceType: string,
-    resourceAttributes?: Record<string, unknown>
-  ): AccessResult => {
-    if (!authStore.user || !tenantStore.subscription) {
-      return { allowed: false, reason: 'permission_denied' }
-    }
-
-    const context: AccessContext = {
-      ...currentContext.value,
-      action,
-      resource: {
-        type: resourceType,
-        ...resourceAttributes,
-      },
-    }
-
-    return accessService.checkAccess(context)
-  }
-
-  /**
-   * Check field access
-   */
-  const canAccessField = (
-    field: FieldSchema,
-    resourceType: string,
-    mode: 'read' | 'write' = 'read',
-    resourceAttributes?: Record<string, unknown>
-  ) => {
-    if (!authStore.user || !tenantStore.subscription) {
-      return { visible: false, editable: false }
-    }
-
-    const context: AccessContext = {
-      ...currentContext.value,
-      action: mode === 'read' ? 'read' : 'update',
-      resource: {
-        type: resourceType,
-        ...resourceAttributes,
-      },
-      field: field.name,
-    }
-
-    return accessService.checkFieldAccess(field, context, mode)
-  }
-
-  /**
-   * Check action access
-   */
-  const canPerformAction = (
-    action: ActionSchema,
-    resourceType: string,
-    resourceAttributes?: Record<string, unknown>
-  ): boolean => {
-    if (!authStore.user || !tenantStore.subscription) {
-      return false
-    }
-
-    const context: AccessContext = {
-      ...currentContext.value,
-      action: action.action,
-      resource: {
-        type: resourceType,
-        ...resourceAttributes,
-      },
-    }
-
-    return accessService.checkActionAccess(action, context)
-  }
-
-  /**
-   * Filter fields based on access
-   */
-  const filterFields = (
-    fields: FieldSchema[],
-    resourceType: string,
-    mode: 'read' | 'write' = 'read',
-    resourceAttributes?: Record<string, unknown>
-  ): FieldSchema[] => {
-    return fields.filter(field => {
-      const access = canAccessField(field, resourceType, mode, resourceAttributes)
-      return access.visible
-    })
-  }
-
-  /**
-   * Filter actions based on access
-   */
-  const filterActions = (
-    actions: ActionSchema[],
-    resourceType: string,
-    resourceAttributes?: Record<string, unknown>
-  ): ActionSchema[] => {
-    return actions.filter(action => canPerformAction(action, resourceType, resourceAttributes))
-  }
-
-  /**
-   * Check if a module is accessible
-   */
-  const hasModuleAccess = (moduleId: string): boolean => {
-    if (!tenantStore.subscription) return false
-    return tenantStore.subscription.modules.includes(moduleId)
-  }
-
-  /**
-   * Check if a feature is enabled
-   */
-  const hasFeature = (featureId: string): boolean => {
-    if (!tenantStore.subscription) return false
-    return tenantStore.subscription.features.includes(featureId)
-  }
-
-  /**
-   * Get current user's role
-   */
-  const getUserRoles = (): Role[] => {
-    if (!authStore.user) return []
-    return roles.value.filter(role => authStore.user!.roles.includes(role.name))
-  }
-
-  return {
-    // State
-    policies,
-    roles,
-    isLoading,
-    isInitialized,
-
-    // Actions
-    initialize,
-
-    // Access checks
-    can,
-    canAny,
-    canAll,
-    getAccess,
-    canAccessField,
-    canPerformAction,
-    filterFields,
-    filterActions,
-    hasModuleAccess,
-    hasFeature,
-    getUserRoles,
-  }
-})
-```
-
----
-
-## Schema Engine
-
 ### Schema Service
 
 ```typescript
 // src/services/schemaService.ts
-import type { DocumentSchema, DashboardSchema, FieldSchema, ColumnSchema } from '@/types/schema'
+/**
+ * Schema loading and management service.
+ * Handles fetching, caching, and parsing document schemas.
+ */
+
+import type { 
+  DocumentSchema, 
+  DashboardSchema, 
+  FieldSchema, 
+  ColumnSchema 
+} from '@/types/schema'
 import api from './api'
 
 class SchemaService {
@@ -2247,19 +3187,17 @@ class SchemaService {
   private dashboardCache = new Map<string, DashboardSchema>()
   private cacheTimeout = 10 * 60 * 1000 // 10 minutes
 
-  // ============================================
-  // DOCUMENT SCHEMAS
-  // ============================================
-
+  /**
+   * Get document schema by type.
+   * Tries API first, falls back to local JSON.
+   */
   async getDocumentSchema(docType: string): Promise<DocumentSchema> {
-    // Check cache
     const cached = this.documentCache.get(docType)
     if (cached) {
       return cached
     }
 
     try {
-      // Try to load from API first
       const response = await api.get<DocumentSchema>(`/api/v1/schemas/documents/${docType}`)
       const schema = response.data
       
@@ -2276,15 +3214,9 @@ class SchemaService {
     }
   }
 
-  async getAllDocumentSchemas(): Promise<DocumentSchema[]> {
-    const response = await api.get<{ schemas: DocumentSchema[] }>('/api/v1/schemas/documents')
-    return response.data.schemas
-  }
-
-  // ============================================
-  // DASHBOARD SCHEMAS
-  // ============================================
-
+  /**
+   * Get dashboard schema.
+   */
   async getDashboardSchema(dashboardId: string): Promise<DashboardSchema> {
     const cached = this.dashboardCache.get(dashboardId)
     if (cached) {
@@ -2307,12 +3239,8 @@ class SchemaService {
     }
   }
 
-  // ============================================
-  // SCHEMA UTILITIES
-  // ============================================
-
   /**
-   * Get fields grouped by section
+   * Get fields grouped by section.
    */
   getFieldsBySection(schema: DocumentSchema): Map<string, FieldSchema[]> {
     const sections = new Map<string, FieldSchema[]>()
@@ -2321,11 +3249,11 @@ class SchemaService {
     for (const section of schema.formView.sections) {
       sections.set(section.name, [])
     }
-    sections.set('default', []) // For fields without section
+    sections.set('default', [])
 
     // Group fields
     for (const field of schema.formView.fields) {
-      const sectionName = field.section || 'default'
+      const sectionName = field.layout?.section || 'default'
       const sectionFields = sections.get(sectionName) || []
       sectionFields.push(field)
       sections.set(sectionName, sectionFields)
@@ -2335,7 +3263,7 @@ class SchemaService {
     for (const [key, fields] of sections) {
       sections.set(
         key,
-        fields.sort((a, b) => (a.order || 0) - (b.order || 0))
+        fields.sort((a, b) => (a.layout?.order || 0) - (b.layout?.order || 0))
       )
     }
 
@@ -2343,21 +3271,26 @@ class SchemaService {
   }
 
   /**
-   * Build list columns from schema
-   */
-  getListColumns(schema: DocumentSchema): ColumnSchema[] {
-    return schema.listView.columns
-  }
-
-  /**
-   * Get default values for form
+   * Get default values for form initialization.
    */
   getDefaultValues(fields: FieldSchema[]): Record<string, unknown> {
     const defaults: Record<string, unknown> = {}
     
     for (const field of fields) {
-      if (field.defaultValue !== undefined) {
-        defaults[field.name] = field.defaultValue
+      if (field.data?.defaultValue !== undefined) {
+        // Handle special default values
+        const defaultValue = field.data.defaultValue
+        if (typeof defaultValue === 'string') {
+          if (defaultValue === '{{today}}') {
+            defaults[field.name] = new Date().toISOString().split('T')[0]
+          } else if (defaultValue === '{{now}}') {
+            defaults[field.name] = new Date().toISOString()
+          } else {
+            defaults[field.name] = defaultValue
+          }
+        } else {
+          defaults[field.name] = defaultValue
+        }
       } else {
         // Set type-appropriate defaults
         switch (field.type) {
@@ -2365,13 +3298,11 @@ class SchemaService {
           case 'textarea':
           case 'email':
           case 'phone':
-          case 'url':
           case 'password':
             defaults[field.name] = ''
             break
           case 'number':
           case 'currency':
-          case 'percent':
             defaults[field.name] = null
             break
           case 'checkbox':
@@ -2383,13 +3314,11 @@ class SchemaService {
             defaults[field.name] = null
             break
           case 'multiselect':
-          case 'tags':
           case 'table':
             defaults[field.name] = []
             break
           case 'date':
           case 'datetime':
-          case 'time':
             defaults[field.name] = null
             break
           default:
@@ -2402,35 +3331,37 @@ class SchemaService {
   }
 
   /**
-   * Validate field value
+   * Validate a single field.
    */
   validateField(field: FieldSchema, value: unknown): string | null {
+    const validation = field.validation
+    
     // Required check
-    if (field.required) {
+    if (validation?.required) {
       if (value === null || value === undefined || value === '') {
-        return `${field.label} is required`
+        return validation.message || `${field.label} is required`
       }
       if (Array.isArray(value) && value.length === 0) {
-        return `${field.label} is required`
+        return validation.message || `${field.label} is required`
       }
     }
 
     if (value === null || value === undefined || value === '') {
-      return null // Skip other validations if empty and not required
+      return null
     }
 
     // String validations
     if (typeof value === 'string') {
-      if (field.minLength && value.length < field.minLength) {
-        return `${field.label} must be at least ${field.minLength} characters`
+      if (validation?.minLength && value.length < validation.minLength) {
+        return `${field.label} must be at least ${validation.minLength} characters`
       }
-      if (field.maxLength && value.length > field.maxLength) {
-        return `${field.label} must be at most ${field.maxLength} characters`
+      if (validation?.maxLength && value.length > validation.maxLength) {
+        return `${field.label} must be at most ${validation.maxLength} characters`
       }
-      if (field.pattern) {
-        const regex = new RegExp(field.pattern)
+      if (validation?.pattern) {
+        const regex = new RegExp(validation.pattern)
         if (!regex.test(value)) {
-          return `${field.label} format is invalid`
+          return validation.message || `${field.label} format is invalid`
         }
       }
 
@@ -2441,34 +3372,26 @@ class SchemaService {
           return `${field.label} must be a valid email`
         }
       }
-
-      // URL validation
-      if (field.type === 'url') {
-        try {
-          new URL(value)
-        } catch {
-          return `${field.label} must be a valid URL`
-        }
-      }
     }
 
     // Number validations
     if (typeof value === 'number') {
-      if (field.min !== undefined && value < field.min) {
-        return `${field.label} must be at least ${field.min}`
+      if (validation?.min !== undefined && value < validation.min) {
+        return `${field.label} must be at least ${validation.min}`
       }
-      if (field.max !== undefined && value > field.max) {
-        return `${field.label} must be at most ${field.max}`
+      if (validation?.max !== undefined && value > validation.max) {
+        return `${field.label} must be at most ${validation.max}`
       }
     }
 
-    // Array validations
-    if (Array.isArray(value)) {
-      if (field.minRows && value.length < field.minRows) {
-        return `${field.label} must have at least ${field.minRows} items`
+    // Array validations (for table fields)
+    if (Array.isArray(value) && field.typeConfig?.type === 'table') {
+      const tableConfig = field.typeConfig
+      if (tableConfig.minRows && value.length < tableConfig.minRows) {
+        return `${field.label} must have at least ${tableConfig.minRows} items`
       }
-      if (field.maxRows && value.length > field.maxRows) {
-        return `${field.label} must have at most ${field.maxRows} items`
+      if (tableConfig.maxRows && value.length > tableConfig.maxRows) {
+        return `${field.label} must have at most ${tableConfig.maxRows} items`
       }
     }
 
@@ -2476,7 +3399,7 @@ class SchemaService {
   }
 
   /**
-   * Validate entire form
+   * Validate entire form.
    */
   validateForm(
     fields: FieldSchema[],
@@ -2493,10 +3416,6 @@ class SchemaService {
 
     return errors
   }
-
-  // ============================================
-  // CACHE MANAGEMENT
-  // ============================================
 
   clearCache() {
     this.documentCache.clear()
@@ -2515,10 +3434,164 @@ export const schemaService = new SchemaService()
 
 ## Composables
 
+### useCondition Composable
+
+```typescript
+// src/composables/useCondition.ts
+/**
+ * Composable for evaluating UI conditions (field dependencies).
+ * Used to show/hide/enable/disable fields based on form values.
+ */
+
+import { computed } from 'vue'
+import type { FieldDependency, Condition, ConditionGroup } from '@/types/schema'
+import { evaluateCondition, evaluateConditionGroup } from '@/services/conditionService'
+
+export function useCondition() {
+  /**
+   * Evaluate field dependencies to determine visibility.
+   */
+  const isFieldVisible = (
+    dependencies: FieldDependency[] | undefined,
+    formData: Record<string, unknown>,
+    defaultVisible = true
+  ): boolean => {
+    if (!dependencies || dependencies.length === 0) {
+      return defaultVisible
+    }
+
+    for (const dep of dependencies) {
+      if (dep.action !== 'show' && dep.action !== 'hide') continue
+
+      const conditionsMet = evaluateDependencyConditions(dep, formData)
+
+      if (dep.action === 'hide' && conditionsMet) return false
+      if (dep.action === 'show' && !conditionsMet) return false
+    }
+
+    return defaultVisible
+  }
+
+  /**
+   * Evaluate field dependencies to determine if field is enabled.
+   */
+  const isFieldEnabled = (
+    dependencies: FieldDependency[] | undefined,
+    formData: Record<string, unknown>,
+    defaultEnabled = true
+  ): boolean => {
+    if (!dependencies || dependencies.length === 0) {
+      return defaultEnabled
+    }
+
+    for (const dep of dependencies) {
+      if (dep.action !== 'enable' && dep.action !== 'disable') continue
+
+      const conditionsMet = evaluateDependencyConditions(dep, formData)
+
+      if (dep.action === 'disable' && conditionsMet) return false
+      if (dep.action === 'enable' && !conditionsMet) return false
+    }
+
+    return defaultEnabled
+  }
+
+  /**
+   * Evaluate field dependencies to determine if field is required.
+   */
+  const isFieldRequired = (
+    baseRequired: boolean,
+    dependencies: FieldDependency[] | undefined,
+    formData: Record<string, unknown>
+  ): boolean => {
+    if (!dependencies || dependencies.length === 0) {
+      return baseRequired
+    }
+
+    for (const dep of dependencies) {
+      if (dep.action !== 'require' && dep.action !== 'unrequire') continue
+
+      const conditionsMet = evaluateDependencyConditions(dep, formData)
+
+      if (dep.action === 'require' && conditionsMet) return true
+      if (dep.action === 'unrequire' && conditionsMet) return false
+    }
+
+    return baseRequired
+  }
+
+  /**
+   * Get value to set from set_value dependencies.
+   */
+  const getSetValue = (
+    dependencies: FieldDependency[] | undefined,
+    formData: Record<string, unknown>
+  ): { shouldSet: boolean; value: unknown } => {
+    if (!dependencies || dependencies.length === 0) {
+      return { shouldSet: false, value: undefined }
+    }
+
+    for (const dep of dependencies) {
+      if (dep.action !== 'set_value') continue
+
+      const conditionsMet = evaluateDependencyConditions(dep, formData)
+
+      if (conditionsMet) {
+        return { shouldSet: true, value: dep.actionValue }
+      }
+    }
+
+    return { shouldSet: false, value: undefined }
+  }
+
+  /**
+   * Evaluate dependency conditions.
+   */
+  const evaluateDependencyConditions = (
+    dep: FieldDependency,
+    formData: Record<string, unknown>
+  ): boolean => {
+    const conditions = dep.conditions
+
+    // If it's a condition group, use group evaluator
+    if ('conjunction' in conditions) {
+      return evaluateConditionGroup(conditions as ConditionGroup, formData)
+    }
+
+    // If it's an array of conditions
+    if (Array.isArray(conditions)) {
+      const logic = dep.logic || 'and'
+      
+      if (logic === 'or') {
+        return conditions.some(c => evaluateCondition(c, formData))
+      } else {
+        return conditions.every(c => evaluateCondition(c, formData))
+      }
+    }
+
+    return false
+  }
+
+  return {
+    isFieldVisible,
+    isFieldEnabled,
+    isFieldRequired,
+    getSetValue,
+    evaluateCondition,
+    evaluateConditionGroup,
+  }
+}
+```
+
 ### useAccess Composable
 
 ```typescript
 // src/composables/useAccess.ts
+/**
+ * Composable for access control checks.
+ * Provides reactive access to permission checking.
+ */
+
 import { computed } from 'vue'
 import { useAccessStore } from '@/stores/accessStore'
 import type { FieldSchema, ActionSchema } from '@/types/schema'
@@ -2528,7 +3601,7 @@ export function useAccess() {
   const accessStore = useAccessStore()
 
   /**
-   * Check if user can perform action on resource
+   * Check if user can perform action on resource.
    */
   const can = (
     action: string,
@@ -2539,7 +3612,7 @@ export function useAccess() {
   }
 
   /**
-   * Check multiple actions
+   * Check multiple actions (OR logic).
    */
   const canAny = (
     actions: string[],
@@ -2549,6 +3622,9 @@ export function useAccess() {
     return accessStore.canAny(actions, resourceType, resourceAttributes)
   }
 
+  /**
+   * Check multiple actions (AND logic).
+   */
   const canAll = (
     actions: string[],
     resourceType: string,
@@ -2558,7 +3634,7 @@ export function useAccess() {
   }
 
   /**
-   * Get full access result
+   * Get full access result with scope.
    */
   const getAccess = (
     action: string,
@@ -2569,7 +3645,7 @@ export function useAccess() {
   }
 
   /**
-   * Check field visibility/editability
+   * Check field visibility/editability.
    */
   const fieldAccess = (
     field: FieldSchema,
@@ -2581,7 +3657,7 @@ export function useAccess() {
   }
 
   /**
-   * Check if action is available
+   * Check if action is available.
    */
   const actionAvailable = (
     action: ActionSchema,
@@ -2592,7 +3668,7 @@ export function useAccess() {
   }
 
   /**
-   * Filter fields based on access
+   * Filter fields based on access.
    */
   const filterFields = (
     fields: FieldSchema[],
@@ -2604,7 +3680,7 @@ export function useAccess() {
   }
 
   /**
-   * Filter actions based on access
+   * Filter actions based on access.
    */
   const filterActions = (
     actions: ActionSchema[],
@@ -2615,14 +3691,14 @@ export function useAccess() {
   }
 
   /**
-   * Check module access
+   * Check module access.
    */
   const hasModule = (moduleId: string): boolean => {
     return accessStore.hasModuleAccess(moduleId)
   }
 
   /**
-   * Check feature flag
+   * Check feature flag.
    */
   const hasFeature = (featureId: string): boolean => {
     return accessStore.hasFeature(featureId)
@@ -2648,10 +3724,20 @@ export function useAccess() {
 
 ```typescript
 // src/composables/useSchema.ts
+/**
+ * Composable for loading and working with document schemas.
+ */
+
 import { ref, computed, watch } from 'vue'
 import { schemaService } from '@/services/schemaService'
 import { useAccess } from './useAccess'
-import type { DocumentSchema, FieldSchema, ColumnSchema, ActionSchema, FormSection } from '@/types/schema'
+import type { 
+  DocumentSchema, 
+  FieldSchema, 
+  ColumnSchema, 
+  ActionSchema, 
+  FormSection 
+} from '@/types/schema'
 
 export function useSchema(docType: string) {
   const { filterFields, filterActions } = useAccess()
@@ -2802,6 +3888,10 @@ export function useSchema(docType: string) {
 
 ```typescript
 // src/composables/useCrud.ts
+/**
+ * Composable for CRUD operations with Vue Query.
+ */
+
 import { ref, computed, watch } from 'vue'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
 import { useAccess } from './useAccess'
@@ -2836,7 +3926,7 @@ interface ListResponse<T> {
 
 export function useCrud<T extends Record<string, unknown>>(options: CrudOptions<T>) {
   const { docType, apiConfig, idField = 'id' } = options
-  const { can, getAccess } = useAccess()
+  const { can } = useAccess()
   const notify = useNotification()
   const queryClient = useQueryClient()
 
@@ -2850,10 +3940,7 @@ export function useCrud<T extends Record<string, unknown>>(options: CrudOptions<
   const listQueryKey = computed(() => ['documents', docType, 'list', listParams.value])
   const getQueryKey = (id: string) => ['documents', docType, 'detail', id]
 
-  // ============================================
-  // LIST QUERY
-  // ============================================
-
+  // Build URL with params
   const buildListUrl = (): string => {
     const baseUrl = apiConfig.endpoints?.list || apiConfig.baseEndpoint
     const params = new URLSearchParams()
@@ -2881,7 +3968,6 @@ export function useCrud<T extends Record<string, unknown>>(options: CrudOptions<
       }
     }
 
-    // Add default params
     if (apiConfig.defaultParams) {
       for (const [key, value] of Object.entries(apiConfig.defaultParams)) {
         if (!params.has(key)) {
@@ -2893,6 +3979,7 @@ export function useCrud<T extends Record<string, unknown>>(options: CrudOptions<
     return `${baseUrl}?${params.toString()}`
   }
 
+  // List query
   const {
     data: listData,
     isLoading: isListLoading,
@@ -2910,10 +3997,7 @@ export function useCrud<T extends Record<string, unknown>>(options: CrudOptions<
   const items = computed(() => listData.value?.data || [])
   const pagination = computed(() => listData.value?.meta)
 
-  // ============================================
-  // GET QUERY
-  // ============================================
-
+  // Get single item
   const getItem = (id: string) => {
     return useQuery({
       queryKey: getQueryKey(id),
@@ -2927,17 +4011,14 @@ export function useCrud<T extends Record<string, unknown>>(options: CrudOptions<
     })
   }
 
-  // ============================================
-  // CREATE MUTATION
-  // ============================================
-
+  // Create mutation
   const createMutation = useMutation({
     mutationFn: async (data: Partial<T>): Promise<T> => {
       const url = apiConfig.endpoints?.create || apiConfig.baseEndpoint
       const response = await api.post<T>(url, data)
       return response.data
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['documents', docType, 'list'] })
       notify.success('Created successfully')
     },
@@ -2953,10 +4034,7 @@ export function useCrud<T extends Record<string, unknown>>(options: CrudOptions<
     return createMutation.mutateAsync(data)
   }
 
-  // ============================================
-  // UPDATE MUTATION
-  // ============================================
-
+  // Update mutation
   const updateMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: Partial<T> }): Promise<T> => {
       const url = apiConfig.endpoints?.update?.replace(':id', id) ||
@@ -2964,7 +4042,7 @@ export function useCrud<T extends Record<string, unknown>>(options: CrudOptions<
       const response = await api.put<T>(url, data)
       return response.data
     },
-    onSuccess: (data, variables) => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['documents', docType, 'list'] })
       queryClient.invalidateQueries({ queryKey: getQueryKey(variables.id) })
       notify.success('Updated successfully')
@@ -2981,10 +4059,7 @@ export function useCrud<T extends Record<string, unknown>>(options: CrudOptions<
     return updateMutation.mutateAsync({ id, data })
   }
 
-  // ============================================
-  // DELETE MUTATION
-  // ============================================
-
+  // Delete mutation
   const deleteMutation = useMutation({
     mutationFn: async (id: string): Promise<void> => {
       const url = apiConfig.endpoints?.delete?.replace(':id', id) ||
@@ -3008,10 +4083,7 @@ export function useCrud<T extends Record<string, unknown>>(options: CrudOptions<
     return deleteMutation.mutateAsync(id)
   }
 
-  // ============================================
-  // BULK OPERATIONS
-  // ============================================
-
+  // Bulk delete
   const bulkDeleteMutation = useMutation({
     mutationFn: async (ids: string[]): Promise<void> => {
       const url = `${apiConfig.baseEndpoint}/bulk-delete`
@@ -3033,10 +4105,7 @@ export function useCrud<T extends Record<string, unknown>>(options: CrudOptions<
     return bulkDeleteMutation.mutateAsync(ids)
   }
 
-  // ============================================
-  // LIST MANAGEMENT
-  // ============================================
-
+  // List management
   const setPage = (page: number) => {
     listParams.value = { ...listParams.value, page }
   }
@@ -3102,6 +4171,10 @@ export function useCrud<T extends Record<string, unknown>>(options: CrudOptions<
 
 ```typescript
 // src/composables/useNotification.ts
+/**
+ * Composable for toast notifications using PrimeVue ToastService.
+ */
+
 import { useToast } from 'primevue/usetoast'
 
 export function useNotification() {
@@ -3161,7 +4234,11 @@ export function useNotification() {
 
 ```typescript
 // src/composables/useDrawer.ts
-import { ref, computed, readonly } from 'vue'
+/**
+ * Composable for managing drawer/dialog state.
+ */
+
+import { ref, computed } from 'vue'
 
 export type DrawerMode = 'create' | 'edit' | 'view'
 
@@ -3262,70 +4339,136 @@ export function useDrawer<T = unknown>() {
 }
 ```
 
+---
 
-## Component Philosophy
+# Part 5: Component Library
+
+## PrimeVue Component Integration Strategy
+
+### Core Principles
+
+1. **Don't Wrap Atoms**: Use PrimeVue components directly. Don't create `<AppButton>` wrappers.
+2. **Compose Molecules**: Create small compositions that combine atoms with business logic.
+3. **Build Organisms**: Create complex, reusable components from molecules.
+4. **Use PT API**: Style globally via PrimeVue configuration, not component wrappers.
+5. **Leverage Slots**: Use PrimeVue's extensive slot system for customization.
 
 ### When to Create Custom Components
 
-**DON'T create custom atoms** - Use PrimeVue directly:
-```vue
-<!-- Just use PrimeVue -->
-<Button label="Save" icon="pi pi-check" />
-<InputText v-model="value" />
-<Select v-model="selected" :options="options" />
+```typescript
+/**
+ * DECISION TREE FOR CUSTOM COMPONENTS
+ * 
+ * Q1: Are you just styling a PrimeVue component?
+ *     → NO custom component. Use PT API or :pt prop.
+ * 
+ * Q2: Are you combining 2+ components with specific behavior?
+ *     → YES, create a molecule (e.g., FormField = label + input + error)
+ * 
+ * Q3: Are you creating a complex, self-contained feature?
+ *     → YES, create an organism (e.g., DataTableCrud = table + pagination + actions)
+ * 
+ * Q4: Are you rendering from schema?
+ *     → YES, create a renderer (e.g., FieldRenderer, DocumentPage)
+ */
 ```
 
-**DO create molecules** when we need:
-- Combined elements with specific behavior
-- Consistent patterns across the app
-- Business logic encapsulation
+---
 
-**DO create organisms** when we need:
-- Complex, reusable sections
-- Schema-driven rendering
-- Self-contained functionality
+## Required PrimeVue Components
 
-### PrimeVue 4 Component Patterns
+### Form Components
 
-```vue
-<script setup lang="ts">
-// 1. Always use TypeScript
-// 2. Define props with defaults
-// 3. Use PrimeVue 4's prop-based styling
+| Component | Usage | Notes |
+|-----------|-------|-------|
+| `InputText` | Text, email, URL inputs | Use `type` prop for variants |
+| `InputNumber` | Numbers, currency, percent | Use `mode` prop for formatting |
+| `Textarea` | Multi-line text | Use `autoResize` for dynamic height |
+| `Password` | Password input | Has built-in strength indicator |
+| `InputMask` | Phone, formatted inputs | Pattern-based masking |
+| `Select` | Single selection dropdown | Replaces Dropdown in v4 |
+| `MultiSelect` | Multiple selection | Supports chips display |
+| `AutoComplete` | Search-as-you-type | Use for link fields |
+| `DatePicker` | Date/datetime selection | Replaces Calendar in v4 |
+| `Checkbox` | Boolean checkbox | Can have label |
+| `ToggleSwitch` | Boolean toggle | Replaces InputSwitch in v4 |
+| `RadioButton` | Single choice from group | Use with v-for |
+| `Rating` | Star rating | Configurable stars |
+| `Chips` | Tag input | For tags field type |
+| `ColorPicker` | Color selection | Inline or popup |
+| `Editor` | Rich text editing | Quill-based |
 
-import Button from 'primevue/button'
-import InputText from 'primevue/inputtext'
+### Data Components
 
-interface Props {
-  label: string
-  modelValue: string
-  invalid?: boolean
-  required?: boolean
-  helpText?: string
-}
+| Component | Usage | Notes |
+|-----------|-------|-------|
+| `DataTable` | List views, child tables | Core component for lists |
+| `Column` | DataTable columns | Used with DataTable |
+| `Paginator` | Standalone pagination | DataTable has built-in |
+| `Tree` | Hierarchical data | For navigation, categories |
+| `TreeTable` | Hierarchical table | Tree + table combined |
 
-const props = withDefaults(defineProps<Props>(), {
-  invalid: false,
-  required: false,
-})
+### Panel Components
 
-const emit = defineEmits<{
-  'update:modelValue': [value: string]
-}>()
-</script>
+| Component | Usage | Notes |
+|-----------|-------|-------|
+| `Card` | Content containers | Basic wrapper |
+| `Panel` | Collapsible sections | For form sections |
+| `Fieldset` | Grouped form fields | Alternative to Panel |
+| `Accordion` | Multiple collapsible | Use AccordionPanel children |
+| `TabView` | Tabbed content | Use TabPanel children |
+| `Divider` | Visual separator | Horizontal or vertical |
 
-<template>
-  <!-- PrimeVue 4 uses props, not classes -->
-  <Button 
-    label="Save" 
-    severity="primary"
-    rounded
-    raised
-  />
-  
-  <!-- Not the old way: class="p-button-rounded p-button-raised" -->
-</template>
-```
+### Overlay Components
+
+| Component | Usage | Notes |
+|-----------|-------|-------|
+| `Dialog` | Modal dialogs | For forms, confirmations |
+| `Drawer` | Side panels | For create/edit forms |
+| `Popover` | Contextual content | Replaces OverlayPanel in v4 |
+| `ConfirmDialog` | Confirmation prompts | Use with ConfirmationService |
+| `Toast` | Notifications | Use with ToastService |
+| `Tooltip` | Hover hints | Use as directive |
+
+### Button Components
+
+| Component | Usage | Notes |
+|-----------|-------|-------|
+| `Button` | Actions | Many severity/style options |
+| `SplitButton` | Primary + menu | For action groups |
+| `SpeedDial` | Floating action menu | Mobile-style FAB |
+| `ButtonGroup` | Grouped buttons | Visual grouping |
+
+### Menu Components
+
+| Component | Usage | Notes |
+|-----------|-------|-------|
+| `Menu` | Popup menu | For action menus |
+| `Menubar` | Horizontal navbar | Main navigation |
+| `Breadcrumb` | Navigation path | Page hierarchy |
+| `ContextMenu` | Right-click menu | Table row actions |
+| `TieredMenu` | Nested menu | Complex menus |
+
+### Feedback Components
+
+| Component | Usage | Notes |
+|-----------|-------|-------|
+| `Message` | Inline messages | Static alerts |
+| `InlineMessage` | Form validation | Compact alerts |
+| `Tag` | Status badges | For status display |
+| `Badge` | Count indicators | Notifications count |
+| `ProgressBar` | Progress indication | Upload, process |
+| `ProgressSpinner` | Loading spinner | Async operations |
+| `Skeleton` | Loading placeholder | Content loading |
+
+### Form Layout
+
+| Component | Usage | Notes |
+|-----------|-------|-------|
+| `FloatLabel` | Floating label inputs | Modern form style |
+| `IconField` | Input with icon | Search fields |
+| `InputIcon` | Icon inside input | Used with IconField |
+| `InputGroup` | Input addons | Prefix/suffix |
 
 ---
 
@@ -3333,22 +4476,36 @@ const emit = defineEmits<{
 
 ### FormField Component
 
-A wrapper that adds label, validation, and help text to any input.
-
 ```vue
 <!-- src/components/molecules/FormField.vue -->
 <script setup lang="ts">
-import { computed, useSlots } from 'vue'
-import Message from 'primevue/message'
+/**
+ * FormField wraps any input with:
+ * - Label with required indicator
+ * - Error message display
+ * - Description/help text
+ * - Consistent spacing
+ * 
+ * Use this for all form inputs to ensure consistent styling.
+ */
+import { computed } from 'vue'
 
 interface Props {
+  /** Field label text */
   label: string
+  /** Field name for accessibility */
   name: string
+  /** Show required indicator */
   required?: boolean
+  /** Validation error message */
   error?: string
-  helpText?: string
+  /** Help text below input */
   description?: string
+  /** Tooltip on hover */
+  tooltip?: string
+  /** Horizontal layout (label beside input) */
   horizontal?: boolean
+  /** Label width for horizontal layout */
   labelWidth?: string
 }
 
@@ -3357,8 +4514,6 @@ const props = withDefaults(defineProps<Props>(), {
   horizontal: false,
   labelWidth: '120px',
 })
-
-const slots = useSlots()
 
 const hasError = computed(() => !!props.error)
 
@@ -3377,22 +4532,27 @@ const fieldClasses = computed(() => ({
       :style="horizontal ? { width: labelWidth } : undefined"
     >
       {{ label }}
-      <span v-if="required" class="form-field__required">*</span>
+      <span v-if="required" class="form-field__required" aria-hidden="true">*</span>
+      <i 
+        v-if="tooltip" 
+        class="pi pi-info-circle form-field__tooltip-icon"
+        v-tooltip.top="tooltip"
+      />
     </label>
     
     <div class="form-field__content">
+      <!-- Input slot -->
       <slot />
       
+      <!-- Description (when no error) -->
       <small v-if="description && !error" class="form-field__description">
         {{ description }}
       </small>
       
-      <small v-if="error" class="form-field__error">
+      <!-- Error message -->
+      <small v-if="error" class="form-field__error" role="alert">
+        <i class="pi pi-exclamation-circle" />
         {{ error }}
-      </small>
-      
-      <small v-if="helpText" class="form-field__help">
-        {{ helpText }}
       </small>
     </div>
   </div>
@@ -3415,6 +4575,9 @@ const fieldClasses = computed(() => ({
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--p-text-color);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .form-field--horizontal .form-field__label {
@@ -3424,7 +4587,12 @@ const fieldClasses = computed(() => ({
 
 .form-field__required {
   color: var(--p-red-500);
-  margin-left: 0.25rem;
+}
+
+.form-field__tooltip-icon {
+  font-size: 0.75rem;
+  color: var(--p-text-muted-color);
+  cursor: help;
 }
 
 .form-field__content {
@@ -3434,13 +4602,18 @@ const fieldClasses = computed(() => ({
   gap: 0.25rem;
 }
 
+/* Make all inputs full width */
 .form-field__content :deep(input),
 .form-field__content :deep(.p-inputtext),
 .form-field__content :deep(.p-select),
-.form-field__content :deep(.p-textarea) {
+.form-field__content :deep(.p-textarea),
+.form-field__content :deep(.p-autocomplete),
+.form-field__content :deep(.p-datepicker),
+.form-field__content :deep(.p-inputnumber) {
   width: 100%;
 }
 
+/* Error state for inputs */
 .form-field--error :deep(.p-inputtext),
 .form-field--error :deep(.p-select),
 .form-field--error :deep(.p-textarea) {
@@ -3449,15 +4622,15 @@ const fieldClasses = computed(() => ({
 
 .form-field__description {
   color: var(--p-text-muted-color);
+  font-size: 0.75rem;
 }
 
 .form-field__error {
   color: var(--p-red-500);
-}
-
-.form-field__help {
-  color: var(--p-text-muted-color);
-  font-style: italic;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 </style>
 ```
@@ -3467,16 +4640,32 @@ const fieldClasses = computed(() => ({
 ```vue
 <!-- src/components/molecules/StatCard.vue -->
 <script setup lang="ts">
+/**
+ * StatCard displays a single KPI/metric with:
+ * - Large value with optional formatting
+ * - Icon in colored container
+ * - Optional trend indicator
+ * 
+ * Used in dashboards for key metrics.
+ */
 import { computed } from 'vue'
 
 interface Props {
+  /** Card title */
   title: string
+  /** Value to display */
   value: string | number
+  /** PrimeIcon name */
   icon?: string
+  /** Trend percentage (positive/negative) */
   trend?: number
+  /** Label for trend comparison */
   trendLabel?: string
+  /** Value formatting */
   format?: 'number' | 'currency' | 'percent'
+  /** Icon background color */
   color?: 'blue' | 'green' | 'orange' | 'red' | 'purple'
+  /** Show loading skeleton */
   loading?: boolean
 }
 
@@ -3515,7 +4704,7 @@ const trendIcon = computed(() => {
   return 'pi pi-minus'
 })
 
-const colorClasses = {
+const colorClasses: Record<string, string> = {
   blue: 'bg-blue-500',
   green: 'bg-green-500',
   orange: 'bg-orange-500',
@@ -3529,10 +4718,16 @@ const colorClasses = {
     <div class="stat-card__content">
       <span class="stat-card__title">{{ title }}</span>
       
-      <div v-if="loading" class="stat-card__skeleton" />
+      <!-- Loading state -->
+      <div v-if="loading" class="stat-card__skeleton">
+        <Skeleton height="2rem" width="120px" />
+      </div>
+      
+      <!-- Value -->
       <div v-else class="stat-card__value">{{ formattedValue }}</div>
       
-      <div v-if="trend !== undefined" class="stat-card__trend">
+      <!-- Trend -->
+      <div v-if="trend !== undefined && !loading" class="stat-card__trend">
         <span 
           :class="[
             'stat-card__trend-value',
@@ -3549,6 +4744,7 @@ const colorClasses = {
       </div>
     </div>
     
+    <!-- Icon -->
     <div v-if="icon" :class="['stat-card__icon', colorClasses[color]]">
       <i :class="icon" />
     </div>
@@ -3564,6 +4760,10 @@ const colorClasses = {
   background: var(--p-surface-0);
   border: 1px solid var(--p-surface-200);
   border-radius: 0.75rem;
+}
+
+.dark .stat-card {
+  border-color: var(--p-surface-700);
 }
 
 .stat-card__content {
@@ -3584,11 +4784,7 @@ const colorClasses = {
 }
 
 .stat-card__skeleton {
-  width: 120px;
   height: 2rem;
-  background: var(--p-surface-200);
-  border-radius: 0.25rem;
-  animation: pulse 1.5s infinite;
 }
 
 .stat-card__trend {
@@ -3618,11 +4814,6 @@ const colorClasses = {
   color: white;
   font-size: 1.5rem;
 }
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
 </style>
 ```
 
@@ -3631,16 +4822,30 @@ const colorClasses = {
 ```vue
 <!-- src/components/molecules/ActionMenu.vue -->
 <script setup lang="ts">
+/**
+ * ActionMenu renders action buttons/menus based on schema.
+ * Supports:
+ * - Individual buttons
+ * - Dropdown menu
+ * - Split button (primary + dropdown)
+ * 
+ * Evaluates showWhen/disableWhen conditions.
+ */
 import { ref, computed } from 'vue'
 import Button from 'primevue/button'
 import Menu from 'primevue/menu'
 import SplitButton from 'primevue/splitbutton'
-import type { ActionSchema } from '@/types/schema'
+import type { ActionSchema, Condition } from '@/types/schema'
+import { evaluateCondition } from '@/services/conditionService'
 
 interface Props {
+  /** Actions to render */
   actions: ActionSchema[]
+  /** Row data for condition evaluation */
   data?: Record<string, unknown>
+  /** Render style */
   type?: 'button' | 'menu' | 'split'
+  /** Button size */
   size?: 'small' | 'large'
 }
 
@@ -3655,8 +4860,19 @@ const emit = defineEmits<{
 
 const menu = ref()
 
+// Filter actions based on showWhen conditions
+const visibleActions = computed(() => {
+  return props.actions.filter(action => {
+    if (!action.showWhen || !props.data) return true
+    return action.showWhen.every(condition => 
+      evaluateCondition(condition, props.data!)
+    )
+  })
+})
+
+// Build menu items
 const menuItems = computed(() => {
-  return props.actions.map(action => ({
+  return visibleActions.value.map(action => ({
     label: action.label,
     icon: action.icon,
     command: () => emit('action', action, props.data),
@@ -3665,9 +4881,10 @@ const menuItems = computed(() => {
   }))
 })
 
+// Build split button items (excluding first)
 const splitItems = computed(() => {
-  if (props.actions.length <= 1) return []
-  return props.actions.slice(1).map(action => ({
+  if (visibleActions.value.length <= 1) return []
+  return visibleActions.value.slice(1).map(action => ({
     label: action.label,
     icon: action.icon,
     command: () => emit('action', action, props.data),
@@ -3675,21 +4892,15 @@ const splitItems = computed(() => {
   }))
 })
 
-const primaryAction = computed(() => props.actions[0])
+const primaryAction = computed(() => visibleActions.value[0])
 
+// Check if action is disabled based on disableWhen
 const isDisabled = (action: ActionSchema): boolean => {
   if (!action.disableWhen || !props.data) return false
   
-  return action.disableWhen.some(condition => {
-    const value = props.data![condition.field]
-    switch (condition.operator) {
-      case 'eq': return value === condition.value
-      case 'neq': return value !== condition.value
-      case 'empty': return !value
-      case 'not_empty': return !!value
-      default: return false
-    }
-  })
+  return action.disableWhen.some(condition => 
+    evaluateCondition(condition, props.data!)
+  )
 }
 
 const toggle = (event: Event) => {
@@ -3698,8 +4909,13 @@ const toggle = (event: Event) => {
 </script>
 
 <template>
+  <!-- No actions -->
+  <template v-if="visibleActions.length === 0">
+    <span />
+  </template>
+  
   <!-- Single Button -->
-  <template v-if="type === 'button' && actions.length === 1">
+  <template v-else-if="type === 'button' && visibleActions.length === 1">
     <Button
       :label="primaryAction?.label"
       :icon="primaryAction?.icon"
@@ -3714,11 +4930,12 @@ const toggle = (event: Event) => {
   <template v-else-if="type === 'button'">
     <div class="flex gap-1">
       <Button
-        v-for="action in actions"
+        v-for="action in visibleActions"
         :key="action.name"
         :icon="action.icon"
         :severity="(action.variant as any) || 'secondary'"
         :size="size"
+        :disabled="isDisabled(action)"
         text
         rounded
         v-tooltip.top="action.label"
@@ -3727,7 +4944,7 @@ const toggle = (event: Event) => {
     </div>
   </template>
   
-  <!-- Menu -->
+  <!-- Menu (default) -->
   <template v-else-if="type === 'menu'">
     <Button
       icon="pi pi-ellipsis-v"
@@ -3735,6 +4952,7 @@ const toggle = (event: Event) => {
       :size="size"
       text
       rounded
+      aria-label="Actions menu"
       @click="toggle"
     />
     <Menu ref="menu" :model="menuItems" popup />
@@ -3759,13 +4977,22 @@ const toggle = (event: Event) => {
 ```vue
 <!-- src/components/molecules/EmptyState.vue -->
 <script setup lang="ts">
+/**
+ * EmptyState shows when lists/tables have no data.
+ * Provides visual feedback and optional call-to-action.
+ */
 import Button from 'primevue/button'
 
 interface Props {
+  /** Icon to display */
   icon?: string
+  /** Main message */
   title: string
+  /** Additional description */
   description?: string
+  /** CTA button label */
   actionLabel?: string
+  /** CTA button icon */
   actionIcon?: string
 }
 
@@ -3836,11 +5063,21 @@ const emit = defineEmits<{
 
 ### DataTableCrud Component
 
-The main reusable list component. Schema-driven, with built-in CRUD operations.
-
 ```vue
 <!-- src/components/organisms/DataTableCrud.vue -->
 <script setup lang="ts">
+/**
+ * DataTableCrud is the main list component.
+ * Schema-driven with built-in:
+ * - Pagination
+ * - Sorting
+ * - Filtering
+ * - Search
+ * - Row selection
+ * - Actions (toolbar, row, bulk)
+ * - Empty state
+ * - Loading skeletons
+ */
 import { ref, computed, watch } from 'vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
@@ -3855,39 +5092,40 @@ import ConfirmDialog from 'primevue/confirmdialog'
 import { useConfirm } from 'primevue/useconfirm'
 import ActionMenu from '@/components/molecules/ActionMenu.vue'
 import EmptyState from '@/components/molecules/EmptyState.vue'
-import FieldRenderer from '@/components/renderers/FieldRenderer.vue'
 import type { ColumnSchema, ActionSchema, FilterConfig } from '@/types/schema'
 import { useAccess } from '@/composables/useAccess'
 import { useDebounceFn } from '@vueuse/core'
 
 interface Props {
-  // Data
+  /** Data items to display */
   items: Record<string, unknown>[]
+  /** Loading state */
   loading?: boolean
-  
-  // Schema
+  /** Column definitions from schema */
   columns: ColumnSchema[]
+  /** Document type for access checks */
   docType: string
-  
-  // Pagination
+  /** Total records for pagination */
   totalRecords?: number
+  /** Current page (1-indexed) */
   page?: number
+  /** Rows per page */
   rows?: number
+  /** Page size options */
   rowsPerPageOptions?: number[]
-  
-  // Features
+  /** Enable global search */
   searchable?: boolean
+  /** Search placeholder */
   searchPlaceholder?: string
-  
-  // Selection
+  /** Enable row selection */
   selectable?: boolean
-  
-  // Actions
+  /** Toolbar actions */
   toolbarActions?: ActionSchema[]
+  /** Per-row actions */
   rowActions?: ActionSchema[]
+  /** Bulk actions for selected rows */
   bulkActions?: ActionSchema[]
-  
-  // Filters
+  /** Filter definitions */
   filters?: FilterConfig[]
 }
 
@@ -3919,18 +5157,8 @@ const confirm = useConfirm()
 const selection = ref<Record<string, unknown>[]>([])
 const searchQuery = ref('')
 const activeFilters = ref<Record<string, unknown>>({})
-const sortField = ref<string | null>(null)
-const sortOrder = ref<'asc' | 'desc'>('asc')
 
 // Computed
-const visibleColumns = computed(() => {
-  return props.columns.filter(col => {
-    if (!col.access) return true
-    // Check column access based on subscription/role
-    return true // Simplified - use accessStore in real implementation
-  })
-})
-
 const availableToolbarActions = computed(() => {
   if (!props.toolbarActions) return []
   return filterActions(props.toolbarActions, props.docType)
@@ -3964,9 +5192,8 @@ const onPage = (event: any) => {
 }
 
 const onSort = (event: any) => {
-  sortField.value = event.sortField
-  sortOrder.value = event.sortOrder === 1 ? 'asc' : 'desc'
-  emit('sort-change', event.sortField, sortOrder.value)
+  const order = event.sortOrder === 1 ? 'asc' : 'desc'
+  emit('sort-change', event.sortField, order)
 }
 
 const onRowClick = (event: any) => {
@@ -4004,11 +5231,12 @@ const clearSelection = () => {
   emit('selection-change', [])
 }
 
+// Get nested value with dot notation
 const getColumnValue = (data: Record<string, unknown>, field: string) => {
-  // Support nested fields with dot notation
   return field.split('.').reduce((obj: any, key) => obj?.[key], data)
 }
 
+// Format cell value based on column type
 const formatCellValue = (column: ColumnSchema, value: unknown): string => {
   if (value === null || value === undefined) return '-'
   
@@ -4025,8 +5253,6 @@ const formatCellValue = (column: ColumnSchema, value: unknown): string => {
         dateStyle: 'medium',
         timeStyle: 'short',
       }).format(new Date(String(value)))
-    case 'percent':
-      return `${value}%`
     case 'number':
       return new Intl.NumberFormat('en-US').format(Number(value))
     default:
@@ -4034,16 +5260,20 @@ const formatCellValue = (column: ColumnSchema, value: unknown): string => {
   }
 }
 
+// Get tag severity for status-like columns
 const getTagSeverity = (value: string): 'success' | 'info' | 'warn' | 'danger' | 'secondary' => {
   const map: Record<string, 'success' | 'info' | 'warn' | 'danger' | 'secondary'> = {
     active: 'success',
     completed: 'success',
     approved: 'success',
+    paid: 'success',
     inactive: 'secondary',
     pending: 'warn',
     draft: 'warn',
+    partial: 'warn',
     cancelled: 'danger',
     rejected: 'danger',
+    overdue: 'danger',
     error: 'danger',
   }
   return map[value.toLowerCase()] || 'info'
@@ -4103,8 +5333,8 @@ const getTagSeverity = (value: string): 'success' | 'info' | 'warn' | 'danger' |
             :key="filter.field"
             v-model="activeFilters[filter.field]"
             :options="filter.options"
-            :optionLabel="'label'"
-            :optionValue="'value'"
+            optionLabel="label"
+            optionValue="value"
             :placeholder="filter.label"
             showClear
             class="w-40"
@@ -4141,12 +5371,12 @@ const getTagSeverity = (value: string): 'success' | 'info' | 'warn' | 'danger' |
       scrollable
       scrollHeight="flex"
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
       @page="onPage"
       @sort="onSort"
       @row-click="onRowClick"
       @update:selection="onSelectionChange"
     >
+      <!-- Empty State -->
       <template #empty>
         <EmptyState
           icon="pi pi-inbox"
@@ -4158,6 +5388,7 @@ const getTagSeverity = (value: string): 'success' | 'info' | 'warn' | 'danger' |
         />
       </template>
       
+      <!-- Loading State -->
       <template #loading>
         <div class="p-4">
           <Skeleton v-for="i in 5" :key="i" class="mb-2" height="2.5rem" />
@@ -4173,7 +5404,7 @@ const getTagSeverity = (value: string): 'success' | 'info' | 'warn' | 'danger' |
       
       <!-- Data Columns -->
       <Column
-        v-for="column in visibleColumns"
+        v-for="column in columns"
         :key="column.field"
         :field="column.field"
         :header="column.header"
@@ -4182,7 +5413,7 @@ const getTagSeverity = (value: string): 'success' | 'info' | 'warn' | 'danger' |
         :frozen="column.frozen"
       >
         <template #body="{ data }">
-          <!-- Custom template -->
+          <!-- Custom slot override -->
           <slot :name="`cell-${column.field}`" :data="data" :value="getColumnValue(data, column.field)">
             <!-- Status/Tag columns -->
             <template v-if="column.type === 'select' && column.field.includes('status')">
@@ -4223,7 +5454,7 @@ const getTagSeverity = (value: string): 'success' | 'info' | 'warn' | 'danger' |
             :actions="availableRowActions"
             :data="data"
             type="button"
-            @action="handleAction($event, data)"
+            @action="(action) => handleAction(action, data)"
           />
         </template>
       </Column>
@@ -4244,6 +5475,10 @@ const getTagSeverity = (value: string): 'success' | 'info' | 'warn' | 'danger' |
   overflow: hidden;
 }
 
+.dark .datatable-crud {
+  border-color: var(--p-surface-700);
+}
+
 .datatable-crud__toolbar {
   display: flex;
   align-items: center;
@@ -4251,6 +5486,13 @@ const getTagSeverity = (value: string): 'success' | 'info' | 'warn' | 'danger' |
   padding: 1rem;
   border-bottom: 1px solid var(--p-surface-200);
   background: var(--p-surface-50);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.dark .datatable-crud__toolbar {
+  background: var(--p-surface-800);
+  border-color: var(--p-surface-700);
 }
 
 .datatable-crud__toolbar-start {
@@ -4264,31 +5506,58 @@ const getTagSeverity = (value: string): 'success' | 'info' | 'warn' | 'danger' |
   align-items: center;
   gap: 0.75rem;
 }
+
+@media (max-width: 768px) {
+  .datatable-crud__toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .datatable-crud__toolbar-end {
+    flex-direction: column;
+  }
+}
 </style>
 ```
 
 ### FormBuilder Component
 
-Schema-driven form generator.
-
 ```vue
 <!-- src/components/organisms/FormBuilder.vue -->
 <script setup lang="ts">
+/**
+ * FormBuilder generates forms from schema.
+ * Handles:
+ * - Field rendering based on type
+ * - Section organization
+ * - Field dependencies (show/hide/enable)
+ * - Validation
+ * - Access control filtering
+ */
 import { ref, computed, watch, onMounted } from 'vue'
 import Button from 'primevue/button'
+import Panel from 'primevue/panel'
 import FormField from '@/components/molecules/FormField.vue'
 import FieldRenderer from '@/components/renderers/FieldRenderer.vue'
 import type { FieldSchema, FormSection } from '@/types/schema'
 import { useAccess } from '@/composables/useAccess'
+import { useCondition } from '@/composables/useCondition'
 import { schemaService } from '@/services/schemaService'
 
 interface Props {
+  /** Field definitions */
   fields: FieldSchema[]
+  /** Section definitions */
   sections?: FormSection[]
+  /** Document type for access checks */
   docType: string
+  /** Form data (v-model) */
   modelValue: Record<string, unknown>
+  /** Form mode */
   mode?: 'create' | 'edit' | 'view'
+  /** Loading state */
   loading?: boolean
+  /** Resource attributes for access checks */
   resourceAttributes?: Record<string, unknown>
 }
 
@@ -4306,6 +5575,7 @@ const emit = defineEmits<{
 }>()
 
 const { canAccessField, filterFields } = useAccess()
+const { isFieldVisible, isFieldEnabled, isFieldRequired, getSetValue } = useCondition()
 
 // State
 const formData = ref<Record<string, unknown>>({})
@@ -4326,7 +5596,12 @@ watch(() => props.modelValue, (newValue) => {
 const isReadonly = computed(() => props.mode === 'view')
 
 const visibleFields = computed(() => {
-  return filterFields(props.fields, props.docType, isReadonly.value ? 'read' : 'write', props.resourceAttributes)
+  return filterFields(
+    props.fields, 
+    props.docType, 
+    isReadonly.value ? 'read' : 'write', 
+    props.resourceAttributes
+  )
 })
 
 const fieldsBySection = computed(() => {
@@ -4340,7 +5615,7 @@ const fieldsBySection = computed(() => {
   
   // Group fields
   for (const field of visibleFields.value) {
-    const sectionName = field.section || 'default'
+    const sectionName = field.layout?.section || 'default'
     const sectionFields = map.get(sectionName) || []
     sectionFields.push(field)
     map.set(sectionName, sectionFields)
@@ -4348,7 +5623,7 @@ const fieldsBySection = computed(() => {
   
   // Sort by order
   for (const [key, fields] of map) {
-    map.set(key, fields.sort((a, b) => (a.order || 0) - (b.order || 0)))
+    map.set(key, fields.sort((a, b) => (a.layout?.order || 0) - (b.layout?.order || 0)))
   }
   
   return map
@@ -4367,8 +5642,28 @@ const updateField = (fieldName: string, value: unknown) => {
     validateField(fieldName)
   }
   
-  // Evaluate dependencies
-  evaluateDependencies(fieldName)
+  // Check for set_value dependencies in other fields
+  evaluateSetValueDependencies(fieldName)
+}
+
+const evaluateSetValueDependencies = (changedField: string) => {
+  for (const field of props.fields) {
+    if (!field.behavior?.dependsOn) continue
+    
+    // Check if any dependency watches the changed field
+    const watchesChanged = field.behavior.dependsOn.some(dep => {
+      const conditions = Array.isArray(dep.conditions) ? dep.conditions : []
+      return conditions.some(c => c.field === changedField)
+    })
+    
+    if (!watchesChanged) continue
+    
+    const { shouldSet, value } = getSetValue(field.behavior.dependsOn, formData.value)
+    if (shouldSet) {
+      formData.value = { ...formData.value, [field.name]: value }
+      emit('update:modelValue', formData.value)
+    }
+  }
 }
 
 const onFieldBlur = (fieldName: string) => {
@@ -4394,113 +5689,35 @@ const validateAll = (): boolean => {
   return Object.keys(errors.value).length === 0
 }
 
-const evaluateDependencies = (changedField: string) => {
-  for (const field of props.fields) {
-    if (!field.depends_on) continue
-    
-    for (const dep of field.depends_on) {
-      if (dep.field !== changedField) continue
-      
-      const value = formData.value[dep.field]
-      let conditionMet = false
-      
-      switch (dep.operator) {
-        case 'eq':
-          conditionMet = value === dep.value
-          break
-        case 'neq':
-          conditionMet = value !== dep.value
-          break
-        case 'in':
-          conditionMet = Array.isArray(dep.value) && dep.value.includes(value)
-          break
-        case 'empty':
-          conditionMet = !value
-          break
-        case 'not_empty':
-          conditionMet = !!value
-          break
-      }
-      
-      if (dep.action === 'set_value' && conditionMet) {
-        updateField(field.name, dep.actionValue)
-      }
-    }
-  }
+// Check field visibility based on dependencies
+const checkFieldVisibility = (field: FieldSchema): boolean => {
+  if (field.layout?.hidden) return false
+  return isFieldVisible(field.behavior?.dependsOn, formData.value, true)
 }
 
-const isFieldVisible = (field: FieldSchema): boolean => {
-  if (field.hidden) return false
-  
-  if (!field.depends_on) return true
-  
-  for (const dep of field.depends_on) {
-    if (dep.action !== 'show' && dep.action !== 'hide') continue
-    
-    const value = formData.value[dep.field]
-    let conditionMet = false
-    
-    switch (dep.operator) {
-      case 'eq':
-        conditionMet = value === dep.value
-        break
-      case 'neq':
-        conditionMet = value !== dep.value
-        break
-      case 'in':
-        conditionMet = Array.isArray(dep.value) && dep.value.includes(value)
-        break
-      case 'empty':
-        conditionMet = !value
-        break
-      case 'not_empty':
-        conditionMet = !!value
-        break
-    }
-    
-    if (dep.action === 'hide' && conditionMet) return false
-    if (dep.action === 'show' && !conditionMet) return false
-  }
-  
-  return true
-}
-
-const isFieldDisabled = (field: FieldSchema): boolean => {
+// Check if field is disabled
+const checkFieldDisabled = (field: FieldSchema): boolean => {
   if (isReadonly.value) return true
-  if (field.disabled) return true
-  if (field.readonly) return true
+  if (field.behavior?.disabled) return true
+  if (field.behavior?.readonly) return true
   
   // Check access
   const access = canAccessField(field, props.docType, 'write', props.resourceAttributes)
   if (!access.editable) return true
   
-  // Check dependencies
-  if (!field.depends_on) return false
-  
-  for (const dep of field.depends_on) {
-    if (dep.action !== 'disable' && dep.action !== 'enable') continue
-    
-    const value = formData.value[dep.field]
-    let conditionMet = false
-    
-    switch (dep.operator) {
-      case 'eq':
-        conditionMet = value === dep.value
-        break
-      case 'neq':
-        conditionMet = value !== dep.value
-        break
-    }
-    
-    if (dep.action === 'disable' && conditionMet) return true
-    if (dep.action === 'enable' && !conditionMet) return true
-  }
-  
-  return false
+  return !isFieldEnabled(field.behavior?.dependsOn, formData.value, true)
 }
 
+// Check if field is required
+const checkFieldRequired = (field: FieldSchema): boolean => {
+  const baseRequired = field.validation?.required || false
+  return isFieldRequired(baseRequired, field.behavior?.dependsOn, formData.value)
+}
+
+// Get field width class
 const getFieldWidth = (field: FieldSchema): string => {
-  switch (field.width) {
+  const width = field.layout?.width || 'half'
+  switch (width) {
     case 'full': return 'col-span-12'
     case 'half': return 'col-span-12 md:col-span-6'
     case 'third': return 'col-span-12 md:col-span-4'
@@ -4538,36 +5755,44 @@ defineExpose({
   <form @submit.prevent="submit" class="form-builder">
     <!-- Sections -->
     <template v-if="sections.length > 0">
-      <div
+      <Panel
         v-for="section in sections"
         :key="section.name"
+        :header="section.label"
+        :toggleable="section.collapsible"
+        :collapsed="section.collapsed"
         class="form-builder__section"
       >
-        <div class="form-builder__section-header">
-          <h3 class="form-builder__section-title">{{ section.label }}</h3>
-          <p v-if="section.description" class="form-builder__section-description">
-            {{ section.description }}
-          </p>
-        </div>
+        <template #header>
+          <div class="flex items-center gap-2">
+            <span class="font-semibold">{{ section.label }}</span>
+            <span v-if="section.description" class="text-sm text-surface-500 font-normal">
+              — {{ section.description }}
+            </span>
+          </div>
+        </template>
         
-        <div class="form-builder__fields" :style="{ '--columns': section.columns || 2 }">
+        <div 
+          class="form-builder__fields" 
+          :style="{ '--columns': section.columns || 2 }"
+        >
           <template v-for="field in fieldsBySection.get(section.name)" :key="field.name">
             <div
-              v-if="isFieldVisible(field)"
+              v-if="checkFieldVisibility(field)"
               :class="getFieldWidth(field)"
             >
               <FormField
                 :label="field.label"
                 :name="field.name"
-                :required="field.required"
+                :required="checkFieldRequired(field)"
                 :error="errors[field.name]"
-                :description="field.description"
-                :helpText="field.tooltip"
+                :description="field.display?.description"
+                :tooltip="field.display?.tooltip"
               >
                 <FieldRenderer
                   :field="field"
                   :value="formData[field.name]"
-                  :disabled="isFieldDisabled(field)"
+                  :disabled="checkFieldDisabled(field)"
                   :invalid="!!errors[field.name]"
                   @update:value="updateField(field.name, $event)"
                   @blur="onFieldBlur(field.name)"
@@ -4576,7 +5801,7 @@ defineExpose({
             </div>
           </template>
         </div>
-      </div>
+      </Panel>
     </template>
     
     <!-- Fields without sections -->
@@ -4584,21 +5809,21 @@ defineExpose({
       <div class="form-builder__fields">
         <template v-for="field in visibleFields" :key="field.name">
           <div
-            v-if="isFieldVisible(field)"
+            v-if="checkFieldVisibility(field)"
             :class="getFieldWidth(field)"
           >
             <FormField
               :label="field.label"
               :name="field.name"
-              :required="field.required"
+              :required="checkFieldRequired(field)"
               :error="errors[field.name]"
-              :description="field.description"
-              :helpText="field.tooltip"
+              :description="field.display?.description"
+              :tooltip="field.display?.tooltip"
             >
               <FieldRenderer
                 :field="field"
                 :value="formData[field.name]"
-                :disabled="isFieldDisabled(field)"
+                :disabled="checkFieldDisabled(field)"
                 :invalid="!!errors[field.name]"
                 @update:value="updateField(field.name, $event)"
                 @blur="onFieldBlur(field.name)"
@@ -4634,31 +5859,11 @@ defineExpose({
 .form-builder {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .form-builder__section {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.form-builder__section-header {
-  border-bottom: 1px solid var(--p-surface-200);
-  padding-bottom: 0.75rem;
-}
-
-.form-builder__section-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--p-text-color);
-  margin: 0;
-}
-
-.form-builder__section-description {
-  font-size: 0.875rem;
-  color: var(--p-text-muted-color);
-  margin: 0.25rem 0 0;
+  margin-bottom: 0;
 }
 
 .form-builder__fields {
@@ -4674,16 +5879,22 @@ defineExpose({
   padding-top: 1rem;
   border-top: 1px solid var(--p-surface-200);
 }
+
+.dark .form-builder__actions {
+  border-color: var(--p-surface-700);
+}
 </style>
 ```
 
 ### FormDrawer Component
 
-Wraps FormBuilder in a Drawer for create/edit operations.
-
 ```vue
 <!-- src/components/organisms/FormDrawer.vue -->
 <script setup lang="ts">
+/**
+ * FormDrawer wraps FormBuilder in a side drawer.
+ * Used for create/edit operations without full page navigation.
+ */
 import { ref, computed, watch } from 'vue'
 import Drawer from 'primevue/drawer'
 import Button from 'primevue/button'
@@ -4691,15 +5902,25 @@ import FormBuilder from './FormBuilder.vue'
 import type { FieldSchema, FormSection } from '@/types/schema'
 
 interface Props {
+  /** Drawer visibility (v-model) */
   visible: boolean
+  /** Drawer title */
   title: string
+  /** Form mode */
   mode: 'create' | 'edit' | 'view'
+  /** Document type */
   docType: string
+  /** Field definitions */
   fields: FieldSchema[]
+  /** Section definitions */
   sections?: FormSection[]
+  /** Form data */
   data?: Record<string, unknown>
+  /** Loading state */
   loading?: boolean
+  /** Drawer position */
   position?: 'left' | 'right' | 'top' | 'bottom'
+  /** Drawer width */
   width?: string
 }
 
@@ -4823,12 +6044,14 @@ const handleSave = async () => {
 
 ### FieldRenderer Component
 
-Renders the appropriate PrimeVue component based on field type.
-
 ```vue
 <!-- src/components/renderers/FieldRenderer.vue -->
 <script setup lang="ts">
-import { computed, defineAsyncComponent } from 'vue'
+/**
+ * FieldRenderer maps field types to PrimeVue components.
+ * This is the core of schema-driven form rendering.
+ */
+import { computed } from 'vue'
 import InputText from 'primevue/inputtext'
 import InputNumber from 'primevue/inputnumber'
 import Textarea from 'primevue/textarea'
@@ -4837,21 +6060,20 @@ import MultiSelect from 'primevue/multiselect'
 import DatePicker from 'primevue/datepicker'
 import Checkbox from 'primevue/checkbox'
 import ToggleSwitch from 'primevue/toggleswitch'
-import RadioButton from 'primevue/radiobutton'
 import Password from 'primevue/password'
-import Rating from 'primevue/rating'
 import Chips from 'primevue/chips'
-import ColorPicker from 'primevue/colorpicker'
 import InputMask from 'primevue/inputmask'
-import Editor from 'primevue/editor'
-import FileUpload from 'primevue/fileupload'
-import type { FieldSchema, FieldOption, OptionsSource } from '@/types/schema'
-import api from '@/services/api'
+import AutoComplete from 'primevue/autocomplete'
+import type { FieldSchema } from '@/types/schema'
 
 interface Props {
+  /** Field definition */
   field: FieldSchema
+  /** Current value */
   value: unknown
+  /** Disabled state */
   disabled?: boolean
+  /** Invalid state (has error) */
   invalid?: boolean
 }
 
@@ -4865,53 +6087,21 @@ const emit = defineEmits<{
   'blur': []
 }>()
 
-// Dynamic options loading
-const loadOptions = async (source: OptionsSource): Promise<FieldOption[]> => {
-  if (source.type === 'static') {
-    return []
-  }
-  
-  if (source.type === 'api' && source.endpoint) {
-    try {
-      const response = await api.get(source.endpoint, { params: source.params })
-      const data = response.data.data || response.data
-      
-      return data.map((item: any) => ({
-        value: item[source.valueField || 'id'],
-        label: item[source.labelField || 'name'],
-      }))
-    } catch (error) {
-      console.error('Failed to load options:', error)
-      return []
-    }
-  }
-  
-  return []
-}
-
-// Computed options
+// Get options from field definition
 const options = computed(() => {
-  if (props.field.options) {
-    return props.field.options
-  }
-  return []
+  return props.field.data?.options || []
 })
 
-// Input handlers
-const onInput = (event: any) => {
-  const value = event?.target?.value ?? event
-  emit('update:value', value)
-}
-
-const onBlur = () => {
-  emit('blur')
-}
-
-// Style classes
+// Common input class
 const inputClass = computed(() => ({
   'w-full': true,
   'p-invalid': props.invalid,
 }))
+
+// Get placeholder
+const placeholder = computed(() => {
+  return props.field.behavior?.placeholder || ''
+})
 </script>
 
 <template>
@@ -4920,10 +6110,10 @@ const inputClass = computed(() => ({
     v-if="field.type === 'text'"
     :modelValue="(value as string) || ''"
     :disabled="disabled"
-    :placeholder="field.placeholder"
+    :placeholder="placeholder"
     :class="inputClass"
     @update:modelValue="emit('update:value', $event)"
-    @blur="onBlur"
+    @blur="emit('blur')"
   />
   
   <!-- Email Input -->
@@ -4931,11 +6121,11 @@ const inputClass = computed(() => ({
     v-else-if="field.type === 'email'"
     :modelValue="(value as string) || ''"
     :disabled="disabled"
-    :placeholder="field.placeholder || 'email@example.com'"
+    :placeholder="placeholder || 'email@example.com'"
     type="email"
     :class="inputClass"
     @update:modelValue="emit('update:value', $event)"
-    @blur="onBlur"
+    @blur="emit('blur')"
   />
   
   <!-- Phone Input -->
@@ -4944,22 +6134,10 @@ const inputClass = computed(() => ({
     :modelValue="(value as string) || ''"
     :disabled="disabled"
     mask="(999) 999-9999"
-    :placeholder="field.placeholder || '(999) 999-9999'"
+    :placeholder="placeholder || '(999) 999-9999'"
     :class="inputClass"
     @update:modelValue="emit('update:value', $event)"
-    @blur="onBlur"
-  />
-  
-  <!-- URL Input -->
-  <InputText
-    v-else-if="field.type === 'url'"
-    :modelValue="(value as string) || ''"
-    :disabled="disabled"
-    :placeholder="field.placeholder || 'https://'"
-    type="url"
-    :class="inputClass"
-    @update:modelValue="emit('update:value', $event)"
-    @blur="onBlur"
+    @blur="emit('blur')"
   />
   
   <!-- Password Input -->
@@ -4967,13 +6145,13 @@ const inputClass = computed(() => ({
     v-else-if="field.type === 'password'"
     :modelValue="(value as string) || ''"
     :disabled="disabled"
-    :placeholder="field.placeholder"
+    :placeholder="placeholder"
     :feedback="false"
     toggleMask
     :class="inputClass"
-    :inputClass="'w-full'"
+    inputClass="w-full"
     @update:modelValue="emit('update:value', $event)"
-    @blur="onBlur"
+    @blur="emit('blur')"
   />
   
   <!-- Textarea -->
@@ -4981,12 +6159,12 @@ const inputClass = computed(() => ({
     v-else-if="field.type === 'textarea'"
     :modelValue="(value as string) || ''"
     :disabled="disabled"
-    :placeholder="field.placeholder"
+    :placeholder="placeholder"
     :rows="5"
     :autoResize="true"
     :class="inputClass"
     @update:modelValue="emit('update:value', $event)"
-    @blur="onBlur"
+    @blur="emit('blur')"
   />
   
   <!-- Number Input -->
@@ -4994,13 +6172,13 @@ const inputClass = computed(() => ({
     v-else-if="field.type === 'number'"
     :modelValue="(value as number) ?? null"
     :disabled="disabled"
-    :placeholder="field.placeholder"
-    :min="field.min"
-    :max="field.max"
+    :placeholder="placeholder"
+    :min="field.validation?.min"
+    :max="field.validation?.max"
     :class="inputClass"
-    :inputClass="'w-full'"
+    inputClass="w-full"
     @update:modelValue="emit('update:value', $event)"
-    @blur="onBlur"
+    @blur="emit('blur')"
   />
   
   <!-- Currency Input -->
@@ -5008,31 +6186,16 @@ const inputClass = computed(() => ({
     v-else-if="field.type === 'currency'"
     :modelValue="(value as number) ?? null"
     :disabled="disabled"
-    :placeholder="field.placeholder"
+    :placeholder="placeholder"
     mode="currency"
-    currency="USD"
-    locale="en-US"
-    :min="field.min"
-    :max="field.max"
+    :currency="(field.typeConfig as any)?.currency || 'USD'"
+    :locale="(field.typeConfig as any)?.locale || 'en-US'"
+    :min="field.validation?.min"
+    :max="field.validation?.max"
     :class="inputClass"
-    :inputClass="'w-full'"
+    inputClass="w-full"
     @update:modelValue="emit('update:value', $event)"
-    @blur="onBlur"
-  />
-  
-  <!-- Percent Input -->
-  <InputNumber
-    v-else-if="field.type === 'percent'"
-    :modelValue="(value as number) ?? null"
-    :disabled="disabled"
-    :placeholder="field.placeholder"
-    suffix="%"
-    :min="0"
-    :max="100"
-    :class="inputClass"
-    :inputClass="'w-full'"
-    @update:modelValue="emit('update:value', $event)"
-    @blur="onBlur"
+    @blur="emit('blur')"
   />
   
   <!-- Select -->
@@ -5043,11 +6206,11 @@ const inputClass = computed(() => ({
     :options="options"
     optionLabel="label"
     optionValue="value"
-    :placeholder="field.placeholder || 'Select...'"
-    :showClear="!field.required"
+    :placeholder="placeholder || 'Select...'"
+    :showClear="!field.validation?.required"
     :class="inputClass"
     @update:modelValue="emit('update:value', $event)"
-    @blur="onBlur"
+    @blur="emit('blur')"
   />
   
   <!-- MultiSelect -->
@@ -5058,11 +6221,11 @@ const inputClass = computed(() => ({
     :options="options"
     optionLabel="label"
     optionValue="value"
-    :placeholder="field.placeholder || 'Select...'"
+    :placeholder="placeholder || 'Select...'"
     :maxSelectedLabels="3"
     :class="inputClass"
     @update:modelValue="emit('update:value', $event)"
-    @blur="onBlur"
+    @blur="emit('blur')"
   />
   
   <!-- Date -->
@@ -5070,14 +6233,14 @@ const inputClass = computed(() => ({
     v-else-if="field.type === 'date'"
     :modelValue="value ? new Date(value as string) : null"
     :disabled="disabled"
-    :placeholder="field.placeholder || 'Select date'"
+    :placeholder="placeholder || 'Select date'"
     dateFormat="mm/dd/yy"
     :showIcon="true"
     :showButtonBar="true"
     :class="inputClass"
-    :inputClass="'w-full'"
-    @update:modelValue="emit('update:value', $event?.toISOString())"
-    @blur="onBlur"
+    inputClass="w-full"
+    @update:modelValue="emit('update:value', $event?.toISOString().split('T')[0])"
+    @blur="emit('blur')"
   />
   
   <!-- DateTime -->
@@ -5085,28 +6248,14 @@ const inputClass = computed(() => ({
     v-else-if="field.type === 'datetime'"
     :modelValue="value ? new Date(value as string) : null"
     :disabled="disabled"
-    :placeholder="field.placeholder"
+    :placeholder="placeholder"
     :showTime="true"
     :showIcon="true"
     :showButtonBar="true"
     :class="inputClass"
-    :inputClass="'w-full'"
+    inputClass="w-full"
     @update:modelValue="emit('update:value', $event?.toISOString())"
-    @blur="onBlur"
-  />
-  
-  <!-- Time -->
-  <DatePicker
-    v-else-if="field.type === 'time'"
-    :modelValue="value ? new Date(`1970-01-01T${value}`) : null"
-    :disabled="disabled"
-    :placeholder="field.placeholder"
-    :timeOnly="true"
-    :showIcon="true"
-    :class="inputClass"
-    :inputClass="'w-full'"
-    @update:modelValue="emit('update:value', $event?.toTimeString().slice(0, 5))"
-    @blur="onBlur"
+    @blur="emit('blur')"
   />
   
   <!-- Checkbox -->
@@ -5131,67 +6280,22 @@ const inputClass = computed(() => ({
     @update:modelValue="emit('update:value', $event)"
   />
   
-  <!-- Radio Group -->
-  <div v-else-if="field.type === 'radio'" class="flex flex-col gap-2">
-    <div
-      v-for="option in options"
-      :key="String(option.value)"
-      class="flex items-center gap-2"
-    >
-      <RadioButton
-        :modelValue="value"
-        :inputId="`${field.name}-${option.value}`"
-        :value="option.value"
-        :disabled="disabled || option.disabled"
-        @update:modelValue="emit('update:value', $event)"
-      />
-      <label :for="`${field.name}-${option.value}`" class="cursor-pointer">
-        {{ option.label }}
-      </label>
-    </div>
-  </div>
-  
-  <!-- Rating -->
-  <Rating
-    v-else-if="field.type === 'rating'"
-    :modelValue="(value as number) || 0"
+  <!-- Link (AutoComplete) -->
+  <AutoComplete
+    v-else-if="field.type === 'link'"
+    :modelValue="value"
     :disabled="disabled"
-    :cancel="false"
-    @update:modelValue="emit('update:value', $event)"
-  />
-  
-  <!-- Tags -->
-  <Chips
-    v-else-if="field.type === 'tags'"
-    :modelValue="(value as string[]) || []"
-    :disabled="disabled"
-    :placeholder="field.placeholder || 'Add tag...'"
+    :placeholder="placeholder"
+    :dropdown="true"
     :class="inputClass"
     @update:modelValue="emit('update:value', $event)"
-    @blur="onBlur"
+    @blur="emit('blur')"
   />
   
-  <!-- Color -->
-  <ColorPicker
-    v-else-if="field.type === 'color'"
-    :modelValue="(value as string) || '#000000'"
-    :disabled="disabled"
-    @update:modelValue="emit('update:value', $event)"
-  />
-  
-  <!-- HTML Editor -->
-  <Editor
-    v-else-if="field.type === 'html'"
-    :modelValue="(value as string) || ''"
-    :readonly="disabled"
-    editorStyle="height: 200px"
-    @update:modelValue="emit('update:value', $event)"
-  />
-  
-  <!-- Readonly/Display -->
+  <!-- Readonly -->
   <div
     v-else-if="field.type === 'readonly'"
-    class="p-3 bg-surface-100 rounded border border-surface-200"
+    class="p-3 bg-surface-100 dark:bg-surface-800 rounded border border-surface-200 dark:border-surface-700"
   >
     {{ value || '-' }}
   </div>
@@ -5201,23 +6305,24 @@ const inputClass = computed(() => ({
     v-else
     :modelValue="(value as string) || ''"
     :disabled="disabled"
-    :placeholder="field.placeholder"
+    :placeholder="placeholder"
     :class="inputClass"
     @update:modelValue="emit('update:value', $event)"
-    @blur="onBlur"
+    @blur="emit('blur')"
   />
 </template>
 ```
 
 ### DocumentPage Renderer
 
-The main page renderer that combines DataTableCrud and FormDrawer.
-
 ```vue
 <!-- src/components/renderers/DocumentPage.vue -->
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import Card from 'primevue/card'
+/**
+ * DocumentPage is the top-level renderer for document schemas.
+ * Combines DataTableCrud and FormDrawer for complete CRUD functionality.
+ */
+import { ref, computed } from 'vue'
 import DataTableCrud from '@/components/organisms/DataTableCrud.vue'
 import FormDrawer from '@/components/organisms/FormDrawer.vue'
 import { useSchema } from '@/composables/useSchema'
@@ -5226,6 +6331,7 @@ import { useDrawer } from '@/composables/useDrawer'
 import type { ActionSchema } from '@/types/schema'
 
 interface Props {
+  /** Document type to render */
   docType: string
 }
 
@@ -5244,10 +6350,9 @@ const {
   filters,
   apiConfig,
   defaultValues,
-  formActions,
 } = useSchema(props.docType)
 
-// CRUD operations
+// CRUD operations (reactive to apiConfig)
 const crud = computed(() => {
   if (!apiConfig.value) return null
   return useCrud({
@@ -5278,9 +6383,6 @@ const handleToolbarAction = (action: ActionSchema) => {
     case 'import':
       // Handle import
       break
-    default:
-      // Custom action
-      break
   }
 }
 
@@ -5299,21 +6401,20 @@ const handleRowAction = (action: ActionSchema, data: Record<string, unknown>) =>
       currentItem.value = { ...rest }
       drawer.openCreate(`Duplicate ${schema.value?.label || props.docType}`)
       break
-    default:
-      // Custom action
-      break
   }
 }
 
-// Handle bulk actions
-const handleBulkAction = (action: ActionSchema, data: { ids: string[] }) => {
-  switch (action.action) {
-    case 'delete':
-      crud.value?.bulkDelete(data.ids)
-      break
-    default:
-      // Custom bulk action
-      break
+// Handle action dispatch
+const handleAction = (action: ActionSchema, data?: Record<string, unknown>) => {
+  if (data && 'ids' in data) {
+    // Bulk action
+    if (action.action === 'delete') {
+      crud.value?.bulkDelete(data.ids as string[])
+    }
+  } else if (data) {
+    handleRowAction(action, data)
+  } else {
+    handleToolbarAction(action)
   }
 }
 
@@ -5336,17 +6437,6 @@ const handleSave = async (data: Record<string, unknown>) => {
 const handleRowClick = (data: Record<string, unknown>) => {
   currentItem.value = { ...data }
   drawer.openView(data, schema.value?.label || props.docType)
-}
-
-// Determine action type for routing
-const handleAction = (action: ActionSchema, data?: Record<string, unknown>) => {
-  if (data) {
-    handleRowAction(action, data)
-  } else if (data && 'ids' in (data as any)) {
-    handleBulkAction(action, data as { ids: string[] })
-  } else {
-    handleToolbarAction(action)
-  }
 }
 </script>
 
@@ -5409,312 +6499,11 @@ const handleAction = (action: ActionSchema, data?: Record<string, unknown>) => {
 
 ---
 
-## Extending PrimeVue
+# Part 6: Advanced Features
 
-### When to Extend vs. Wrap
+## JSON Schema Examples
 
-**Extend** when we need to:
-- Add new props/slots to existing component
-- Modify default behavior globally
-- Create a component variant
-
-**Wrap** when we need to:
-- Combine multiple components
-- Add business logic
-- Standardize patterns
-
-### Example: Extended DataTable
-
-When PrimeVue's DataTable doesn't have exactly what we need:
-
-```vue
-<!-- src/components/extended/AppDataTable.vue -->
-<script setup lang="ts">
-import { computed, useSlots, useAttrs } from 'vue'
-import DataTable from 'primevue/datatable'
-import Column from 'primevue/column'
-import Skeleton from 'primevue/skeleton'
-import EmptyState from '@/components/molecules/EmptyState.vue'
-
-interface Props {
-  // Extend PrimeVue DataTable props
-  value: Record<string, unknown>[]
-  loading?: boolean
-  
-  // Our custom additions
-  emptyTitle?: string
-  emptyDescription?: string
-  emptyIcon?: string
-  showCreateButton?: boolean
-  skeletonRows?: number
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  loading: false,
-  emptyTitle: 'No records found',
-  emptyDescription: 'Try adjusting your filters or create a new record',
-  emptyIcon: 'pi pi-inbox',
-  showCreateButton: true,
-  skeletonRows: 5,
-})
-
-const emit = defineEmits<{
-  create: []
-}>()
-
-// Forward all other attrs to DataTable
-const attrs = useAttrs()
-const slots = useSlots()
-
-// Computed
-const tableProps = computed(() => ({
-  ...attrs,
-  value: props.value,
-  loading: false, // We handle loading ourselves
-}))
-
-const isEmpty = computed(() => !props.loading && props.value.length === 0)
-</script>
-
-<template>
-  <!-- Loading State -->
-  <div v-if="loading" class="app-datatable__loading">
-    <Skeleton v-for="i in skeletonRows" :key="i" class="mb-2" height="3rem" />
-  </div>
-  
-  <!-- Empty State -->
-  <EmptyState
-    v-else-if="isEmpty"
-    :icon="emptyIcon"
-    :title="emptyTitle"
-    :description="emptyDescription"
-    :action-label="showCreateButton ? 'Create New' : undefined"
-    action-icon="pi pi-plus"
-    @action="emit('create')"
-  />
-  
-  <!-- Data Table -->
-  <DataTable v-else v-bind="tableProps">
-    <!-- Forward all slots -->
-    <template v-for="(_, slotName) in slots" #[slotName]="slotData">
-      <slot :name="slotName" v-bind="slotData" />
-    </template>
-  </DataTable>
-</template>
-```
-
-### Example: Custom Field Component
-
-When we need a field type PrimeVue doesn't have:
-
-```vue
-<!-- src/components/extended/LinkField.vue -->
-<script setup lang="ts">
-/**
- * A "Link" field that references another document type.
- * Like ERPNext's Link field - shows a searchable dropdown
- * that fetches from another doctype's API.
- */
-import { ref, computed, watch } from 'vue'
-import AutoComplete from 'primevue/autocomplete'
-import Button from 'primevue/button'
-import Dialog from 'primevue/dialog'
-import api from '@/services/api'
-import { useDebounceFn } from '@vueuse/core'
-
-interface Props {
-  modelValue: string | null
-  docType: string              // Target doctype to link to
-  displayField?: string        // Field to display (default: 'name')
-  searchFields?: string[]      // Fields to search
-  filters?: Record<string, unknown>  // Additional filters
-  disabled?: boolean
-  placeholder?: string
-  showQuickCreate?: boolean    // Show "+" button to create new
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  displayField: 'name',
-  searchFields: () => ['name'],
-  disabled: false,
-  showQuickCreate: false,
-})
-
-const emit = defineEmits<{
-  'update:modelValue': [value: string | null]
-  'select': [item: Record<string, unknown>]
-}>()
-
-// State
-const suggestions = ref<Record<string, unknown>[]>([])
-const isLoading = ref(false)
-const selectedItem = ref<Record<string, unknown> | null>(null)
-const showCreateDialog = ref(false)
-
-// Load initial value
-watch(() => props.modelValue, async (newValue) => {
-  if (newValue && !selectedItem.value) {
-    await loadItem(newValue)
-  }
-}, { immediate: true })
-
-// Methods
-const loadItem = async (id: string) => {
-  try {
-    const response = await api.get(`/api/v1/${props.docType}/${id}`)
-    selectedItem.value = response.data
-  } catch (error) {
-    console.error('Failed to load linked item:', error)
-  }
-}
-
-const search = useDebounceFn(async (query: string) => {
-  if (!query || query.length < 2) {
-    suggestions.value = []
-    return
-  }
-  
-  isLoading.value = true
-  try {
-    const params: Record<string, unknown> = {
-      search: query,
-      limit: 20,
-      ...props.filters,
-    }
-    
-    const response = await api.get(`/api/v1/${props.docType}`, { params })
-    suggestions.value = response.data.data || response.data
-  } catch (error) {
-    console.error('Failed to search:', error)
-    suggestions.value = []
-  } finally {
-    isLoading.value = false
-  }
-}, 300)
-
-const onSelect = (event: any) => {
-  const item = event.value
-  selectedItem.value = item
-  emit('update:modelValue', item.id)
-  emit('select', item)
-}
-
-const onClear = () => {
-  selectedItem.value = null
-  emit('update:modelValue', null)
-}
-
-const getDisplayValue = (item: Record<string, unknown>): string => {
-  return String(item[props.displayField] || item.id || '')
-}
-
-const openQuickCreate = () => {
-  showCreateDialog.value = true
-}
-</script>
-
-<template>
-  <div class="link-field">
-    <AutoComplete
-      :modelValue="selectedItem"
-      :suggestions="suggestions"
-      :field="displayField"
-      :disabled="disabled"
-      :placeholder="placeholder || `Search ${docType}...`"
-      :loading="isLoading"
-      :dropdown="true"
-      :forceSelection="true"
-      class="flex-1"
-      @complete="search($event.query)"
-      @item-select="onSelect"
-      @clear="onClear"
-    >
-      <template #option="{ option }">
-        <div class="flex items-center gap-2">
-          <span>{{ getDisplayValue(option) }}</span>
-          <span v-if="option.description" class="text-sm text-surface-500">
-            - {{ option.description }}
-          </span>
-        </div>
-      </template>
-    </AutoComplete>
-    
-    <Button
-      v-if="showQuickCreate && !disabled"
-      icon="pi pi-plus"
-      severity="secondary"
-      outlined
-      v-tooltip="'Create new'"
-      @click="openQuickCreate"
-    />
-    
-    <!-- Quick Create Dialog -->
-    <Dialog
-      v-model:visible="showCreateDialog"
-      :header="`Create ${docType}`"
-      modal
-      :style="{ width: '500px' }"
-    >
-      <slot name="create-form" :close="() => showCreateDialog = false" />
-    </Dialog>
-  </div>
-</template>
-
-<style scoped>
-.link-field {
-  display: flex;
-  gap: 0.5rem;
-  align-items: flex-start;
-}
-</style>
-```
-
-
-## JSON Schema Structure
-
-### Schema File Location Strategy
-
-```
-src/schemas/
-├── documents/           # Document type schemas
-│   ├── core/           # Core/system documents
-│   │   ├── user.json
-│   │   ├── role.json
-│   │   └── tenant.json
-│   ├── accounting/     # Accounting module
-│   │   ├── invoice.json
-│   │   ├── payment.json
-│   │   └── journal-entry.json
-│   ├── inventory/      # Inventory module
-│   │   ├── product.json
-│   │   ├── warehouse.json
-│   │   └── stock-transfer.json
-│   ├── sales/          # Sales module
-│   │   ├── customer.json
-│   │   ├── sales-order.json
-│   │   └── quotation.json
-│   └── hr/             # HR module
-│       ├── employee.json
-│       ├── leave-request.json
-│       └── payroll.json
-├── dashboards/
-│   ├── main.json
-│   ├── sales.json
-│   └── accounting.json
-├── reports/
-│   ├── sales-summary.json
-│   └── profit-loss.json
-└── meta/
-    ├── modules.json     # Module definitions
-    ├── field-types.json # Field type metadata
-    └── plans.json       # Subscription plans
-```
-
----
-
-## Complete Schema Examples
-
-### Customer Schema (Full Example)
+### Complete Customer Schema
 
 ```json
 {
@@ -5729,23 +6518,13 @@ src/schemas/
 
   "api": {
     "baseEndpoint": "/api/v1/customers",
-    "endpoints": {
-      "list": "/api/v1/customers",
-      "get": "/api/v1/customers/:id",
-      "create": "/api/v1/customers",
-      "update": "/api/v1/customers/:id",
-      "delete": "/api/v1/customers/:id",
-      "export": "/api/v1/customers/export",
-      "import": "/api/v1/customers/import"
-    },
-    "defaultParams": {
-      "include": "contacts,addresses"
-    },
-    "idField": "id",
     "pagination": {
-      "pageParam": "page",
-      "limitParam": "limit",
       "defaultLimit": 20
+    },
+    "responseFormat": {
+      "dataPath": "data",
+      "metaPath": "meta",
+      "totalField": "total"
     }
   },
 
@@ -5757,13 +6536,12 @@ src/schemas/
         "type": "text",
         "width": "120px",
         "sortable": true,
-        "filterable": true,
         "frozen": true,
         "linkTo": "customer"
       },
       {
         "field": "name",
-        "header": "Customer Name",
+        "header": "Name",
         "type": "text",
         "sortable": true,
         "filterable": true
@@ -5772,13 +6550,7 @@ src/schemas/
         "field": "type",
         "header": "Type",
         "type": "select",
-        "sortable": true,
-        "filterable": true,
-        "filterType": "select",
-        "filterOptions": [
-          { "value": "individual", "label": "Individual" },
-          { "value": "company", "label": "Company" }
-        ]
+        "sortable": true
       },
       {
         "field": "email",
@@ -5786,85 +6558,19 @@ src/schemas/
         "type": "email"
       },
       {
-        "field": "phone",
-        "header": "Phone",
-        "type": "phone"
-      },
-      {
-        "field": "creditLimit",
-        "header": "Credit Limit",
-        "type": "currency",
-        "align": "right",
-        "access": {
-          "requiredPlan": ["professional", "enterprise"],
-          "readRoles": ["admin", "accountant", "sales_manager"]
-        }
-      },
-      {
-        "field": "outstandingBalance",
-        "header": "Outstanding",
-        "type": "currency",
-        "align": "right"
-      },
-      {
         "field": "status",
         "header": "Status",
         "type": "select",
-        "sortable": true,
-        "filterable": true
-      },
-      {
-        "field": "createdAt",
-        "header": "Created",
-        "type": "date",
-        "sortable": true,
-        "format": "MMM dd, yyyy"
+        "sortable": true
       }
     ],
-
     "defaultSort": {
       "field": "name",
       "order": "asc"
     },
-
     "searchable": true,
-    "searchFields": ["code", "name", "email", "phone"],
-
-    "filters": [
-      {
-        "field": "status",
-        "label": "Status",
-        "type": "select",
-        "options": [
-          { "value": "active", "label": "Active" },
-          { "value": "inactive", "label": "Inactive" },
-          { "value": "blocked", "label": "Blocked" }
-        ]
-      },
-      {
-        "field": "type",
-        "label": "Type",
-        "type": "select",
-        "options": [
-          { "value": "individual", "label": "Individual" },
-          { "value": "company", "label": "Company" }
-        ]
-      },
-      {
-        "field": "customerGroup",
-        "label": "Group",
-        "type": "select",
-        "optionsSource": {
-          "type": "api",
-          "endpoint": "/api/v1/customer-groups",
-          "valueField": "id",
-          "labelField": "name"
-        }
-      }
-    ],
-
+    "searchFields": ["code", "name", "email"],
     "selectable": true,
-
     "toolbarActions": [
       {
         "name": "create",
@@ -5872,57 +6578,16 @@ src/schemas/
         "icon": "pi pi-plus",
         "type": "button",
         "variant": "primary",
-        "action": "create",
-        "access": {
-          "requiredPermissions": ["customer:create"]
-        }
-      },
-      {
-        "name": "export",
-        "label": "Export",
-        "icon": "pi pi-download",
-        "type": "button",
-        "variant": "secondary",
-        "action": "export",
-        "access": {
-          "requiredPermissions": ["customer:export"],
-          "requiredPlan": ["professional", "enterprise"]
-        }
-      },
-      {
-        "name": "import",
-        "label": "Import",
-        "icon": "pi pi-upload",
-        "type": "button",
-        "variant": "secondary",
-        "action": "import",
-        "access": {
-          "requiredPermissions": ["customer:import"],
-          "requiredPlan": ["enterprise"]
-        }
+        "action": "create"
       }
     ],
-
     "rowActions": [
       {
         "name": "edit",
         "label": "Edit",
         "icon": "pi pi-pencil",
         "type": "button",
-        "action": "edit",
-        "access": {
-          "requiredPermissions": ["customer:update"]
-        }
-      },
-      {
-        "name": "duplicate",
-        "label": "Duplicate",
-        "icon": "pi pi-copy",
-        "type": "button",
-        "action": "duplicate",
-        "access": {
-          "requiredPermissions": ["customer:create"]
-        }
+        "action": "edit"
       },
       {
         "name": "delete",
@@ -5933,45 +6598,8 @@ src/schemas/
         "action": "delete",
         "confirm": {
           "title": "Delete Customer",
-          "message": "Are you sure you want to delete this customer? This action cannot be undone.",
-          "acceptLabel": "Delete",
-          "rejectLabel": "Cancel",
+          "message": "Are you sure?",
           "severity": "danger"
-        },
-        "disableWhen": [
-          { "field": "outstandingBalance", "operator": "neq", "value": 0 }
-        ],
-        "access": {
-          "requiredPermissions": ["customer:delete"]
-        }
-      }
-    ],
-
-    "bulkActions": [
-      {
-        "name": "bulkDelete",
-        "label": "Delete Selected",
-        "icon": "pi pi-trash",
-        "type": "button",
-        "variant": "danger",
-        "action": "delete",
-        "confirm": {
-          "title": "Delete Customers",
-          "message": "Are you sure you want to delete the selected customers?",
-          "severity": "danger"
-        },
-        "access": {
-          "requiredPermissions": ["customer:delete"]
-        }
-      },
-      {
-        "name": "bulkExport",
-        "label": "Export Selected",
-        "icon": "pi pi-download",
-        "type": "button",
-        "action": "export",
-        "access": {
-          "requiredPermissions": ["customer:export"]
         }
       }
     ]
@@ -5988,309 +6616,122 @@ src/schemas/
         "name": "contact",
         "label": "Contact Details",
         "columns": 2
-      },
-      {
-        "name": "billing",
-        "label": "Billing & Credit",
-        "description": "Financial settings and credit limits",
-        "columns": 2,
-        "access": {
-          "readRoles": ["admin", "accountant", "sales_manager"]
-        }
-      },
-      {
-        "name": "addresses",
-        "label": "Addresses",
-        "collapsible": true,
-        "columns": 1
-      },
-      {
-        "name": "notes",
-        "label": "Notes & Attachments",
-        "collapsible": true,
-        "collapsed": true,
-        "columns": 1
       }
     ],
-
     "fields": [
       {
         "name": "code",
         "label": "Customer Code",
         "type": "text",
-        "section": "basic",
-        "width": "half",
-        "required": true,
-        "readonly": true,
-        "description": "Auto-generated unique identifier",
-        "order": 1
+        "layout": {
+          "section": "basic",
+          "width": "half",
+          "order": 1
+        },
+        "behavior": {
+          "readonly": true
+        },
+        "display": {
+          "description": "Auto-generated"
+        }
       },
       {
         "name": "type",
         "label": "Customer Type",
         "type": "select",
-        "section": "basic",
-        "width": "half",
-        "required": true,
-        "defaultValue": "individual",
-        "options": [
-          { "value": "individual", "label": "Individual", "icon": "pi pi-user" },
-          { "value": "company", "label": "Company", "icon": "pi pi-building" }
-        ],
-        "order": 2
+        "layout": {
+          "section": "basic",
+          "width": "half",
+          "order": 2
+        },
+        "validation": {
+          "required": true
+        },
+        "data": {
+          "defaultValue": "individual",
+          "options": [
+            { "value": "individual", "label": "Individual" },
+            { "value": "company", "label": "Company" }
+          ]
+        }
       },
       {
         "name": "name",
         "label": "Customer Name",
         "type": "text",
-        "section": "basic",
-        "width": "half",
-        "required": true,
-        "minLength": 2,
-        "maxLength": 100,
-        "placeholder": "Enter customer name",
-        "order": 3
+        "layout": {
+          "section": "basic",
+          "width": "half",
+          "order": 3
+        },
+        "validation": {
+          "required": true,
+          "minLength": 2,
+          "maxLength": 100
+        }
       },
       {
-        "name": "companyName",
+        "name": "company_name",
         "label": "Company Name",
         "type": "text",
-        "section": "basic",
-        "width": "half",
-        "depends_on": [
-          { "field": "type", "operator": "eq", "value": "company", "action": "show" }
-        ],
-        "required": false,
-        "order": 4
-      },
-      {
-        "name": "taxId",
-        "label": "Tax ID / VAT Number",
-        "type": "text",
-        "section": "basic",
-        "width": "half",
-        "depends_on": [
-          { "field": "type", "operator": "eq", "value": "company", "action": "show" }
-        ],
-        "pattern": "^[A-Z0-9]{8,15}$",
-        "order": 5
-      },
-      {
-        "name": "customerGroup",
-        "label": "Customer Group",
-        "type": "link",
-        "section": "basic",
-        "width": "half",
-        "linkTo": "customer-group",
-        "order": 6
-      },
-      {
-        "name": "status",
-        "label": "Status",
-        "type": "select",
-        "section": "basic",
-        "width": "half",
-        "required": true,
-        "defaultValue": "active",
-        "options": [
-          { "value": "active", "label": "Active", "color": "green" },
-          { "value": "inactive", "label": "Inactive", "color": "gray" },
-          { "value": "blocked", "label": "Blocked", "color": "red" }
-        ],
-        "order": 7
+        "layout": {
+          "section": "basic",
+          "width": "half",
+          "order": 4
+        },
+        "behavior": {
+          "dependsOn": [
+            {
+              "conditions": [
+                { "field": "type", "operator": "eq", "value": "company" }
+              ],
+              "action": "show"
+            }
+          ]
+        }
       },
       {
         "name": "email",
         "label": "Email",
         "type": "email",
-        "section": "contact",
-        "width": "half",
-        "required": true,
-        "order": 10
+        "layout": {
+          "section": "contact",
+          "width": "half",
+          "order": 1
+        },
+        "validation": {
+          "required": true
+        }
       },
       {
         "name": "phone",
         "label": "Phone",
         "type": "phone",
-        "section": "contact",
-        "width": "half",
-        "order": 11
+        "layout": {
+          "section": "contact",
+          "width": "half",
+          "order": 2
+        }
       },
       {
-        "name": "mobile",
-        "label": "Mobile",
-        "type": "phone",
-        "section": "contact",
-        "width": "half",
-        "order": 12
-      },
-      {
-        "name": "website",
-        "label": "Website",
-        "type": "url",
-        "section": "contact",
-        "width": "half",
-        "depends_on": [
-          { "field": "type", "operator": "eq", "value": "company", "action": "show" }
-        ],
-        "order": 13
-      },
-      {
-        "name": "currency",
-        "label": "Currency",
+        "name": "status",
+        "label": "Status",
         "type": "select",
-        "section": "billing",
-        "width": "half",
-        "defaultValue": "USD",
-        "options": [
-          { "value": "USD", "label": "US Dollar (USD)" },
-          { "value": "EUR", "label": "Euro (EUR)" },
-          { "value": "GBP", "label": "British Pound (GBP)" },
-          { "value": "KES", "label": "Kenyan Shilling (KES)" }
-        ],
-        "order": 20
-      },
-      {
-        "name": "paymentTerms",
-        "label": "Payment Terms",
-        "type": "link",
-        "section": "billing",
-        "width": "half",
-        "linkTo": "payment-terms",
-        "order": 21
-      },
-      {
-        "name": "creditLimit",
-        "label": "Credit Limit",
-        "type": "currency",
-        "section": "billing",
-        "width": "half",
-        "min": 0,
-        "defaultValue": 0,
-        "access": {
-          "requiredPlan": ["professional", "enterprise"],
-          "writeRoles": ["admin", "accountant"]
+        "layout": {
+          "section": "basic",
+          "width": "half",
+          "order": 5
         },
-        "order": 22
-      },
-      {
-        "name": "outstandingBalance",
-        "label": "Outstanding Balance",
-        "type": "currency",
-        "section": "billing",
-        "width": "half",
-        "readonly": true,
-        "order": 23
-      },
-      {
-        "name": "addresses",
-        "label": "Addresses",
-        "type": "table",
-        "section": "addresses",
-        "width": "full",
-        "tableSchema": [
-          {
-            "name": "type",
-            "label": "Type",
-            "type": "select",
-            "width": "quarter",
-            "required": true,
-            "options": [
-              { "value": "billing", "label": "Billing" },
-              { "value": "shipping", "label": "Shipping" },
-              { "value": "both", "label": "Both" }
-            ]
-          },
-          {
-            "name": "address1",
-            "label": "Address Line 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "name": "address2",
-            "label": "Address Line 2",
-            "type": "text"
-          },
-          {
-            "name": "city",
-            "label": "City",
-            "type": "text",
-            "required": true
-          },
-          {
-            "name": "state",
-            "label": "State/Province",
-            "type": "text"
-          },
-          {
-            "name": "postalCode",
-            "label": "Postal Code",
-            "type": "text"
-          },
-          {
-            "name": "country",
-            "label": "Country",
-            "type": "select",
-            "required": true,
-            "optionsSource": {
-              "type": "api",
-              "endpoint": "/api/v1/countries",
-              "valueField": "code",
-              "labelField": "name"
-            }
-          },
-          {
-            "name": "isDefault",
-            "label": "Default",
-            "type": "checkbox"
-          }
-        ],
-        "minRows": 0,
-        "maxRows": 10,
-        "order": 30
-      },
-      {
-        "name": "notes",
-        "label": "Internal Notes",
-        "type": "textarea",
-        "section": "notes",
-        "width": "full",
-        "maxLength": 2000,
-        "order": 40
-      },
-      {
-        "name": "tags",
-        "label": "Tags",
-        "type": "tags",
-        "section": "notes",
-        "width": "full",
-        "order": 41
-      }
-    ],
-
-    "layout": "vertical",
-    "validateOnBlur": true,
-    "validateOnChange": false,
-
-    "actions": [
-      {
-        "name": "save",
-        "label": "Save",
-        "icon": "pi pi-check",
-        "type": "button",
-        "variant": "primary",
-        "action": "api",
-        "method": "POST"
-      },
-      {
-        "name": "saveAndNew",
-        "label": "Save & New",
-        "icon": "pi pi-plus",
-        "type": "button",
-        "variant": "secondary",
-        "action": "custom",
-        "handler": "saveAndNew"
+        "validation": {
+          "required": true
+        },
+        "data": {
+          "defaultValue": "active",
+          "options": [
+            { "value": "active", "label": "Active", "color": "green" },
+            { "value": "inactive", "label": "Inactive", "color": "gray" }
+          ]
+        }
       }
     ]
   },
@@ -6298,3175 +6739,24 @@ src/schemas/
   "access": {
     "requiredModule": "sales",
     "permissions": {
-      "create": {
-        "roles": ["admin", "sales_manager", "sales_rep"],
-        "conditions": []
-      },
-      "read": {
-        "roles": ["admin", "sales_manager", "sales_rep", "accountant"],
-        "owner": true
-      },
-      "update": {
-        "roles": ["admin", "sales_manager"],
-        "owner": true,
-        "conditions": [
-          {
-            "attribute": "resource.status",
-            "operator": "neq",
-            "value": "blocked"
-          }
-        ]
-      },
-      "delete": {
-        "roles": ["admin"],
-        "conditions": [
-          {
-            "attribute": "resource.outstandingBalance",
-            "operator": "eq",
-            "value": 0
-          }
-        ]
-      },
-      "export": {
-        "roles": ["admin", "sales_manager"]
-      },
-      "import": {
-        "roles": ["admin"]
-      }
+      "create": { "roles": ["admin", "sales_manager"] },
+      "read": { "roles": ["admin", "sales_manager", "sales_rep"] },
+      "update": { "roles": ["admin", "sales_manager"] },
+      "delete": { "roles": ["admin"] }
     }
-  },
-
-  "workflow": {
-    "statusField": "status",
-    "states": [
-      { "name": "active", "label": "Active", "color": "green" },
-      { "name": "inactive", "label": "Inactive", "color": "gray" },
-      { "name": "blocked", "label": "Blocked", "color": "red" }
-    ],
-    "transitions": [
-      {
-        "from": ["active"],
-        "to": "inactive",
-        "label": "Deactivate",
-        "roles": ["admin", "sales_manager"]
-      },
-      {
-        "from": ["inactive"],
-        "to": "active",
-        "label": "Activate",
-        "roles": ["admin", "sales_manager"]
-      },
-      {
-        "from": ["active", "inactive"],
-        "to": "blocked",
-        "label": "Block",
-        "roles": ["admin"]
-      },
-      {
-        "from": ["blocked"],
-        "to": "active",
-        "label": "Unblock",
-        "roles": ["admin"]
-      }
-    ]
-  }
-}
-```
-
-### Invoice Schema (Transaction Document)
-
-```json
-{
-  "name": "invoice",
-  "label": "Invoice",
-  "labelPlural": "Invoices",
-  "icon": "pi pi-file",
-  "description": "Sales invoices",
-  "module": "accounting",
-  "version": "1.0.0",
-  "updatedAt": "2024-01-15T10:30:00Z",
-
-  "api": {
-    "baseEndpoint": "/api/v1/invoices",
-    "endpoints": {
-      "list": "/api/v1/invoices",
-      "get": "/api/v1/invoices/:id",
-      "create": "/api/v1/invoices",
-      "update": "/api/v1/invoices/:id",
-      "delete": "/api/v1/invoices/:id",
-      "submit": "/api/v1/invoices/:id/submit",
-      "cancel": "/api/v1/invoices/:id/cancel",
-      "pdf": "/api/v1/invoices/:id/pdf"
-    },
-    "defaultParams": {
-      "include": "customer,items,payments"
-    },
-    "pagination": {
-      "defaultLimit": 20
-    }
-  },
-
-  "listView": {
-    "columns": [
-      {
-        "field": "number",
-        "header": "Invoice #",
-        "type": "text",
-        "width": "140px",
-        "sortable": true,
-        "filterable": true,
-        "frozen": true,
-        "linkTo": "invoice"
-      },
-      {
-        "field": "customer.name",
-        "header": "Customer",
-        "type": "text",
-        "sortable": true,
-        "filterable": true
-      },
-      {
-        "field": "date",
-        "header": "Date",
-        "type": "date",
-        "width": "120px",
-        "sortable": true,
-        "filterable": true,
-        "filterType": "date"
-      },
-      {
-        "field": "dueDate",
-        "header": "Due Date",
-        "type": "date",
-        "width": "120px",
-        "sortable": true
-      },
-      {
-        "field": "total",
-        "header": "Total",
-        "type": "currency",
-        "width": "140px",
-        "align": "right",
-        "sortable": true
-      },
-      {
-        "field": "paidAmount",
-        "header": "Paid",
-        "type": "currency",
-        "width": "140px",
-        "align": "right"
-      },
-      {
-        "field": "balance",
-        "header": "Balance",
-        "type": "currency",
-        "width": "140px",
-        "align": "right"
-      },
-      {
-        "field": "status",
-        "header": "Status",
-        "type": "select",
-        "width": "120px",
-        "sortable": true,
-        "filterable": true
-      }
-    ],
-
-    "defaultSort": {
-      "field": "date",
-      "order": "desc"
-    },
-
-    "searchable": true,
-    "searchFields": ["number", "customer.name"],
-
-    "filters": [
-      {
-        "field": "status",
-        "label": "Status",
-        "type": "multiselect",
-        "options": [
-          { "value": "draft", "label": "Draft" },
-          { "value": "submitted", "label": "Submitted" },
-          { "value": "partial", "label": "Partially Paid" },
-          { "value": "paid", "label": "Paid" },
-          { "value": "overdue", "label": "Overdue" },
-          { "value": "cancelled", "label": "Cancelled" }
-        ]
-      },
-      {
-        "field": "dateRange",
-        "label": "Date Range",
-        "type": "daterange"
-      },
-      {
-        "field": "customerId",
-        "label": "Customer",
-        "type": "select",
-        "optionsSource": {
-          "type": "api",
-          "endpoint": "/api/v1/customers",
-          "valueField": "id",
-          "labelField": "name",
-          "params": { "status": "active" }
-        }
-      }
-    ],
-
-    "selectable": true,
-
-    "toolbarActions": [
-      {
-        "name": "create",
-        "label": "New Invoice",
-        "icon": "pi pi-plus",
-        "type": "button",
-        "variant": "primary",
-        "action": "create"
-      }
-    ],
-
-    "rowActions": [
-      {
-        "name": "view",
-        "label": "View",
-        "icon": "pi pi-eye",
-        "type": "button",
-        "action": "navigate",
-        "route": "/invoices/:id"
-      },
-      {
-        "name": "edit",
-        "label": "Edit",
-        "icon": "pi pi-pencil",
-        "type": "button",
-        "action": "edit",
-        "showWhen": [
-          { "field": "status", "operator": "eq", "value": "draft" }
-        ]
-      },
-      {
-        "name": "submit",
-        "label": "Submit",
-        "icon": "pi pi-send",
-        "type": "button",
-        "variant": "success",
-        "action": "workflow",
-        "endpoint": "/api/v1/invoices/:id/submit",
-        "method": "POST",
-        "showWhen": [
-          { "field": "status", "operator": "eq", "value": "draft" }
-        ],
-        "confirm": {
-          "title": "Submit Invoice",
-          "message": "Submit this invoice? You won't be able to edit it after submission.",
-          "severity": "info"
-        }
-      },
-      {
-        "name": "pdf",
-        "label": "Download PDF",
-        "icon": "pi pi-file-pdf",
-        "type": "button",
-        "action": "api",
-        "endpoint": "/api/v1/invoices/:id/pdf",
-        "method": "GET"
-      },
-      {
-        "name": "email",
-        "label": "Send Email",
-        "icon": "pi pi-envelope",
-        "type": "button",
-        "action": "custom",
-        "handler": "sendInvoiceEmail",
-        "showWhen": [
-          { "field": "status", "operator": "neq", "value": "draft" }
-        ]
-      },
-      {
-        "name": "payment",
-        "label": "Record Payment",
-        "icon": "pi pi-dollar",
-        "type": "button",
-        "variant": "success",
-        "action": "custom",
-        "handler": "openPaymentDialog",
-        "showWhen": [
-          { "field": "status", "operator": "in", "value": ["submitted", "partial", "overdue"] }
-        ]
-      },
-      {
-        "name": "cancel",
-        "label": "Cancel",
-        "icon": "pi pi-times",
-        "type": "button",
-        "variant": "danger",
-        "action": "workflow",
-        "endpoint": "/api/v1/invoices/:id/cancel",
-        "method": "POST",
-        "showWhen": [
-          { "field": "status", "operator": "in", "value": ["draft", "submitted"] }
-        ],
-        "confirm": {
-          "title": "Cancel Invoice",
-          "message": "Are you sure you want to cancel this invoice?",
-          "severity": "danger"
-        }
-      }
-    ]
-  },
-
-  "formView": {
-    "sections": [
-      {
-        "name": "header",
-        "label": "Invoice Details",
-        "columns": 3
-      },
-      {
-        "name": "items",
-        "label": "Line Items",
-        "columns": 1
-      },
-      {
-        "name": "totals",
-        "label": "Totals",
-        "columns": 2
-      },
-      {
-        "name": "notes",
-        "label": "Notes",
-        "collapsible": true,
-        "columns": 1
-      }
-    ],
-
-    "fields": [
-      {
-        "name": "number",
-        "label": "Invoice Number",
-        "type": "text",
-        "section": "header",
-        "width": "third",
-        "readonly": true,
-        "description": "Auto-generated",
-        "order": 1
-      },
-      {
-        "name": "customerId",
-        "label": "Customer",
-        "type": "link",
-        "section": "header",
-        "width": "third",
-        "required": true,
-        "linkTo": "customer",
-        "linkFilters": { "status": "active" },
-        "onChange": "onCustomerChange",
-        "order": 2
-      },
-      {
-        "name": "status",
-        "label": "Status",
-        "type": "readonly",
-        "section": "header",
-        "width": "third",
-        "order": 3
-      },
-      {
-        "name": "date",
-        "label": "Invoice Date",
-        "type": "date",
-        "section": "header",
-        "width": "third",
-        "required": true,
-        "defaultValue": "{{today}}",
-        "order": 4
-      },
-      {
-        "name": "dueDate",
-        "label": "Due Date",
-        "type": "date",
-        "section": "header",
-        "width": "third",
-        "required": true,
-        "order": 5
-      },
-      {
-        "name": "reference",
-        "label": "Reference / PO Number",
-        "type": "text",
-        "section": "header",
-        "width": "third",
-        "order": 6
-      },
-      {
-        "name": "items",
-        "label": "Line Items",
-        "type": "table",
-        "section": "items",
-        "width": "full",
-        "required": true,
-        "minRows": 1,
-        "tableSchema": [
-          {
-            "name": "productId",
-            "label": "Product/Service",
-            "type": "link",
-            "linkTo": "product",
-            "required": true,
-            "width": "quarter",
-            "onChange": "onProductSelect"
-          },
-          {
-            "name": "description",
-            "label": "Description",
-            "type": "text",
-            "width": "quarter"
-          },
-          {
-            "name": "quantity",
-            "label": "Qty",
-            "type": "number",
-            "required": true,
-            "min": 1,
-            "defaultValue": 1,
-            "onChange": "calculateLineTotal"
-          },
-          {
-            "name": "unitPrice",
-            "label": "Unit Price",
-            "type": "currency",
-            "required": true,
-            "min": 0,
-            "onChange": "calculateLineTotal"
-          },
-          {
-            "name": "discount",
-            "label": "Discount %",
-            "type": "percent",
-            "defaultValue": 0,
-            "min": 0,
-            "max": 100,
-            "onChange": "calculateLineTotal",
-            "access": {
-              "requiredPlan": ["professional", "enterprise"]
-            }
-          },
-          {
-            "name": "taxRate",
-            "label": "Tax %",
-            "type": "percent",
-            "defaultValue": 0,
-            "onChange": "calculateLineTotal"
-          },
-          {
-            "name": "total",
-            "label": "Total",
-            "type": "currency",
-            "readonly": true
-          }
-        ],
-        "order": 10
-      },
-      {
-        "name": "subtotal",
-        "label": "Subtotal",
-        "type": "currency",
-        "section": "totals",
-        "width": "half",
-        "readonly": true,
-        "order": 20
-      },
-      {
-        "name": "discountTotal",
-        "label": "Total Discount",
-        "type": "currency",
-        "section": "totals",
-        "width": "half",
-        "readonly": true,
-        "access": {
-          "requiredPlan": ["professional", "enterprise"]
-        },
-        "order": 21
-      },
-      {
-        "name": "taxTotal",
-        "label": "Total Tax",
-        "type": "currency",
-        "section": "totals",
-        "width": "half",
-        "readonly": true,
-        "order": 22
-      },
-      {
-        "name": "total",
-        "label": "Grand Total",
-        "type": "currency",
-        "section": "totals",
-        "width": "half",
-        "readonly": true,
-        "order": 23
-      },
-      {
-        "name": "notes",
-        "label": "Notes (appears on invoice)",
-        "type": "textarea",
-        "section": "notes",
-        "width": "full",
-        "maxLength": 1000,
-        "order": 30
-      },
-      {
-        "name": "internalNotes",
-        "label": "Internal Notes",
-        "type": "textarea",
-        "section": "notes",
-        "width": "full",
-        "maxLength": 1000,
-        "description": "Only visible to staff",
-        "order": 31
-      }
-    ]
-  },
-
-  "access": {
-    "requiredModule": "accounting",
-    "permissions": {
-      "create": {
-        "roles": ["admin", "accountant", "sales_manager", "sales_rep"]
-      },
-      "read": {
-        "roles": ["admin", "accountant", "sales_manager", "sales_rep"],
-        "owner": true
-      },
-      "update": {
-        "roles": ["admin", "accountant"],
-        "conditions": [
-          { "attribute": "resource.status", "operator": "eq", "value": "draft" }
-        ]
-      },
-      "delete": {
-        "roles": ["admin"],
-        "conditions": [
-          { "attribute": "resource.status", "operator": "eq", "value": "draft" }
-        ]
-      }
-    }
-  },
-
-  "workflow": {
-    "statusField": "status",
-    "states": [
-      { "name": "draft", "label": "Draft", "color": "gray" },
-      { "name": "submitted", "label": "Submitted", "color": "blue" },
-      { "name": "partial", "label": "Partially Paid", "color": "orange" },
-      { "name": "paid", "label": "Paid", "color": "green" },
-      { "name": "overdue", "label": "Overdue", "color": "red" },
-      { "name": "cancelled", "label": "Cancelled", "color": "gray" }
-    ],
-    "transitions": [
-      {
-        "from": ["draft"],
-        "to": "submitted",
-        "label": "Submit",
-        "roles": ["admin", "accountant", "sales_manager"],
-        "action": {
-          "name": "submit",
-          "endpoint": "/api/v1/invoices/:id/submit",
-          "method": "POST"
-        }
-      },
-      {
-        "from": ["submitted", "partial", "overdue"],
-        "to": "paid",
-        "label": "Mark as Paid",
-        "roles": ["admin", "accountant"]
-      },
-      {
-        "from": ["draft", "submitted"],
-        "to": "cancelled",
-        "label": "Cancel",
-        "roles": ["admin", "accountant"]
-      }
-    ]
-  }
-}
-```
-
-### Dashboard Schema
-
-```json
-{
-  "name": "main-dashboard",
-  "label": "Dashboard",
-
-  "layout": {
-    "type": "grid",
-    "columns": 12,
-    "gap": "1.5rem"
-  },
-
-  "widgets": [
-    {
-      "id": "revenue-stat",
-      "type": "stat",
-      "title": "Revenue (This Month)",
-      "position": { "row": 1, "col": 1, "width": 3, "height": 1 },
-      "dataSource": {
-        "type": "api",
-        "endpoint": "/api/v1/dashboard/stats/revenue",
-        "refreshInterval": 300
-      },
-      "config": {
-        "valueField": "total",
-        "format": "currency",
-        "icon": "pi pi-dollar",
-        "color": "green",
-        "trend": {
-          "field": "percentChange",
-          "compareLabel": "vs last month"
-        }
-      }
-    },
-    {
-      "id": "invoices-stat",
-      "type": "stat",
-      "title": "Outstanding Invoices",
-      "position": { "row": 1, "col": 4, "width": 3, "height": 1 },
-      "dataSource": {
-        "type": "api",
-        "endpoint": "/api/v1/dashboard/stats/outstanding-invoices"
-      },
-      "config": {
-        "valueField": "total",
-        "format": "currency",
-        "icon": "pi pi-file",
-        "color": "orange"
-      }
-    },
-    {
-      "id": "customers-stat",
-      "type": "stat",
-      "title": "Total Customers",
-      "position": { "row": 1, "col": 7, "width": 3, "height": 1 },
-      "dataSource": {
-        "type": "api",
-        "endpoint": "/api/v1/dashboard/stats/customers"
-      },
-      "config": {
-        "valueField": "count",
-        "format": "number",
-        "icon": "pi pi-users",
-        "color": "blue",
-        "trend": {
-          "field": "newThisMonth",
-          "compareLabel": "new this month"
-        }
-      }
-    },
-    {
-      "id": "overdue-stat",
-      "type": "stat",
-      "title": "Overdue Amount",
-      "position": { "row": 1, "col": 10, "width": 3, "height": 1 },
-      "dataSource": {
-        "type": "api",
-        "endpoint": "/api/v1/dashboard/stats/overdue"
-      },
-      "config": {
-        "valueField": "total",
-        "format": "currency",
-        "icon": "pi pi-exclamation-triangle",
-        "color": "red"
-      },
-      "access": {
-        "readRoles": ["admin", "accountant"]
-      }
-    },
-    {
-      "id": "revenue-chart",
-      "type": "chart",
-      "title": "Revenue Trend",
-      "position": { "row": 2, "col": 1, "width": 8, "height": 2 },
-      "dataSource": {
-        "type": "api",
-        "endpoint": "/api/v1/dashboard/charts/revenue-trend",
-        "params": { "period": "12months" }
-      },
-      "config": {
-        "chartType": "area",
-        "xField": "month",
-        "yField": "revenue",
-        "colors": ["#3B82F6"]
-      }
-    },
-    {
-      "id": "top-customers",
-      "type": "table",
-      "title": "Top Customers",
-      "position": { "row": 2, "col": 9, "width": 4, "height": 2 },
-      "dataSource": {
-        "type": "api",
-        "endpoint": "/api/v1/dashboard/top-customers",
-        "params": { "limit": 5 }
-      },
-      "config": {
-        "columns": [
-          { "field": "name", "header": "Customer" },
-          { "field": "revenue", "header": "Revenue", "type": "currency" }
-        ],
-        "linkTo": "/customers"
-      }
-    },
-    {
-      "id": "recent-invoices",
-      "type": "table",
-      "title": "Recent Invoices",
-      "position": { "row": 4, "col": 1, "width": 6, "height": 2 },
-      "dataSource": {
-        "type": "api",
-        "endpoint": "/api/v1/invoices",
-        "params": { "limit": 10, "sort": "-createdAt" }
-      },
-      "config": {
-        "columns": [
-          { "field": "number", "header": "#", "linkTo": "invoice" },
-          { "field": "customer.name", "header": "Customer" },
-          { "field": "total", "header": "Amount", "type": "currency" },
-          { "field": "status", "header": "Status", "type": "tag" }
-        ],
-        "linkTo": "/invoices"
-      }
-    },
-    {
-      "id": "payment-breakdown",
-      "type": "chart",
-      "title": "Payment Status",
-      "position": { "row": 4, "col": 7, "width": 6, "height": 2 },
-      "dataSource": {
-        "type": "api",
-        "endpoint": "/api/v1/dashboard/charts/payment-breakdown"
-      },
-      "config": {
-        "chartType": "doughnut",
-        "xField": "status",
-        "yField": "amount",
-        "colors": ["#22C55E", "#F59E0B", "#EF4444", "#6B7280"]
-      }
-    }
-  ],
-
-  "access": {
-    "requiredModule": "core"
   }
 }
 ```
 
 ---
 
-## Schema Builder UI
-
-For complex ERPs, we might want a visual schema builder. Here's a simplified implementation:
-
-### Schema Builder Store
-
-```typescript
-// src/stores/schemaBuilderStore.ts
-import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
-import type { DocumentSchema, FieldSchema, ColumnSchema, ActionSchema, FormSection } from '@/types/schema'
-import { v4 as uuid } from 'uuid'
-
-export const useSchemaBuilderStore = defineStore('schemaBuilder', () => {
-  // Current schema being edited
-  const schema = ref<Partial<DocumentSchema>>({
-    name: '',
-    label: '',
-    labelPlural: '',
-    module: '',
-    version: '1.0.0',
-    api: {
-      baseEndpoint: '',
-      pagination: { defaultLimit: 20 }
-    },
-    listView: {
-      columns: [],
-      toolbarActions: [],
-      rowActions: [],
-      bulkActions: [],
-      filters: [],
-      searchable: true,
-      selectable: false
-    },
-    formView: {
-      sections: [],
-      fields: []
-    },
-    access: {
-      permissions: {
-        create: { roles: [] },
-        read: { roles: [] },
-        update: { roles: [] },
-        delete: { roles: [] }
-      }
-    }
-  })
-
-  const isDirty = ref(false)
-  const selectedFieldIndex = ref<number | null>(null)
-  const selectedColumnIndex = ref<number | null>(null)
-
-  // ============================================
-  // FIELD OPERATIONS
-  // ============================================
-
-  const addField = (field: Partial<FieldSchema>) => {
-    const newField: FieldSchema = {
-      name: field.name || `field_${uuid().slice(0, 8)}`,
-      label: field.label || 'New Field',
-      type: field.type || 'text',
-      section: field.section || 'default',
-      order: schema.value.formView?.fields?.length || 0,
-      ...field
-    }
-    
-    if (!schema.value.formView) {
-      schema.value.formView = { sections: [], fields: [] }
-    }
-    schema.value.formView.fields?.push(newField)
-    isDirty.value = true
-    
-    return newField
-  }
-
-  const updateField = (index: number, updates: Partial<FieldSchema>) => {
-    if (schema.value.formView?.fields?.[index]) {
-      schema.value.formView.fields[index] = {
-        ...schema.value.formView.fields[index],
-        ...updates
-      }
-      isDirty.value = true
-    }
-  }
-
-  const removeField = (index: number) => {
-    schema.value.formView?.fields?.splice(index, 1)
-    isDirty.value = true
-  }
-
-  const reorderFields = (fromIndex: number, toIndex: number) => {
-    const fields = schema.value.formView?.fields
-    if (!fields) return
-    
-    const [removed] = fields.splice(fromIndex, 1)
-    fields.splice(toIndex, 0, removed)
-    
-    // Update order values
-    fields.forEach((field, index) => {
-      field.order = index
-    })
-    
-    isDirty.value = true
-  }
-
-  // ============================================
-  // SECTION OPERATIONS
-  // ============================================
-
-  const addSection = (section: Partial<FormSection>) => {
-    const newSection: FormSection = {
-      name: section.name || `section_${uuid().slice(0, 8)}`,
-      label: section.label || 'New Section',
-      columns: section.columns || 2,
-      ...section
-    }
-    
-    if (!schema.value.formView) {
-      schema.value.formView = { sections: [], fields: [] }
-    }
-    schema.value.formView.sections?.push(newSection)
-    isDirty.value = true
-    
-    return newSection
-  }
-
-  const updateSection = (index: number, updates: Partial<FormSection>) => {
-    if (schema.value.formView?.sections?.[index]) {
-      schema.value.formView.sections[index] = {
-        ...schema.value.formView.sections[index],
-        ...updates
-      }
-      isDirty.value = true
-    }
-  }
-
-  const removeSection = (index: number) => {
-    const sectionName = schema.value.formView?.sections?.[index]?.name
-    schema.value.formView?.sections?.splice(index, 1)
-    
-    // Move fields in this section to default
-    schema.value.formView?.fields?.forEach(field => {
-      if (field.section === sectionName) {
-        field.section = 'default'
-      }
-    })
-    
-    isDirty.value = true
-  }
-
-  // ============================================
-  // COLUMN OPERATIONS
-  // ============================================
-
-  const addColumn = (column: Partial<ColumnSchema>) => {
-    const newColumn: ColumnSchema = {
-      field: column.field || '',
-      header: column.header || 'New Column',
-      type: column.type || 'text',
-      sortable: column.sortable ?? true,
-      filterable: column.filterable ?? false,
-      ...column
-    }
-    
-    if (!schema.value.listView) {
-      schema.value.listView = { columns: [] }
-    }
-    schema.value.listView.columns?.push(newColumn)
-    isDirty.value = true
-    
-    return newColumn
-  }
-
-  const updateColumn = (index: number, updates: Partial<ColumnSchema>) => {
-    if (schema.value.listView?.columns?.[index]) {
-      schema.value.listView.columns[index] = {
-        ...schema.value.listView.columns[index],
-        ...updates
-      }
-      isDirty.value = true
-    }
-  }
-
-  const removeColumn = (index: number) => {
-    schema.value.listView?.columns?.splice(index, 1)
-    isDirty.value = true
-  }
-
-  // ============================================
-  // ACTION OPERATIONS
-  // ============================================
-
-  const addToolbarAction = (action: Partial<ActionSchema>) => {
-    const newAction: ActionSchema = {
-      name: action.name || `action_${uuid().slice(0, 8)}`,
-      label: action.label || 'New Action',
-      type: 'button',
-      action: action.action || 'custom',
-      ...action
-    }
-    
-    schema.value.listView?.toolbarActions?.push(newAction)
-    isDirty.value = true
-    
-    return newAction
-  }
-
-  const addRowAction = (action: Partial<ActionSchema>) => {
-    const newAction: ActionSchema = {
-      name: action.name || `action_${uuid().slice(0, 8)}`,
-      label: action.label || 'New Action',
-      type: 'button',
-      action: action.action || 'custom',
-      ...action
-    }
-    
-    schema.value.listView?.rowActions?.push(newAction)
-    isDirty.value = true
-    
-    return newAction
-  }
-
-  // ============================================
-  // SCHEMA OPERATIONS
-  // ============================================
-
-  const loadSchema = (newSchema: DocumentSchema) => {
-    schema.value = JSON.parse(JSON.stringify(newSchema))
-    isDirty.value = false
-  }
-
-  const newSchema = () => {
-    schema.value = {
-      name: '',
-      label: '',
-      labelPlural: '',
-      module: '',
-      version: '1.0.0',
-      api: {
-        baseEndpoint: '',
-        pagination: { defaultLimit: 20 }
-      },
-      listView: {
-        columns: [],
-        toolbarActions: [],
-        rowActions: [],
-        bulkActions: [],
-        filters: [],
-        searchable: true,
-        selectable: false
-      },
-      formView: {
-        sections: [{ name: 'default', label: 'General', columns: 2 }],
-        fields: []
-      },
-      access: {
-        permissions: {
-          create: { roles: ['admin'] },
-          read: { roles: ['admin'] },
-          update: { roles: ['admin'] },
-          delete: { roles: ['admin'] }
-        }
-      }
-    }
-    isDirty.value = false
-  }
-
-  const exportSchema = (): string => {
-    // Update timestamp
-    const exportSchema = {
-      ...schema.value,
-      updatedAt: new Date().toISOString()
-    }
-    return JSON.stringify(exportSchema, null, 2)
-  }
-
-  const importSchema = (json: string) => {
-    try {
-      const parsed = JSON.parse(json)
-      loadSchema(parsed)
-      return true
-    } catch (error) {
-      console.error('Failed to parse schema:', error)
-      return false
-    }
-  }
-
-  // ============================================
-  // AUTO-GENERATE COLUMNS FROM FIELDS
-  // ============================================
-
-  const generateColumnsFromFields = () => {
-    const columns: ColumnSchema[] = []
-    
-    schema.value.formView?.fields
-      ?.filter(f => !f.hidden && f.type !== 'table' && f.type !== 'textarea' && f.type !== 'html')
-      ?.slice(0, 8) // Limit to 8 columns
-      ?.forEach(field => {
-        columns.push({
-          field: field.name,
-          header: field.label,
-          type: field.type,
-          sortable: true,
-          filterable: ['select', 'date', 'text'].includes(field.type)
-        })
-      })
-    
-    if (schema.value.listView) {
-      schema.value.listView.columns = columns
-    }
-    
-    isDirty.value = true
-  }
-
-  return {
-    schema,
-    isDirty,
-    selectedFieldIndex,
-    selectedColumnIndex,
-    
-    // Field operations
-    addField,
-    updateField,
-    removeField,
-    reorderFields,
-    
-    // Section operations
-    addSection,
-    updateSection,
-    removeSection,
-    
-    // Column operations
-    addColumn,
-    updateColumn,
-    removeColumn,
-    
-    // Action operations
-    addToolbarAction,
-    addRowAction,
-    
-    // Schema operations
-    loadSchema,
-    newSchema,
-    exportSchema,
-    importSchema,
-    generateColumnsFromFields,
-  }
-})
-```
-
-### Schema Builder Component (Simplified)
-
-```vue
-<!-- src/views/admin/SchemaBuilder.vue -->
-<script setup lang="ts">
-import { ref, computed } from 'vue'
-import TabView from 'primevue/tabview'
-import TabPanel from 'primevue/tabpanel'
-import Button from 'primevue/button'
-import InputText from 'primevue/inputtext'
-import Select from 'primevue/select'
-import Textarea from 'primevue/textarea'
-import Panel from 'primevue/panel'
-import DataTable from 'primevue/datatable'
-import Column from 'primevue/column'
-import Dialog from 'primevue/dialog'
-import FormField from '@/components/molecules/FormField.vue'
-import { useSchemaBuilderStore } from '@/stores/schemaBuilderStore'
-import { useNotification } from '@/composables/useNotification'
-
-const store = useSchemaBuilderStore()
-const notify = useNotification()
-
-// Field type options
-const fieldTypes = [
-  { value: 'text', label: 'Text' },
-  { value: 'textarea', label: 'Text Area' },
-  { value: 'number', label: 'Number' },
-  { value: 'currency', label: 'Currency' },
-  { value: 'percent', label: 'Percent' },
-  { value: 'date', label: 'Date' },
-  { value: 'datetime', label: 'Date & Time' },
-  { value: 'select', label: 'Select' },
-  { value: 'multiselect', label: 'Multi-Select' },
-  { value: 'checkbox', label: 'Checkbox' },
-  { value: 'switch', label: 'Switch' },
-  { value: 'email', label: 'Email' },
-  { value: 'phone', label: 'Phone' },
-  { value: 'url', label: 'URL' },
-  { value: 'link', label: 'Link (Reference)' },
-  { value: 'table', label: 'Child Table' },
-  { value: 'tags', label: 'Tags' },
-  { value: 'rating', label: 'Rating' },
-  { value: 'color', label: 'Color' },
-  { value: 'html', label: 'Rich Text' },
-]
-
-const widthOptions = [
-  { value: 'full', label: 'Full Width' },
-  { value: 'half', label: 'Half' },
-  { value: 'third', label: 'One Third' },
-  { value: 'quarter', label: 'Quarter' },
-]
-
-const moduleOptions = [
-  { value: 'core', label: 'Core' },
-  { value: 'sales', label: 'Sales' },
-  { value: 'accounting', label: 'Accounting' },
-  { value: 'inventory', label: 'Inventory' },
-  { value: 'hr', label: 'Human Resources' },
-  { value: 'crm', label: 'CRM' },
-]
-
-// Dialogs
-const showFieldDialog = ref(false)
-const showColumnDialog = ref(false)
-const showExportDialog = ref(false)
-const editingFieldIndex = ref<number | null>(null)
-const editingField = ref<any>({})
-
-// Methods
-const openAddField = () => {
-  editingFieldIndex.value = null
-  editingField.value = {
-    name: '',
-    label: '',
-    type: 'text',
-    section: store.schema.formView?.sections?.[0]?.name || 'default',
-    width: 'half',
-    required: false,
-  }
-  showFieldDialog.value = true
-}
-
-const openEditField = (index: number) => {
-  editingFieldIndex.value = index
-  editingField.value = { ...store.schema.formView?.fields?.[index] }
-  showFieldDialog.value = true
-}
-
-const saveField = () => {
-  if (editingFieldIndex.value === null) {
-    store.addField(editingField.value)
-  } else {
-    store.updateField(editingFieldIndex.value, editingField.value)
-  }
-  showFieldDialog.value = false
-}
-
-const deleteField = (index: number) => {
-  store.removeField(index)
-}
-
-const exportSchema = () => {
-  showExportDialog.value = true
-}
-
-const downloadSchema = () => {
-  const json = store.exportSchema()
-  const blob = new Blob([json], { type: 'application/json' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `${store.schema.name || 'schema'}.json`
-  a.click()
-  URL.revokeObjectURL(url)
-  notify.success('Schema downloaded')
-}
-
-const copyToClipboard = async () => {
-  const json = store.exportSchema()
-  await navigator.clipboard.writeText(json)
-  notify.success('Copied to clipboard')
-}
-
-// Auto-generate API endpoint
-const updateApiEndpoint = () => {
-  if (store.schema.name && store.schema.api) {
-    store.schema.api.baseEndpoint = `/api/v1/${store.schema.name.toLowerCase().replace(/\s+/g, '-')}s`
-  }
-}
-</script>
-
-<template>
-  <div class="schema-builder">
-    <div class="schema-builder__header">
-      <h1 class="page-title">Schema Builder</h1>
-      <div class="flex gap-2">
-        <Button
-          label="New"
-          icon="pi pi-file"
-          severity="secondary"
-          @click="store.newSchema()"
-        />
-        <Button
-          label="Export"
-          icon="pi pi-download"
-          @click="exportSchema"
-        />
-      </div>
-    </div>
-
-    <TabView>
-      <!-- Basic Info -->
-      <TabPanel header="Basic Info">
-        <div class="grid grid-cols-2 gap-4">
-          <FormField label="Document Name" name="name" required>
-            <InputText
-              v-model="store.schema.name"
-              placeholder="e.g., customer"
-              @blur="updateApiEndpoint"
-            />
-          </FormField>
-
-          <FormField label="Label (Singular)" name="label" required>
-            <InputText
-              v-model="store.schema.label"
-              placeholder="e.g., Customer"
-            />
-          </FormField>
-
-          <FormField label="Label (Plural)" name="labelPlural" required>
-            <InputText
-              v-model="store.schema.labelPlural"
-              placeholder="e.g., Customers"
-            />
-          </FormField>
-
-          <FormField label="Module" name="module" required>
-            <Select
-              v-model="store.schema.module"
-              :options="moduleOptions"
-              optionValue="value"
-              optionLabel="label"
-              placeholder="Select module"
-            />
-          </FormField>
-
-          <FormField label="Icon" name="icon">
-            <InputText
-              v-model="store.schema.icon"
-              placeholder="e.g., pi pi-users"
-            />
-          </FormField>
-
-          <FormField label="API Endpoint" name="endpoint">
-            <InputText
-              v-model="store.schema.api!.baseEndpoint"
-              placeholder="/api/v1/documents"
-            />
-          </FormField>
-
-          <FormField label="Description" name="description" class="col-span-2">
-            <Textarea
-              v-model="store.schema.description"
-              rows="3"
-              class="w-full"
-            />
-          </FormField>
-        </div>
-      </TabPanel>
-
-      <!-- Fields -->
-      <TabPanel header="Form Fields">
-        <div class="mb-4">
-          <Button
-            label="Add Field"
-            icon="pi pi-plus"
-            @click="openAddField"
-          />
-        </div>
-
-        <DataTable
-          :value="store.schema.formView?.fields || []"
-          stripedRows
-          dataKey="name"
-        >
-          <Column field="name" header="Name" />
-          <Column field="label" header="Label" />
-          <Column field="type" header="Type" />
-          <Column field="section" header="Section" />
-          <Column field="required" header="Required">
-            <template #body="{ data }">
-              <i :class="data.required ? 'pi pi-check text-green-500' : 'pi pi-times text-gray-400'" />
-            </template>
-          </Column>
-          <Column header="Actions" style="width: 120px">
-            <template #body="{ data, index }">
-              <div class="flex gap-1">
-                <Button
-                  icon="pi pi-pencil"
-                  severity="secondary"
-                  text
-                  rounded
-                  size="small"
-                  @click="openEditField(index)"
-                />
-                <Button
-                  icon="pi pi-trash"
-                  severity="danger"
-                  text
-                  rounded
-                  size="small"
-                  @click="deleteField(index)"
-                />
-              </div>
-            </template>
-          </Column>
-        </DataTable>
-      </TabPanel>
-
-      <!-- List Columns -->
-      <TabPanel header="List Columns">
-        <div class="mb-4 flex gap-2">
-          <Button
-            label="Add Column"
-            icon="pi pi-plus"
-            @click="store.addColumn({})"
-          />
-          <Button
-            label="Generate from Fields"
-            icon="pi pi-refresh"
-            severity="secondary"
-            @click="store.generateColumnsFromFields()"
-          />
-        </div>
-
-        <DataTable
-          :value="store.schema.listView?.columns || []"
-          stripedRows
-        >
-          <Column field="field" header="Field" />
-          <Column field="header" header="Header" />
-          <Column field="type" header="Type" />
-          <Column field="sortable" header="Sortable">
-            <template #body="{ data }">
-              <i :class="data.sortable ? 'pi pi-check text-green-500' : 'pi pi-times text-gray-400'" />
-            </template>
-          </Column>
-          <Column field="filterable" header="Filterable">
-            <template #body="{ data }">
-              <i :class="data.filterable ? 'pi pi-check text-green-500' : 'pi pi-times text-gray-400'" />
-            </template>
-          </Column>
-          <Column header="Actions" style="width: 80px">
-            <template #body="{ index }">
-              <Button
-                icon="pi pi-trash"
-                severity="danger"
-                text
-                rounded
-                size="small"
-                @click="store.removeColumn(index)"
-              />
-            </template>
-          </Column>
-        </DataTable>
-      </TabPanel>
-
-      <!-- Permissions -->
-      <TabPanel header="Permissions">
-        <div class="grid grid-cols-2 gap-4">
-          <Panel header="Create">
-            <FormField label="Allowed Roles" name="createRoles">
-              <InputText
-                :modelValue="store.schema.access?.permissions?.create?.roles?.join(', ')"
-                placeholder="admin, manager"
-                @update:modelValue="v => store.schema.access!.permissions!.create = { roles: v.split(',').map(s => s.trim()) }"
-              />
-            </FormField>
-          </Panel>
-
-          <Panel header="Read">
-            <FormField label="Allowed Roles" name="readRoles">
-              <InputText
-                :modelValue="store.schema.access?.permissions?.read?.roles?.join(', ')"
-                placeholder="admin, manager, user"
-                @update:modelValue="v => store.schema.access!.permissions!.read = { roles: v.split(',').map(s => s.trim()) }"
-              />
-            </FormField>
-          </Panel>
-
-          <Panel header="Update">
-            <FormField label="Allowed Roles" name="updateRoles">
-              <InputText
-                :modelValue="store.schema.access?.permissions?.update?.roles?.join(', ')"
-                placeholder="admin, manager"
-                @update:modelValue="v => store.schema.access!.permissions!.update = { roles: v.split(',').map(s => s.trim()) }"
-              />
-            </FormField>
-          </Panel>
-
-          <Panel header="Delete">
-            <FormField label="Allowed Roles" name="deleteRoles">
-              <InputText
-                :modelValue="store.schema.access?.permissions?.delete?.roles?.join(', ')"
-                placeholder="admin"
-                @update:modelValue="v => store.schema.access!.permissions!.delete = { roles: v.split(',').map(s => s.trim()) }"
-              />
-            </FormField>
-          </Panel>
-        </div>
-      </TabPanel>
-
-      <!-- Preview JSON -->
-      <TabPanel header="JSON Preview">
-        <pre class="bg-surface-100 p-4 rounded-lg overflow-auto max-h-[600px] text-sm">{{ store.exportSchema() }}</pre>
-      </TabPanel>
-    </TabView>
-
-    <!-- Field Dialog -->
-    <Dialog
-      v-model:visible="showFieldDialog"
-      :header="editingFieldIndex === null ? 'Add Field' : 'Edit Field'"
-      modal
-      :style="{ width: '600px' }"
-    >
-      <div class="grid grid-cols-2 gap-4">
-        <FormField label="Field Name" name="fieldName" required>
-          <InputText
-            v-model="editingField.name"
-            placeholder="field_name"
-          />
-        </FormField>
-
-        <FormField label="Label" name="fieldLabel" required>
-          <InputText
-            v-model="editingField.label"
-            placeholder="Field Label"
-          />
-        </FormField>
-
-        <FormField label="Type" name="fieldType" required>
-          <Select
-            v-model="editingField.type"
-            :options="fieldTypes"
-            optionValue="value"
-            optionLabel="label"
-          />
-        </FormField>
-
-        <FormField label="Section" name="fieldSection">
-          <Select
-            v-model="editingField.section"
-            :options="store.schema.formView?.sections?.map(s => ({ value: s.name, label: s.label })) || []"
-            optionValue="value"
-            optionLabel="label"
-          />
-        </FormField>
-
-        <FormField label="Width" name="fieldWidth">
-          <Select
-            v-model="editingField.width"
-            :options="widthOptions"
-            optionValue="value"
-            optionLabel="label"
-          />
-        </FormField>
-
-        <FormField label="Placeholder" name="placeholder">
-          <InputText v-model="editingField.placeholder" />
-        </FormField>
-
-        <div class="col-span-2 flex gap-4">
-          <label class="flex items-center gap-2">
-            <input type="checkbox" v-model="editingField.required" />
-            Required
-          </label>
-          <label class="flex items-center gap-2">
-            <input type="checkbox" v-model="editingField.readonly" />
-            Read-only
-          </label>
-          <label class="flex items-center gap-2">
-            <input type="checkbox" v-model="editingField.hidden" />
-            Hidden
-          </label>
-        </div>
-
-        <FormField label="Description" name="description" class="col-span-2">
-          <Textarea
-            v-model="editingField.description"
-            rows="2"
-            class="w-full"
-          />
-        </FormField>
-      </div>
-
-      <template #footer>
-        <Button
-          label="Cancel"
-          severity="secondary"
-          @click="showFieldDialog = false"
-        />
-        <Button
-          label="Save"
-          @click="saveField"
-        />
-      </template>
-    </Dialog>
-
-    <!-- Export Dialog -->
-    <Dialog
-      v-model:visible="showExportDialog"
-      header="Export Schema"
-      modal
-      :style="{ width: '500px' }"
-    >
-      <p class="mb-4">Export your schema as JSON:</p>
-      <div class="flex gap-2">
-        <Button
-          label="Download JSON"
-          icon="pi pi-download"
-          @click="downloadSchema"
-        />
-        <Button
-          label="Copy to Clipboard"
-          icon="pi pi-copy"
-          severity="secondary"
-          @click="copyToClipboard"
-        />
-      </div>
-    </Dialog>
-  </div>
-</template>
-
-<style scoped>
-.schema-builder {
-  padding: 1.5rem;
-}
-
-.schema-builder__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-</style>
-```
-
----
-
-## Dynamic Route Generation
-
-Automatically generate routes from schemas:
-
-```typescript
-// src/router/schemaRoutes.ts
-import type { RouteRecordRaw } from 'vue-router'
-import type { DocumentSchema } from '@/types/schema'
-import { schemaService } from '@/services/schemaService'
-
-// Dynamic import for document page
-const DocumentPage = () => import('@/components/renderers/DocumentPage.vue')
-const DocumentDetail = () => import('@/views/documents/DocumentDetail.vue')
-
-export async function generateSchemaRoutes(): Promise<RouteRecordRaw[]> {
-  const schemas = await schemaService.getAllDocumentSchemas()
-  const routes: RouteRecordRaw[] = []
-
-  for (const schema of schemas) {
-    // Generate URL slug from name
-    const slug = schema.name.toLowerCase().replace(/_/g, '-')
-    
-    // List route
-    routes.push({
-      path: `/${slug}`,
-      name: `${schema.name}-list`,
-      component: DocumentPage,
-      props: { docType: schema.name },
-      meta: {
-        title: schema.labelPlural,
-        icon: schema.icon,
-        module: schema.module,
-        permissions: ['read'],
-      },
-    })
-
-    // Detail/Edit route
-    routes.push({
-      path: `/${slug}/:id`,
-      name: `${schema.name}-detail`,
-      component: DocumentDetail,
-      props: route => ({
-        docType: schema.name,
-        id: route.params.id,
-      }),
-      meta: {
-        title: schema.label,
-        module: schema.module,
-        permissions: ['read'],
-      },
-    })
-
-    // Create route (optional - can use drawer instead)
-    routes.push({
-      path: `/${slug}/new`,
-      name: `${schema.name}-create`,
-      component: DocumentDetail,
-      props: {
-        docType: schema.name,
-        mode: 'create',
-      },
-      meta: {
-        title: `New ${schema.label}`,
-        module: schema.module,
-        permissions: ['create'],
-      },
-    })
-  }
-
-  return routes
-}
-
-// Use in router/index.ts
-// src/router/index.ts
-import { createRouter, createWebHistory } from 'vue-router'
-import { generateSchemaRoutes } from './schemaRoutes'
-
-const staticRoutes = [
-  {
-    path: '/',
-    component: () => import('@/components/templates/MainLayout.vue'),
-    children: [
-      {
-        path: '',
-        name: 'dashboard',
-        component: () => import('@/views/Dashboard.vue'),
-      },
-      // Dynamic routes will be added here
-    ],
-  },
-  {
-    path: '/auth',
-    component: () => import('@/components/templates/AuthLayout.vue'),
-    children: [
-      { path: 'login', name: 'login', component: () => import('@/views/auth/Login.vue') },
-    ],
-  },
-]
-
-const router = createRouter({
-  history: createWebHistory(),
-  routes: staticRoutes,
-})
-
-// Add schema routes after app initialization
-export async function initializeRoutes() {
-  const schemaRoutes = await generateSchemaRoutes()
-  
-  // Add to main layout's children
-  schemaRoutes.forEach(route => {
-    router.addRoute('main-layout', route) // Assuming main layout has this name
-  })
-}
-
-export default router
-```
-
----
-
-## Multi-Tenant Theming
-
-### Theme Configuration Store
-
-```typescript
-// src/stores/themeStore.ts
-import { defineStore } from 'pinia'
-import { ref, computed, watch } from 'vue'
-import { updatePreset, updateSurfacePalette } from '@primevue/themes'
-
-interface TenantTheme {
-  primaryColor: string
-  primaryPalette: Record<string, string>
-  surfacePalette?: Record<string, string>
-  logo?: string
-  logoLight?: string
-  favicon?: string
-  fontFamily?: string
-}
-
-export const useThemeStore = defineStore('theme', () => {
-  const isDark = ref(false)
-  const tenantTheme = ref<TenantTheme | null>(null)
-
-  // Toggle dark mode
-  const toggleDarkMode = () => {
-    isDark.value = !isDark.value
-    
-    if (isDark.value) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-    
-    localStorage.setItem('darkMode', String(isDark.value))
-  }
-
-  // Initialize from localStorage
-  const initTheme = () => {
-    const stored = localStorage.getItem('darkMode')
-    if (stored === 'true') {
-      isDark.value = true
-      document.documentElement.classList.add('dark')
-    }
-  }
-
-  // Apply tenant theme
-  const applyTenantTheme = (theme: TenantTheme) => {
-    tenantTheme.value = theme
-
-    // Update PrimeVue preset with tenant colors
-    updatePreset({
-      semantic: {
-        primary: theme.primaryPalette,
-      },
-    })
-
-    // Update surface palette if provided
-    if (theme.surfacePalette) {
-      updateSurfacePalette(theme.surfacePalette)
-    }
-
-    // Apply custom font
-    if (theme.fontFamily) {
-      document.documentElement.style.setProperty('--font-family', theme.fontFamily)
-    }
-
-    // Update favicon
-    if (theme.favicon) {
-      const link = document.querySelector<HTMLLinkElement>("link[rel*='icon']")
-      if (link) {
-        link.href = theme.favicon
-      }
-    }
-  }
-
-  // Reset to default theme
-  const resetTheme = () => {
-    tenantTheme.value = null
-    // Re-apply default preset
-    // This would require storing the original preset
-  }
-
-  // CSS variables for custom styling
-  const cssVariables = computed(() => {
-    if (!tenantTheme.value) return {}
-    
-    return {
-      '--tenant-primary': tenantTheme.value.primaryColor,
-      '--tenant-logo': tenantTheme.value.logo ? `url(${tenantTheme.value.logo})` : 'none',
-    }
-  })
-
-  return {
-    isDark,
-    tenantTheme,
-    toggleDarkMode,
-    initTheme,
-    applyTenantTheme,
-    resetTheme,
-    cssVariables,
-  }
-})
-```
-
-### Tenant Theme Loader
-
-```typescript
-// src/services/themeService.ts
-import { useThemeStore } from '@/stores/themeStore'
-import api from './api'
-
-interface TenantBranding {
-  primaryColor: string
-  secondaryColor?: string
-  logo: string
-  logoLight: string
-  favicon: string
-  fontFamily?: string
-}
-
-// Color palette generator
-function generatePalette(baseColor: string): Record<string, string> {
-  // Simple palette generation - in production use a library like chroma.js
-  const adjustLightness = (color: string, amount: number): string => {
-    // This is simplified - use proper color manipulation
-    return color
-  }
-
-  return {
-    50: adjustLightness(baseColor, 95),
-    100: adjustLightness(baseColor, 90),
-    200: adjustLightness(baseColor, 80),
-    300: adjustLightness(baseColor, 70),
-    400: adjustLightness(baseColor, 60),
-    500: baseColor,
-    600: adjustLightness(baseColor, 40),
-    700: adjustLightness(baseColor, 30),
-    800: adjustLightness(baseColor, 20),
-    900: adjustLightness(baseColor, 10),
-    950: adjustLightness(baseColor, 5),
-  }
-}
-
-export async function loadTenantTheme(tenantId: string) {
-  const themeStore = useThemeStore()
-
-  try {
-    const response = await api.get<TenantBranding>(`/api/v1/tenants/${tenantId}/branding`)
-    const branding = response.data
-
-    themeStore.applyTenantTheme({
-      primaryColor: branding.primaryColor,
-      primaryPalette: generatePalette(branding.primaryColor),
-      logo: branding.logo,
-      logoLight: branding.logoLight,
-      favicon: branding.favicon,
-      fontFamily: branding.fontFamily,
-    })
-  } catch (error) {
-    console.error('Failed to load tenant theme:', error)
-    // Use default theme
-  }
-}
-```
-
----
-
-## Best Practices
-
-### 1. Schema Design Principles
-
-```
-DO:
-✓ Use consistent naming conventions (snake_case for fields)
-✓ Group related fields into sections
-✓ Define explicit field types
-✓ Set appropriate defaults
-✓ Include validation rules
-✓ Document fields with descriptions
-✓ Plan access control from the start
-
-DON'T:
-✗ Over-complicate with too many field types
-✗ Create deeply nested structures
-✗ Forget about mobile responsiveness
-✗ Skip validation
-✗ Hardcode values that should be configurable
-```
-
-### 2. Component Organization
-
-```typescript
-// Good: Schema-driven, reusable
-<DocumentPage docType="customer" />
-
-// Bad: Hardcoded, single-use
-<CustomerListPage />
-```
-
-### 3. Access Control Strategy
-
-```typescript
-// Always check at multiple levels:
-
-// 1. Route level (guards)
-router.beforeEach((to, from) => {
-  const { can } = useAccess()
-  if (to.meta.permissions && !can(to.meta.permissions, to.meta.resource)) {
-    return { name: 'forbidden' }
-  }
-})
-
-// 2. Component level
-<Button v-if="can('create', 'customer')" />
-
-// 3. Field level
-const visibleFields = filterFields(fields, docType, 'read')
-
-// 4. API level (backend)
-// Always validate on server - never trust client
-```
-
-### 4. Performance Optimization
-
-```typescript
-// Cache schemas
-const schemaCache = new Map<string, DocumentSchema>()
-
-// Lazy load schemas
-const schema = await schemaService.getDocumentSchema(docType)
-
-// Debounce search
-const debouncedSearch = useDebounceFn((query) => {
-  emit('search', query)
-}, 300)
-
-// Virtual scrolling for large lists
-<DataTable :virtualScrollerOptions="{ itemSize: 50 }" />
-```
-
-### 5. Error Handling
-
-```typescript
-// Global error handler
-app.config.errorHandler = (err, instance, info) => {
-  console.error('Global error:', err)
-  notify.error('An error occurred')
-}
-
-// API error interceptor
-api.interceptors.response.use(
-  response => response,
-  error => {
-    if (error.response?.status === 401) {
-      authStore.logout()
-      router.push('/auth/login')
-    }
-    return Promise.reject(error)
-  }
-)
-```
-
-### 6. Testing Schema-Driven Components
-
-```typescript
-// tests/components/DataTableCrud.spec.ts
-import { mount } from '@vue/test-utils'
-import DataTableCrud from '@/components/organisms/DataTableCrud.vue'
-
-const mockSchema = {
-  columns: [
-    { field: 'name', header: 'Name', type: 'text' },
-    { field: 'status', header: 'Status', type: 'select' },
-  ],
-}
-
-describe('DataTableCrud', () => {
-  it('renders columns from schema', () => {
-    const wrapper = mount(DataTableCrud, {
-      props: {
-        items: [{ id: 1, name: 'Test', status: 'active' }],
-        columns: mockSchema.columns,
-        docType: 'test',
-      },
-    })
-
-    expect(wrapper.findAll('th').length).toBeGreaterThan(0)
-  })
-
-  it('filters actions based on permissions', () => {
-    // Mock useAccess to return specific permissions
-    // Test that only allowed actions are rendered
-  })
-})
-```
-
-
-## Application Shell
-
-### App.vue
-
-```vue
-<!-- src/App.vue -->
-<script setup lang="ts">
-import { onMounted } from 'vue'
-import { RouterView } from 'vue-router'
-import Toast from 'primevue/toast'
-import ConfirmDialog from 'primevue/confirmdialog'
-import { useThemeStore } from '@/stores/themeStore'
-
-const themeStore = useThemeStore()
-
-onMounted(() => {
-  themeStore.initTheme()
-})
-</script>
-
-<template>
-  <Toast position="top-right" />
-  <ConfirmDialog />
-  <RouterView />
-</template>
-
-<style>
-/* Global styles that can't go in main.css */
-</style>
-```
-
----
-
-## Layout Components
-
-### MainLayout
-
-```vue
-<!-- src/components/templates/MainLayout.vue -->
-<script setup lang="ts">
-import { ref, computed, provide } from 'vue'
-import { RouterView } from 'vue-router'
-import AppSidebar from '@/components/organisms/AppSidebar.vue'
-import AppTopbar from '@/components/organisms/AppTopbar.vue'
-import { useUiStore } from '@/stores/uiStore'
-import { useAuthStore } from '@/stores/authStore'
-
-const uiStore = useUiStore()
-const authStore = useAuthStore()
-
-// Provide layout context to children
-provide('layout', {
-  isSidebarCollapsed: computed(() => uiStore.sidebarCollapsed),
-  toggleSidebar: () => uiStore.toggleSidebar(),
-})
-
-const mainContentStyle = computed(() => ({
-  marginLeft: uiStore.sidebarCollapsed 
-    ? 'var(--app-sidebar-collapsed-width)' 
-    : 'var(--app-sidebar-width)',
-  transition: 'margin-left 0.3s ease',
-}))
-</script>
-
-<template>
-  <div class="main-layout">
-    <!-- Sidebar -->
-    <AppSidebar 
-      :collapsed="uiStore.sidebarCollapsed"
-      @toggle="uiStore.toggleSidebar()"
-    />
-    
-    <!-- Main Content Area -->
-    <div class="main-layout__content" :style="mainContentStyle">
-      <!-- Topbar -->
-      <AppTopbar />
-      
-      <!-- Page Content -->
-      <main class="main-layout__main">
-        <RouterView v-slot="{ Component, route }">
-          <Transition name="fade" mode="out-in">
-            <component :is="Component" :key="route.path" />
-          </Transition>
-        </RouterView>
-      </main>
-    </div>
-  </div>
-</template>
-
-<style scoped>
-.main-layout {
-  min-height: 100vh;
-  background: var(--p-surface-50);
-}
-
-.dark .main-layout {
-  background: var(--p-surface-950);
-}
-
-.main-layout__content {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.main-layout__main {
-  flex: 1;
-  padding: 1.5rem;
-  margin-top: var(--app-topbar-height);
-  overflow-x: hidden;
-}
-
-/* Page transitions */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.15s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>
-```
-
-### AppTopbar
-
-```vue
-<!-- src/components/organisms/AppTopbar.vue -->
-<script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
-import Button from 'primevue/button'
-import InputText from 'primevue/inputtext'
-import IconField from 'primevue/iconfield'
-import InputIcon from 'primevue/inputicon'
-import Menu from 'primevue/menu'
-import Badge from 'primevue/badge'
-import Avatar from 'primevue/avatar'
-import OverlayBadge from 'primevue/overlaybadge'
-import { useAuthStore } from '@/stores/authStore'
-import { useThemeStore } from '@/stores/themeStore'
-import { useTenantStore } from '@/stores/tenantStore'
-import { useUiStore } from '@/stores/uiStore'
-
-const router = useRouter()
-const authStore = useAuthStore()
-const themeStore = useThemeStore()
-const tenantStore = useTenantStore()
-const uiStore = useUiStore()
-
-const userMenu = ref()
-const notificationMenu = ref()
-
-const user = computed(() => authStore.user)
-
-const userMenuItems = computed(() => [
-  {
-    label: 'Profile',
-    icon: 'pi pi-user',
-    command: () => router.push('/settings/profile'),
-  },
-  {
-    label: 'Settings',
-    icon: 'pi pi-cog',
-    command: () => router.push('/settings'),
-  },
-  {
-    separator: true,
-  },
-  {
-    label: 'Logout',
-    icon: 'pi pi-sign-out',
-    command: () => handleLogout(),
-  },
-])
-
-const handleLogout = async () => {
-  await authStore.logout()
-  router.push('/auth/login')
-}
-
-const toggleUserMenu = (event: Event) => {
-  userMenu.value?.toggle(event)
-}
-
-const toggleNotifications = (event: Event) => {
-  notificationMenu.value?.toggle(event)
-}
-
-const userInitials = computed(() => {
-  if (!user.value) return '?'
-  return `${user.value.firstName?.[0] || ''}${user.value.lastName?.[0] || ''}`.toUpperCase()
-})
-</script>
-
-<template>
-  <header class="app-topbar">
-    <div class="app-topbar__start">
-      <!-- Sidebar Toggle -->
-      <Button
-        icon="pi pi-bars"
-        severity="secondary"
-        text
-        rounded
-        @click="uiStore.toggleSidebar()"
-      />
-      
-      <!-- Breadcrumb or Search -->
-      <IconField class="app-topbar__search">
-        <InputIcon class="pi pi-search" />
-        <InputText 
-          placeholder="Search..." 
-          class="w-64"
-        />
-      </IconField>
-    </div>
-    
-    <div class="app-topbar__end">
-      <!-- Tenant/Company Name -->
-      <span class="text-sm text-surface-500 mr-4">
-        {{ tenantStore.tenant?.name }}
-      </span>
-      
-      <!-- Dark Mode Toggle -->
-      <Button
-        :icon="themeStore.isDark ? 'pi pi-sun' : 'pi pi-moon'"
-        severity="secondary"
-        text
-        rounded
-        @click="themeStore.toggleDarkMode()"
-        v-tooltip.bottom="themeStore.isDark ? 'Light Mode' : 'Dark Mode'"
-      />
-      
-      <!-- Notifications -->
-      <OverlayBadge value="3" severity="danger">
-        <Button
-          icon="pi pi-bell"
-          severity="secondary"
-          text
-          rounded
-          @click="toggleNotifications"
-        />
-      </OverlayBadge>
-      <Menu ref="notificationMenu" popup>
-        <template #start>
-          <div class="px-4 py-3 border-b border-surface-200">
-            <span class="font-semibold">Notifications</span>
-          </div>
-        </template>
-        <template #end>
-          <div class="px-4 py-2 border-t border-surface-200">
-            <Button label="View All" text size="small" class="w-full" />
-          </div>
-        </template>
-      </Menu>
-      
-      <!-- User Menu -->
-      <div class="app-topbar__user" @click="toggleUserMenu">
-        <Avatar
-          v-if="user?.avatar"
-          :image="user.avatar"
-          shape="circle"
-          size="normal"
-        />
-        <Avatar
-          v-else
-          :label="userInitials"
-          shape="circle"
-          size="normal"
-          class="bg-primary text-white"
-        />
-        <div class="app-topbar__user-info">
-          <span class="app-topbar__user-name">
-            {{ user?.firstName }} {{ user?.lastName }}
-          </span>
-          <span class="app-topbar__user-role">
-            {{ user?.roles?.[0] }}
-          </span>
-        </div>
-        <i class="pi pi-chevron-down text-xs" />
-      </div>
-      <Menu ref="userMenu" :model="userMenuItems" popup />
-    </div>
-  </header>
-</template>
-
-<style scoped>
-.app-topbar {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: var(--app-sidebar-width);
-  height: var(--app-topbar-height);
-  background: var(--p-surface-0);
-  border-bottom: 1px solid var(--p-surface-200);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 1.5rem;
-  z-index: 100;
-  transition: left 0.3s ease;
-}
-
-.dark .app-topbar {
-  background: var(--p-surface-900);
-  border-color: var(--p-surface-700);
-}
-
-/* When sidebar is collapsed */
-:global(.sidebar-collapsed) .app-topbar {
-  left: var(--app-sidebar-collapsed-width);
-}
-
-.app-topbar__start {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.app-topbar__end {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.app-topbar__user {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: background 0.2s;
-  margin-left: 0.5rem;
-}
-
-.app-topbar__user:hover {
-  background: var(--p-surface-100);
-}
-
-.dark .app-topbar__user:hover {
-  background: var(--p-surface-800);
-}
-
-.app-topbar__user-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.app-topbar__user-name {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--p-text-color);
-}
-
-.app-topbar__user-role {
-  font-size: 0.75rem;
-  color: var(--p-text-muted-color);
-  text-transform: capitalize;
-}
-
-@media (max-width: 768px) {
-  .app-topbar__search {
-    display: none;
-  }
-  
-  .app-topbar__user-info {
-    display: none;
-  }
-}
-</style>
-```
-
-### AppSidebar
-
-```vue
-<!-- src/components/organisms/AppSidebar.vue -->
-<script setup lang="ts">
-import { ref, computed, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import Button from 'primevue/button'
-import Ripple from 'primevue/ripple'
-import { useTenantStore } from '@/stores/tenantStore'
-import { useAccessStore } from '@/stores/accessStore'
-import type { Module } from '@/types/access'
-
-interface Props {
-  collapsed: boolean
-}
-
-const props = defineProps<Props>()
-const emit = defineEmits<{
-  toggle: []
-}>()
-
-const route = useRoute()
-const router = useRouter()
-const tenantStore = useTenantStore()
-const accessStore = useAccessStore()
-
-// Expanded modules
-const expandedModules = ref<Set<string>>(new Set())
-
-// Navigation structure based on modules
-const navigation = computed(() => {
-  const modules = tenantStore.enabledModules
-  
-  return modules.map(module => ({
-    id: module.id,
-    label: module.name,
-    icon: module.icon,
-    expanded: expandedModules.value.has(module.id),
-    items: getModuleItems(module),
-  }))
-})
-
-const getModuleItems = (module: Module) => {
-  // Get documents for this module that user has access to
-  return module.documents
-    .filter(docType => accessStore.can('list', docType))
-    .map(docType => {
-      const slug = docType.toLowerCase().replace(/_/g, '-')
-      return {
-        label: formatLabel(docType),
-        route: `/${slug}`,
-        icon: 'pi pi-circle',
-      }
-    })
-}
-
-const formatLabel = (name: string): string => {
-  return name
-    .replace(/_/g, ' ')
-    .replace(/-/g, ' ')
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ')
-}
-
-const isActive = (path: string): boolean => {
-  return route.path === path || route.path.startsWith(path + '/')
-}
-
-const isModuleActive = (moduleId: string): boolean => {
-  const module = navigation.value.find(m => m.id === moduleId)
-  if (!module) return false
-  return module.items.some(item => isActive(item.route))
-}
-
-const toggleModule = (moduleId: string) => {
-  if (expandedModules.value.has(moduleId)) {
-    expandedModules.value.delete(moduleId)
-  } else {
-    expandedModules.value.add(moduleId)
-  }
-}
-
-const navigateTo = (path: string) => {
-  router.push(path)
-}
-
-// Auto-expand active module
-watch(() => route.path, () => {
-  for (const module of navigation.value) {
-    if (isModuleActive(module.id)) {
-      expandedModules.value.add(module.id)
-    }
-  }
-}, { immediate: true })
-
-// Static items
-const staticItems = [
-  { label: 'Dashboard', icon: 'pi pi-home', route: '/' },
-]
-
-const bottomItems = [
-  { label: 'Settings', icon: 'pi pi-cog', route: '/settings' },
-  { label: 'Help', icon: 'pi pi-question-circle', route: '/help' },
-]
-</script>
-
-<template>
-  <aside :class="['app-sidebar', { 'app-sidebar--collapsed': collapsed }]">
-    <!-- Logo -->
-    <div class="app-sidebar__header">
-      <img
-        v-if="tenantStore.tenant?.logo"
-        :src="tenantStore.tenant.logo"
-        alt="Logo"
-        class="app-sidebar__logo"
-      />
-      <span v-if="!collapsed" class="app-sidebar__brand">
-        {{ tenantStore.tenant?.name || 'Dhool' }}
-      </span>
-    </div>
-    
-    <!-- Navigation -->
-    <nav class="app-sidebar__nav">
-      <!-- Static Items -->
-      <div class="app-sidebar__section">
-        <div
-          v-for="item in staticItems"
-          :key="item.route"
-          v-ripple
-          :class="['app-sidebar__item', { 'app-sidebar__item--active': isActive(item.route) }]"
-          @click="navigateTo(item.route)"
-        >
-          <i :class="[item.icon, 'app-sidebar__item-icon']" />
-          <span v-if="!collapsed" class="app-sidebar__item-label">
-            {{ item.label }}
-          </span>
-        </div>
-      </div>
-      
-      <!-- Module Navigation -->
-      <div class="app-sidebar__section">
-        <div
-          v-for="module in navigation"
-          :key="module.id"
-          class="app-sidebar__module"
-        >
-          <!-- Module Header -->
-          <div
-            v-ripple
-            :class="[
-              'app-sidebar__module-header',
-              { 'app-sidebar__module-header--active': isModuleActive(module.id) }
-            ]"
-            @click="collapsed ? null : toggleModule(module.id)"
-          >
-            <i :class="[module.icon, 'app-sidebar__item-icon']" />
-            <span v-if="!collapsed" class="app-sidebar__item-label flex-1">
-              {{ module.label }}
-            </span>
-            <i
-              v-if="!collapsed && module.items.length > 0"
-              :class="[
-                'pi',
-                module.expanded ? 'pi-chevron-down' : 'pi-chevron-right',
-                'text-xs transition-transform'
-              ]"
-            />
-          </div>
-          
-          <!-- Module Items -->
-          <Transition name="slide-down">
-            <div
-              v-if="!collapsed && module.expanded"
-              class="app-sidebar__module-items"
-            >
-              <div
-                v-for="item in module.items"
-                :key="item.route"
-                v-ripple
-                :class="['app-sidebar__subitem', { 'app-sidebar__subitem--active': isActive(item.route) }]"
-                @click="navigateTo(item.route)"
-              >
-                <span class="app-sidebar__subitem-label">
-                  {{ item.label }}
-                </span>
-              </div>
-            </div>
-          </Transition>
-        </div>
-      </div>
-      
-      <!-- Spacer -->
-      <div class="flex-1" />
-      
-      <!-- Bottom Items -->
-      <div class="app-sidebar__section app-sidebar__section--bottom">
-        <div
-          v-for="item in bottomItems"
-          :key="item.route"
-          v-ripple
-          :class="['app-sidebar__item', { 'app-sidebar__item--active': isActive(item.route) }]"
-          @click="navigateTo(item.route)"
-        >
-          <i :class="[item.icon, 'app-sidebar__item-icon']" />
-          <span v-if="!collapsed" class="app-sidebar__item-label">
-            {{ item.label }}
-          </span>
-        </div>
-      </div>
-    </nav>
-    
-    <!-- Collapse Toggle -->
-    <div class="app-sidebar__footer">
-      <Button
-        :icon="collapsed ? 'pi pi-angle-right' : 'pi pi-angle-left'"
-        severity="secondary"
-        text
-        rounded
-        @click="emit('toggle')"
-      />
-    </div>
-  </aside>
-</template>
-
-<style scoped>
-.app-sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: var(--app-sidebar-width);
-  background: var(--p-surface-0);
-  border-right: 1px solid var(--p-surface-200);
-  display: flex;
-  flex-direction: column;
-  z-index: 200;
-  transition: width 0.3s ease;
-}
-
-.dark .app-sidebar {
-  background: var(--p-surface-900);
-  border-color: var(--p-surface-700);
-}
-
-.app-sidebar--collapsed {
-  width: var(--app-sidebar-collapsed-width);
-}
-
-.app-sidebar__header {
-  height: var(--app-topbar-height);
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0 1rem;
-  border-bottom: 1px solid var(--p-surface-200);
-}
-
-.dark .app-sidebar__header {
-  border-color: var(--p-surface-700);
-}
-
-.app-sidebar__logo {
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
-}
-
-.app-sidebar__brand {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--p-text-color);
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.app-sidebar__nav {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 1rem 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.app-sidebar__section {
-  padding: 0 0.75rem;
-  margin-bottom: 1rem;
-}
-
-.app-sidebar__section--bottom {
-  margin-top: auto;
-  margin-bottom: 0;
-  border-top: 1px solid var(--p-surface-200);
-  padding-top: 1rem;
-}
-
-.dark .app-sidebar__section--bottom {
-  border-color: var(--p-surface-700);
-}
-
-.app-sidebar__item,
-.app-sidebar__module-header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  color: var(--p-text-color);
-  transition: background 0.2s, color 0.2s;
-}
-
-.app-sidebar__item:hover,
-.app-sidebar__module-header:hover {
-  background: var(--p-surface-100);
-}
-
-.dark .app-sidebar__item:hover,
-.dark .app-sidebar__module-header:hover {
-  background: var(--p-surface-800);
-}
-
-.app-sidebar__item--active,
-.app-sidebar__module-header--active {
-  background: var(--p-primary-50);
-  color: var(--p-primary-color);
-}
-
-.dark .app-sidebar__item--active,
-.dark .app-sidebar__module-header--active {
-  background: var(--p-primary-900);
-}
-
-.app-sidebar__item-icon {
-  font-size: 1.125rem;
-  width: 1.25rem;
-  text-align: center;
-  flex-shrink: 0;
-}
-
-.app-sidebar__item-label {
-  font-size: 0.875rem;
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.app-sidebar__module-items {
-  margin-top: 0.25rem;
-  margin-left: 2rem;
-  border-left: 1px solid var(--p-surface-200);
-}
-
-.dark .app-sidebar__module-items {
-  border-color: var(--p-surface-700);
-}
-
-.app-sidebar__subitem {
-  display: flex;
-  align-items: center;
-  padding: 0.5rem 0.75rem;
-  margin-left: -1px;
-  border-left: 2px solid transparent;
-  cursor: pointer;
-  color: var(--p-text-muted-color);
-  transition: all 0.2s;
-}
-
-.app-sidebar__subitem:hover {
-  color: var(--p-text-color);
-  background: var(--p-surface-50);
-}
-
-.dark .app-sidebar__subitem:hover {
-  background: var(--p-surface-800);
-}
-
-.app-sidebar__subitem--active {
-  color: var(--p-primary-color);
-  border-color: var(--p-primary-color);
-  background: var(--p-primary-50);
-}
-
-.dark .app-sidebar__subitem--active {
-  background: var(--p-primary-900);
-}
-
-.app-sidebar__subitem-label {
-  font-size: 0.8125rem;
-  white-space: nowrap;
-}
-
-.app-sidebar__footer {
-  display: flex;
-  justify-content: center;
-  padding: 0.75rem;
-  border-top: 1px solid var(--p-surface-200);
-}
-
-.dark .app-sidebar__footer {
-  border-color: var(--p-surface-700);
-}
-
-/* Collapsed state */
-.app-sidebar--collapsed .app-sidebar__header {
-  justify-content: center;
-}
-
-.app-sidebar--collapsed .app-sidebar__item,
-.app-sidebar--collapsed .app-sidebar__module-header {
-  justify-content: center;
-  padding: 0.75rem;
-}
-
-.app-sidebar--collapsed .app-sidebar__item-icon {
-  font-size: 1.25rem;
-}
-
-/* Transitions */
-.slide-down-enter-active,
-.slide-down-leave-active {
-  transition: all 0.2s ease;
-  overflow: hidden;
-}
-
-.slide-down-enter-from,
-.slide-down-leave-to {
-  opacity: 0;
-  max-height: 0;
-}
-
-.slide-down-enter-to,
-.slide-down-leave-from {
-  opacity: 1;
-  max-height: 500px;
-}
-</style>
-```
-
----
-
-## Stores
-
-### Auth Store
-
-```typescript
-// src/stores/authStore.ts
-import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
-import type { User } from '@/types/access'
-import api from '@/services/api'
-
-interface LoginCredentials {
-  email: string
-  password: string
-  remember?: boolean
-}
-
-interface AuthResponse {
-  user: User
-  accessToken: string
-  refreshToken: string
-}
-
-export const useAuthStore = defineStore('auth', () => {
-  // State
-  const user = ref<User | null>(null)
-  const accessToken = ref<string | null>(null)
-  const refreshToken = ref<string | null>(null)
-  const isLoading = ref(false)
-
-  // Computed
-  const isAuthenticated = computed(() => !!user.value && !!accessToken.value)
-  const userRoles = computed(() => user.value?.roles || [])
-  const userPermissions = computed(() => user.value?.permissions || [])
-
-  // Actions
-  const login = async (credentials: LoginCredentials): Promise<void> => {
-    isLoading.value = true
-    try {
-      const response = await api.post<AuthResponse>('/api/v1/auth/login', credentials)
-      const { user: userData, accessToken: access, refreshToken: refresh } = response.data
-
-      user.value = userData
-      accessToken.value = access
-      refreshToken.value = refresh
-
-      // Store tokens
-      localStorage.setItem('accessToken', access)
-      if (credentials.remember) {
-        localStorage.setItem('refreshToken', refresh)
-      } else {
-        sessionStorage.setItem('refreshToken', refresh)
-      }
-
-      // Set auth header
-      api.defaults.headers.common['Authorization'] = `Bearer ${access}`
-    } finally {
-      isLoading.value = false
-    }
-  }
-
-  const logout = async (): Promise<void> => {
-    try {
-      await api.post('/api/v1/auth/logout')
-    } catch {
-      // Ignore logout errors
-    }
-
-    // Clear state
-    user.value = null
-    accessToken.value = null
-    refreshToken.value = null
-
-    // Clear storage
-    localStorage.removeItem('accessToken')
-    localStorage.removeItem('refreshToken')
-    sessionStorage.removeItem('refreshToken')
-
-    // Clear auth header
-    delete api.defaults.headers.common['Authorization']
-  }
-
-  const refreshSession = async (): Promise<boolean> => {
-    const refresh = refreshToken.value || 
-      localStorage.getItem('refreshToken') || 
-      sessionStorage.getItem('refreshToken')
-
-    if (!refresh) return false
-
-    try {
-      const response = await api.post<AuthResponse>('/api/v1/auth/refresh', {
-        refreshToken: refresh,
-      })
-
-      accessToken.value = response.data.accessToken
-      refreshToken.value = response.data.refreshToken
-      user.value = response.data.user
-
-      localStorage.setItem('accessToken', response.data.accessToken)
-      api.defaults.headers.common['Authorization'] = `Bearer ${response.data.accessToken}`
-
-      return true
-    } catch {
-      await logout()
-      return false
-    }
-  }
-
-  const loadUser = async (): Promise<void> => {
-    const token = localStorage.getItem('accessToken')
-    if (!token) return
-
-    accessToken.value = token
-    api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-
-    try {
-      const response = await api.get<User>('/api/v1/auth/me')
-      user.value = response.data
-    } catch {
-      await logout()
-    }
-  }
-
-  const hasRole = (role: string): boolean => {
-    return userRoles.value.includes(role)
-  }
-
-  const hasAnyRole = (roles: string[]): boolean => {
-    return roles.some(role => userRoles.value.includes(role))
-  }
-
-  const hasPermission = (permission: string): boolean => {
-    return userPermissions.value.includes(permission)
-  }
-
-  return {
-    // State
-    user,
-    accessToken,
-    isLoading,
-
-    // Computed
-    isAuthenticated,
-    userRoles,
-    userPermissions,
-
-    // Actions
-    login,
-    logout,
-    refreshSession,
-    loadUser,
-    hasRole,
-    hasAnyRole,
-    hasPermission,
-  }
-})
-```
-
-### Tenant Store
-
-```typescript
-// src/stores/tenantStore.ts
-import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
-import type { Subscription, Module } from '@/types/access'
-import api from '@/services/api'
-
-interface Tenant {
-  id: string
-  name: string
-  slug: string
-  logo?: string
-  logoLight?: string
-  status: 'active' | 'suspended' | 'cancelled'
-}
-
-export const useTenantStore = defineStore('tenant', () => {
-  // State
-  const tenant = ref<Tenant | null>(null)
-  const subscription = ref<Subscription | null>(null)
-  const modules = ref<Module[]>([])
-  const isLoading = ref(false)
-
-  // Computed
-  const enabledModules = computed(() => {
-    if (!subscription.value) return []
-    return modules.value
-      .filter(m => subscription.value!.modules.includes(m.id))
-      .sort((a, b) => a.order - b.order)
-  })
-
-  const currentPlan = computed(() => subscription.value?.plan)
-
-  const hasModule = (moduleId: string): boolean => {
-    return subscription.value?.modules.includes(moduleId) ?? false
-  }
-
-  const hasFeature = (featureId: string): boolean => {
-    return subscription.value?.features.includes(featureId) ?? false
-  }
-
-  const isLimitReached = (limitKey: string): boolean => {
-    if (!subscription.value) return true
-    const limit = subscription.value.limits[limitKey]
-    const usage = subscription.value.usage[limitKey]
-    if (limit === null) return false // Unlimited
-    return (usage || 0) >= limit
-  }
-
-  // Actions
-  const loadTenant = async (): Promise<void> => {
-    isLoading.value = true
-    try {
-      const [tenantRes, subscriptionRes, modulesRes] = await Promise.all([
-        api.get<Tenant>('/api/v1/tenant'),
-        api.get<Subscription>('/api/v1/tenant/subscription'),
-        api.get<{ modules: Module[] }>('/api/v1/modules'),
-      ])
-
-      tenant.value = tenantRes.data
-      subscription.value = subscriptionRes.data
-      modules.value = modulesRes.data.modules
-    } finally {
-      isLoading.value = false
-    }
-  }
-
-  const refreshSubscription = async (): Promise<void> => {
-    const response = await api.get<Subscription>('/api/v1/tenant/subscription')
-    subscription.value = response.data
-  }
-
-  return {
-    // State
-    tenant,
-    subscription,
-    modules,
-    isLoading,
-
-    // Computed
-    enabledModules,
-    currentPlan,
-
-    // Methods
-    hasModule,
-    hasFeature,
-    isLimitReached,
-
-    // Actions
-    loadTenant,
-    refreshSubscription,
-  }
-})
-```
-
-### UI Store
-
-```typescript
-// src/stores/uiStore.ts
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
-
-export const useUiStore = defineStore('ui', () => {
-  // Sidebar
-  const sidebarCollapsed = ref(false)
-  
-  const toggleSidebar = () => {
-    sidebarCollapsed.value = !sidebarCollapsed.value
-    localStorage.setItem('sidebarCollapsed', String(sidebarCollapsed.value))
-  }
-
-  const initSidebar = () => {
-    const stored = localStorage.getItem('sidebarCollapsed')
-    if (stored === 'true') {
-      sidebarCollapsed.value = true
-    }
-  }
-
-  // Loading overlay
-  const isGlobalLoading = ref(false)
-  const loadingMessage = ref('')
-
-  const showLoading = (message = 'Loading...') => {
-    loadingMessage.value = message
-    isGlobalLoading.value = true
-  }
-
-  const hideLoading = () => {
-    isGlobalLoading.value = false
-    loadingMessage.value = ''
-  }
-
-  // Page title
-  const pageTitle = ref('')
-  
-  const setPageTitle = (title: string) => {
-    pageTitle.value = title
-    document.title = title ? `${title} | Dhool` : 'Dhool'
-  }
-
-  return {
-    // Sidebar
-    sidebarCollapsed,
-    toggleSidebar,
-    initSidebar,
-
-    // Loading
-    isGlobalLoading,
-    loadingMessage,
-    showLoading,
-    hideLoading,
-
-    // Page
-    pageTitle,
-    setPageTitle,
-  }
-})
-```
-
----
+# Part 7: Application Shell
 
 ## API Service
 
 ```typescript
 // src/services/api.ts
-import axios, { type AxiosInstance, type InternalAxiosRequestConfig, type AxiosResponse } from 'axios'
+import axios, { type AxiosInstance, type InternalAxiosRequestConfig } from 'axios'
 
 const api: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL || '',
@@ -9484,64 +6774,31 @@ api.interceptors.request.use(
     if (tenantId) {
       config.headers['X-Tenant-ID'] = tenantId
     }
-
     return config
   },
-  (error) => {
-    return Promise.reject(error)
-  }
+  (error) => Promise.reject(error)
 )
 
 // Response interceptor
 api.interceptors.response.use(
-  (response: AxiosResponse) => {
-    return response
-  },
+  (response) => response,
   async (error) => {
     const originalRequest = error.config
 
     // Handle 401 - try to refresh token
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true
-
       try {
-        // Import dynamically to avoid circular dependency
         const { useAuthStore } = await import('@/stores/authStore')
         const authStore = useAuthStore()
-        
         const success = await authStore.refreshSession()
         if (success) {
           originalRequest.headers['Authorization'] = `Bearer ${authStore.accessToken}`
           return api(originalRequest)
         }
       } catch {
-        // Refresh failed, redirect to login
         window.location.href = '/auth/login'
       }
-    }
-
-    // Handle 403 - forbidden
-    if (error.response?.status === 403) {
-      console.error('Access forbidden:', error.response.data)
-    }
-
-    // Handle 404 - not found
-    if (error.response?.status === 404) {
-      console.error('Resource not found:', error.config.url)
-    }
-
-    // Handle 422 - validation error
-    if (error.response?.status === 422) {
-      // Return validation errors for form handling
-      return Promise.reject({
-        ...error,
-        validationErrors: error.response.data.errors,
-      })
-    }
-
-    // Handle 500+ - server error
-    if (error.response?.status >= 500) {
-      console.error('Server error:', error.response.data)
     }
 
     return Promise.reject(error)
@@ -9553,454 +6810,55 @@ export default api
 
 ---
 
-## Router Guards
+# Part 8: Best Practices
 
-```typescript
-// src/router/guards.ts
-import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
-import { useAuthStore } from '@/stores/authStore'
-import { useAccessStore } from '@/stores/accessStore'
-import { useTenantStore } from '@/stores/tenantStore'
+## Schema Design Best Practices
 
-export async function authGuard(
-  to: RouteLocationNormalized,
-  from: RouteLocationNormalized,
-  next: NavigationGuardNext
-) {
-  const authStore = useAuthStore()
+1. **Use snake_case for field names** - Matches Go conventions
+2. **Group related properties** - Use layout.section for organization
+3. **Define explicit types** - Avoid 'custom' type unless necessary
+4. **Set appropriate defaults** - Reduce user input burden
+5. **Include descriptions** - Help Schema Builder users
+6. **Plan access control** - Define permissions early
+7. **Keep conditions simple** - Complex logic belongs on backend
 
-  // Public routes
-  if (to.meta.public) {
-    return next()
-  }
+## Component Organization Best Practices
 
-  // Check authentication
-  if (!authStore.isAuthenticated) {
-    // Try to restore session
-    await authStore.loadUser()
-    
-    if (!authStore.isAuthenticated) {
-      return next({
-        name: 'login',
-        query: { redirect: to.fullPath },
-      })
-    }
-  }
+1. **Don't wrap PrimeVue atoms** - Use directly with PT API
+2. **Create molecules for patterns** - FormField, StatCard, etc.
+3. **Create organisms for features** - DataTableCrud, FormBuilder
+4. **Use renderers for schema** - DocumentPage, FieldRenderer
+5. **Leverage slots** - Let parent customize
 
-  next()
-}
+## Performance Optimization
 
-export async function accessGuard(
-  to: RouteLocationNormalized,
-  from: RouteLocationNormalized,
-  next: NavigationGuardNext
-) {
-  const accessStore = useAccessStore()
-  const tenantStore = useTenantStore()
-
-  // Initialize stores if needed
-  if (!accessStore.isInitialized) {
-    await accessStore.initialize()
-  }
-
-  if (!tenantStore.tenant) {
-    await tenantStore.loadTenant()
-  }
-
-  // Check module access
-  if (to.meta.module) {
-    if (!tenantStore.hasModule(to.meta.module as string)) {
-      return next({ name: 'module-not-available' })
-    }
-  }
-
-  // Check permissions
-  if (to.meta.permissions) {
-    const permissions = to.meta.permissions as string[]
-    const resource = (to.meta.resource as string) || to.params.docType as string
-
-    const hasAccess = permissions.some(perm => 
-      accessStore.can(perm, resource)
-    )
-
-    if (!hasAccess) {
-      return next({ name: 'forbidden' })
-    }
-  }
-
-  next()
-}
-
-export function titleGuard(
-  to: RouteLocationNormalized,
-  from: RouteLocationNormalized,
-  next: NavigationGuardNext
-) {
-  const title = to.meta.title as string
-  if (title) {
-    document.title = `${title} | Dhool`
-  } else {
-    document.title = 'Dhool'
-  }
-  next()
-}
-```
-
-### Router Index
-
-```typescript
-// src/router/index.ts
-import { createRouter, createWebHistory } from 'vue-router'
-import { authGuard, accessGuard, titleGuard } from './guards'
-
-const routes = [
-  // Auth routes
-  {
-    path: '/auth',
-    component: () => import('@/components/templates/AuthLayout.vue'),
-    meta: { public: true },
-    children: [
-      {
-        path: 'login',
-        name: 'login',
-        component: () => import('@/views/auth/Login.vue'),
-        meta: { title: 'Login' },
-      },
-      {
-        path: 'forgot-password',
-        name: 'forgot-password',
-        component: () => import('@/views/auth/ForgotPassword.vue'),
-        meta: { title: 'Forgot Password' },
-      },
-    ],
-  },
-
-  // Main app routes
-  {
-    path: '/',
-    name: 'main-layout',
-    component: () => import('@/components/templates/MainLayout.vue'),
-    children: [
-      {
-        path: '',
-        name: 'dashboard',
-        component: () => import('@/views/Dashboard.vue'),
-        meta: { title: 'Dashboard' },
-      },
-
-      // Settings
-      {
-        path: 'settings',
-        name: 'settings',
-        component: () => import('@/views/settings/Settings.vue'),
-        meta: { title: 'Settings' },
-        children: [
-          {
-            path: 'profile',
-            name: 'settings-profile',
-            component: () => import('@/views/settings/Profile.vue'),
-            meta: { title: 'Profile Settings' },
-          },
-          {
-            path: 'company',
-            name: 'settings-company',
-            component: () => import('@/views/settings/Company.vue'),
-            meta: { title: 'Company Settings' },
-          },
-        ],
-      },
-
-      // Admin routes
-      {
-        path: 'admin',
-        name: 'admin',
-        meta: { permissions: ['admin'] },
-        children: [
-          {
-            path: 'schema-builder',
-            name: 'schema-builder',
-            component: () => import('@/views/admin/SchemaBuilder.vue'),
-            meta: { title: 'Schema Builder' },
-          },
-          {
-            path: 'users',
-            name: 'admin-users',
-            component: () => import('@/views/admin/Users.vue'),
-            meta: { title: 'User Management' },
-          },
-          {
-            path: 'roles',
-            name: 'admin-roles',
-            component: () => import('@/views/admin/Roles.vue'),
-            meta: { title: 'Role Management' },
-          },
-        ],
-      },
-
-      // Dynamic document routes will be added here
-    ],
-  },
-
-  // Error pages
-  {
-    path: '/forbidden',
-    name: 'forbidden',
-    component: () => import('@/views/errors/Forbidden.vue'),
-    meta: { public: true, title: 'Access Denied' },
-  },
-  {
-    path: '/module-not-available',
-    name: 'module-not-available',
-    component: () => import('@/views/errors/ModuleNotAvailable.vue'),
-    meta: { public: true, title: 'Module Not Available' },
-  },
-  {
-    path: '/:pathMatch(.*)*',
-    name: 'not-found',
-    component: () => import('@/views/errors/NotFound.vue'),
-    meta: { public: true, title: 'Page Not Found' },
-  },
-]
-
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-  scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) {
-      return savedPosition
-    }
-    return { top: 0 }
-  },
-})
-
-// Apply guards
-router.beforeEach(authGuard)
-router.beforeEach(accessGuard)
-router.beforeEach(titleGuard)
-
-export default router
-```
-
----
-
-## App Initialization
-
-```typescript
-// src/init.ts
-import { useAuthStore } from '@/stores/authStore'
-import { useTenantStore } from '@/stores/tenantStore'
-import { useAccessStore } from '@/stores/accessStore'
-import { useThemeStore } from '@/stores/themeStore'
-import { useUiStore } from '@/stores/uiStore'
-import { loadTenantTheme } from '@/services/themeService'
-import { generateSchemaRoutes } from '@/router/schemaRoutes'
-import router from '@/router'
-
-export async function initializeApp(): Promise<boolean> {
-  const authStore = useAuthStore()
-  const tenantStore = useTenantStore()
-  const accessStore = useAccessStore()
-  const themeStore = useThemeStore()
-  const uiStore = useUiStore()
-
-  // Initialize theme from localStorage
-  themeStore.initTheme()
-  uiStore.initSidebar()
-
-  // Check if user is logged in
-  const token = localStorage.getItem('accessToken')
-  if (!token) {
-    return false
-  }
-
-  try {
-    // Load user
-    await authStore.loadUser()
-    
-    if (!authStore.isAuthenticated) {
-      return false
-    }
-
-    // Load tenant & subscription
-    await tenantStore.loadTenant()
-
-    // Apply tenant theme
-    if (tenantStore.tenant) {
-      await loadTenantTheme(tenantStore.tenant.id)
-    }
-
-    // Load access policies
-    await accessStore.initialize()
-
-    // Generate dynamic routes from schemas
-    const schemaRoutes = await generateSchemaRoutes()
-    schemaRoutes.forEach(route => {
-      router.addRoute('main-layout', route)
-    })
-
-    return true
-  } catch (error) {
-    console.error('Failed to initialize app:', error)
-    await authStore.logout()
-    return false
-  }
-}
-```
-
-### Updated main.ts
-
-```typescript
-// src/main.ts
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-import { VueQueryPlugin } from '@tanstack/vue-query'
-import PrimeVue from 'primevue/config'
-import Aura from '@primevue/themes/aura'
-import { definePreset } from '@primevue/themes'
-
-// Services
-import ToastService from 'primevue/toastservice'
-import ConfirmationService from 'primevue/confirmationservice'
-import DialogService from 'primevue/dialogservice'
-
-// Directives
-import Tooltip from 'primevue/tooltip'
-import Ripple from 'primevue/ripple'
-import BadgeDirective from 'primevue/badgedirective'
-import FocusTrap from 'primevue/focustrap'
-
-import App from './App.vue'
-import router from './router'
-import { initializeApp } from './init'
-
-// Styles
-import 'primeicons/primeicons.css'
-import './assets/styles/main.css'
-
-async function bootstrap() {
-  const app = createApp(App)
-
-  // Pinia
-  const pinia = createPinia()
-  app.use(pinia)
-
-  // PrimeVue configuration (same as before)
-  const DhoolPreset = definePreset(Aura, {
-    semantic: {
-      primary: {
-        50: '{blue.50}',
-        100: '{blue.100}',
-        200: '{blue.200}',
-        300: '{blue.300}',
-        400: '{blue.400}',
-        500: '{blue.500}',
-        600: '{blue.600}',
-        700: '{blue.700}',
-        800: '{blue.800}',
-        900: '{blue.900}',
-        950: '{blue.950}',
-      },
-      colorScheme: {
-        light: {
-          primary: {
-            color: '{primary.500}',
-            contrastColor: '#ffffff',
-            hoverColor: '{primary.600}',
-            activeColor: '{primary.700}',
-          },
-        },
-        dark: {
-          primary: {
-            color: '{primary.400}',
-            contrastColor: '{surface.900}',
-            hoverColor: '{primary.300}',
-            activeColor: '{primary.200}',
-          },
-        },
-      },
-    },
-  })
-
-  app.use(PrimeVue, {
-    theme: {
-      preset: DhoolPreset,
-      options: {
-        prefix: 'p',
-        darkModeSelector: '.dark',
-        cssLayer: {
-          name: 'primevue',
-          order: 'tailwind-base, primevue, tailwind-utilities',
-        },
-      },
-    },
-    ripple: true,
-    pt: {
-      datatable: {
-        root: { class: 'border border-surface-200 dark:border-surface-700 rounded-lg overflow-hidden' },
-      },
-    },
-  })
-
-  // Services & Directives
-  app.use(ToastService)
-  app.use(ConfirmationService)
-  app.use(DialogService)
-  app.directive('tooltip', Tooltip)
-  app.directive('ripple', Ripple)
-  app.directive('badge', BadgeDirective)
-  app.directive('focustrap', FocusTrap)
-
-  // Vue Query
-  app.use(VueQueryPlugin, {
-    queryClientConfig: {
-      defaultOptions: {
-        queries: {
-          staleTime: 5 * 60 * 1000,
-          retry: 1,
-        },
-      },
-    },
-  })
-
-  // Router
-  app.use(router)
-
-  // Initialize app (load user, tenant, etc.)
-  // This runs before showing the app
-  await initializeApp()
-
-  app.mount('#app')
-}
-
-bootstrap()
-```
+1. **Cache schemas** - Use Vue Query with staleTime
+2. **Lazy load routes** - Dynamic imports
+3. **Debounce search** - 300ms minimum
+4. **Virtual scroll** - For large lists
+5. **Memoize computed** - Avoid recalculation
 
 ---
 
 ## Summary
 
-This guide provides a complete architecture for a schema-driven ERP system with:
+This documentation provides a complete architecture for a schema-driven ERP system:
 
-1. **Schema-Driven UI**: JSON schemas define documents, forms, lists, and dashboards
-2. **Multi-Level Access Control**: Subscription → Module → Role → ABAC
-3. **Reusable Components**: Molecules and organisms built on PrimeVue 4
-4. **Dynamic Routing**: Routes generated from schemas
-5. **Multi-Tenant Theming**: Per-tenant customization
-6. **Type Safety**: Full TypeScript throughout
+1. **Schema V1.0** - Clean, parseable structure aligned with Go backend
+2. **Condition Alignment** - Operators match Go condition package exactly
+3. **Backend/Frontend Split** - Clear separation of responsibilities
+4. **PrimeVue Integration** - Proper component patterns, no unnecessary wrappers
+5. **Access Control** - Three-layer model with ABAC support
+6. **Type Safety** - Full TypeScript with detailed documentation
 
 ### Key Benefits
 
-- **Rapid Development**: Define new document types in JSON
+- **Rapid Development**: Define documents in JSON, not code
 - **Consistency**: All pages share the same components
-- **Flexibility**: Backend can modify UI without deployments
-- **Maintainability**: Changes in one place affect all instances
-- **Security**: Access control at every level
+- **Backend Integration**: Schema structures match Go backend
+- **Security**: Frontend conditions are hints, backend is authoritative
+- **Maintainability**: Changes in schema affect all instances
 
-### Next Steps
-
-1. Start with core schemas (User, Customer, Invoice)
-2. Build out the Schema Builder UI for admin users
-3. Add more field types as needed
-4. Implement the Report schema type
-5. Add workflow engine for document states
-6. Build mobile-responsive variants
+<function_calls>
+<invoke name="view">
+<parameter name="path">/home/claude/dhoolui-complete-documentation.md

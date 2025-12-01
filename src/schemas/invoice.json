@@ -1,0 +1,804 @@
+{
+  "$schema": "../meta/document.schema.json",
+  "name": "invoice",
+  "label": "Invoice",
+  "module": "sales",
+  "icon": "pi-receipt",
+  "description": "Sales invoice with workflow, calculations, and line items",
+  
+  "api": {
+    "baseEndpoint": "/api/v1/invoices",
+    "methods": ["GET", "POST", "PUT", "DELETE"],
+    "bulkOperations": ["export", "bulkUpdate"]
+  },
+  
+  "workflow": {
+    "enabled": true,
+    "statusField": "status",
+    "states": {
+      "draft": {
+        "label": "Draft",
+        "color": "secondary",
+        "icon": "pi-file-edit",
+        "allowedTransitions": ["submitted"],
+        "editableFields": "*"
+      },
+      "submitted": {
+        "label": "Submitted",
+        "color": "info",
+        "icon": "pi-send",
+        "allowedTransitions": ["approved", "draft"],
+        "editableFields": ["internal_notes"]
+      },
+      "approved": {
+        "label": "Approved",
+        "color": "success",
+        "icon": "pi-check-circle",
+        "allowedTransitions": ["paid", "submitted"],
+        "editableFields": ["payment_notes", "internal_notes"]
+      },
+      "paid": {
+        "label": "Paid",
+        "color": "success",
+        "icon": "pi-wallet",
+        "allowedTransitions": [],
+        "editableFields": ["internal_notes"],
+        "isFinal": true
+      }
+    },
+    "transitions": {
+      "submit": {
+        "from": "draft",
+        "to": "submitted",
+        "label": "Submit for Approval",
+        "icon": "pi-send",
+        "validation": {
+          "required": ["customer", "items", "due_date"],
+          "custom": [
+            {
+              "rule": "items.length > 0",
+              "message": "Invoice must have at least one item"
+            },
+            {
+              "rule": "grand_total > 0",
+              "message": "Invoice total must be greater than zero"
+            }
+          ]
+        }
+      },
+      "approve": {
+        "from": "submitted",
+        "to": "approved",
+        "label": "Approve",
+        "icon": "pi-check",
+        "permissions": ["invoice.approve"]
+      },
+      "reject": {
+        "from": "submitted",
+        "to": "draft",
+        "label": "Send Back",
+        "icon": "pi-times",
+        "permissions": ["invoice.approve"]
+      },
+      "markPaid": {
+        "from": "approved",
+        "to": "paid",
+        "label": "Mark as Paid",
+        "icon": "pi-wallet",
+        "permissions": ["invoice.markPaid"],
+        "validation": {
+          "required": ["payment_date", "payment_method"]
+        }
+      }
+    }
+  },
+  
+  "fields": [
+    {
+      "name": "invoice_number",
+      "label": "Invoice Number",
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "readonly": true,
+      "default": "INV-{sequence}",
+      "sequence": {
+        "prefix": "INV-",
+        "padLength": 5,
+        "startFrom": 1
+      }
+    },
+    {
+      "name": "status",
+      "label": "Status",
+      "type": "select",
+      "required": true,
+      "default": "draft",
+      "options": [
+        { "value": "draft", "label": "Draft" },
+        { "value": "submitted", "label": "Submitted" },
+        { "value": "approved", "label": "Approved" },
+        { "value": "paid", "label": "Paid" }
+      ],
+      "readonly": true
+    },
+    {
+      "name": "customer",
+      "label": "Customer",
+      "type": "link",
+      "linkDoctype": "customer",
+      "required": true,
+      "searchable": true,
+      "displayField": "customer_name",
+      "filters": {
+        "is_active": true
+      }
+    },
+    {
+      "name": "customer_name",
+      "label": "Customer Name",
+      "type": "string",
+      "readonly": true,
+      "fetchFrom": "customer.full_name"
+    },
+    {
+      "name": "invoice_date",
+      "label": "Invoice Date",
+      "type": "date",
+      "required": true,
+      "default": "today"
+    },
+    {
+      "name": "due_date",
+      "label": "Due Date",
+      "type": "date",
+      "required": true,
+      "validation": {
+        "min": "{invoice_date}",
+        "message": "Due date must be after invoice date"
+      }
+    },
+    {
+      "name": "currency",
+      "label": "Currency",
+      "type": "select",
+      "required": true,
+      "default": "USD",
+      "options": [
+        { "value": "USD", "label": "USD - US Dollar" },
+        { "value": "EUR", "label": "EUR - Euro" },
+        { "value": "GBP", "label": "GBP - British Pound" }
+      ]
+    },
+    {
+      "name": "items",
+      "label": "Invoice Items",
+      "type": "table",
+      "required": true,
+      "childFields": [
+        {
+          "name": "item_code",
+          "label": "Item",
+          "type": "link",
+          "linkDoctype": "item",
+          "required": true,
+          "displayField": "item_name",
+          "width": "200px"
+        },
+        {
+          "name": "item_name",
+          "label": "Item Name",
+          "type": "string",
+          "readonly": true,
+          "fetchFrom": "item_code.item_name",
+          "width": "250px"
+        },
+        {
+          "name": "description",
+          "label": "Description",
+          "type": "text",
+          "rows": 2,
+          "width": "300px"
+        },
+        {
+          "name": "quantity",
+          "label": "Qty",
+          "type": "number",
+          "required": true,
+          "default": 1,
+          "min": 0.01,
+          "precision": 2,
+          "width": "100px"
+        },
+        {
+          "name": "unit_price",
+          "label": "Unit Price",
+          "type": "currency",
+          "required": true,
+          "min": 0,
+          "precision": 2,
+          "fetchFrom": "item_code.standard_rate",
+          "width": "120px"
+        },
+        {
+          "name": "discount_percentage",
+          "label": "Discount %",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 100,
+          "precision": 2,
+          "width": "100px"
+        },
+        {
+          "name": "tax_rate",
+          "label": "Tax %",
+          "type": "number",
+          "required": true,
+          "default": 10,
+          "min": 0,
+          "max": 100,
+          "precision": 2,
+          "width": "100px"
+        },
+        {
+          "name": "amount",
+          "label": "Amount",
+          "type": "currency",
+          "readonly": true,
+          "formula": "quantity * unit_price * (1 - discount_percentage / 100)",
+          "precision": 2,
+          "width": "120px"
+        },
+        {
+          "name": "tax_amount",
+          "label": "Tax Amount",
+          "type": "currency",
+          "readonly": true,
+          "formula": "amount * (tax_rate / 100)",
+          "precision": 2,
+          "width": "120px"
+        },
+        {
+          "name": "total_amount",
+          "label": "Total",
+          "type": "currency",
+          "readonly": true,
+          "formula": "amount + tax_amount",
+          "precision": 2,
+          "width": "120px",
+          "bold": true
+        }
+      ]
+    },
+    {
+      "name": "subtotal",
+      "label": "Subtotal",
+      "type": "currency",
+      "readonly": true,
+      "formula": "SUM(items.amount)",
+      "precision": 2,
+      "bold": true
+    },
+    {
+      "name": "total_discount",
+      "label": "Total Discount",
+      "type": "currency",
+      "readonly": true,
+      "formula": "SUM(items.quantity * items.unit_price * items.discount_percentage / 100)",
+      "precision": 2
+    },
+    {
+      "name": "tax_total",
+      "label": "Tax Total",
+      "type": "currency",
+      "readonly": true,
+      "formula": "SUM(items.tax_amount)",
+      "precision": 2
+    },
+    {
+      "name": "grand_total",
+      "label": "Grand Total",
+      "type": "currency",
+      "readonly": true,
+      "formula": "subtotal + tax_total",
+      "precision": 2,
+      "bold": true,
+      "fontSize": "large"
+    },
+    {
+      "name": "payment_terms",
+      "label": "Payment Terms",
+      "type": "select",
+      "options": [
+        { "value": "net_30", "label": "Net 30 Days" },
+        { "value": "net_15", "label": "Net 15 Days" },
+        { "value": "immediate", "label": "Due on Receipt" },
+        { "value": "net_45", "label": "Net 45 Days" },
+        { "value": "net_60", "label": "Net 60 Days" }
+      ]
+    },
+    {
+      "name": "notes",
+      "label": "Notes",
+      "type": "text",
+      "rows": 3,
+      "placeholder": "Additional notes or terms"
+    },
+    {
+      "name": "internal_notes",
+      "label": "Internal Notes",
+      "type": "text",
+      "rows": 3,
+      "placeholder": "Internal notes (not visible to customer)",
+      "permissions": ["invoice.viewInternal"]
+    },
+    {
+      "name": "payment_date",
+      "label": "Payment Date",
+      "type": "date",
+      "dependsOn": "status === 'paid'",
+      "required": "status === 'paid'"
+    },
+    {
+      "name": "payment_method",
+      "label": "Payment Method",
+      "type": "select",
+      "dependsOn": "status === 'paid'",
+      "required": "status === 'paid'",
+      "options": [
+        { "value": "cash", "label": "Cash" },
+        { "value": "check", "label": "Check" },
+        { "value": "wire", "label": "Wire Transfer" },
+        { "value": "credit_card", "label": "Credit Card" },
+        { "value": "other", "label": "Other" }
+      ]
+    },
+    {
+      "name": "payment_reference",
+      "label": "Payment Reference",
+      "type": "string",
+      "dependsOn": "status === 'paid'",
+      "placeholder": "Check number, transaction ID, etc."
+    }
+  ],
+  
+  "listView": {
+    "title": "Invoices",
+    "defaultSort": { "field": "created_at", "order": "desc" },
+    "defaultFilters": [
+      {
+        "field": "status",
+        "operator": "notEquals",
+        "value": "cancelled"
+      }
+    ],
+    "columns": [
+      {
+        "field": "invoice_number",
+        "label": "Invoice #",
+        "sortable": true,
+        "frozen": true,
+        "width": "120px",
+        "template": "<Tag :value=\"data.invoice_number\" severity=\"primary\" />"
+      },
+      {
+        "field": "status",
+        "label": "Status",
+        "sortable": true,
+        "filter": true,
+        "width": "120px",
+        "template": "<Tag :value=\"data.status\" :severity=\"getStatusSeverity(data.status)\" />"
+      },
+      {
+        "field": "customer_name",
+        "label": "Customer",
+        "sortable": true,
+        "filter": true,
+        "width": "200px"
+      },
+      {
+        "field": "invoice_date",
+        "label": "Date",
+        "sortable": true,
+        "filter": true,
+        "dataType": "date",
+        "width": "120px"
+      },
+      {
+        "field": "due_date",
+        "label": "Due Date",
+        "sortable": true,
+        "filter": true,
+        "dataType": "date",
+        "width": "120px",
+        "template": "<span :class=\"{'text-red-500': isPastDue(data)}\">${formatDate(data.due_date)}</span>"
+      },
+      {
+        "field": "grand_total",
+        "label": "Total",
+        "sortable": true,
+        "filter": true,
+        "dataType": "numeric",
+        "width": "120px",
+        "align": "right",
+        "template": "<span class=\"font-bold\">${formatCurrency(data.grand_total, data.currency)}</span>"
+      }
+    ],
+    "toolbarActions": [
+      {
+        "action": "create",
+        "label": "New Invoice",
+        "icon": "pi-plus",
+        "severity": "primary"
+      },
+      {
+        "action": "export",
+        "label": "Export",
+        "icon": "pi-download",
+        "items": [
+          { "action": "exportExcel", "label": "Export to Excel", "icon": "pi-file-excel" },
+          { "action": "exportPdf", "label": "Export to PDF", "icon": "pi-file-pdf" }
+        ]
+      }
+    ],
+    "rowActions": [
+      {
+        "action": "view",
+        "label": "View",
+        "icon": "pi-eye"
+      },
+      {
+        "action": "edit",
+        "label": "Edit",
+        "icon": "pi-pencil",
+        "condition": "row.status === 'draft'"
+      },
+      {
+        "action": "workflow",
+        "label": "Actions",
+        "icon": "pi-cog",
+        "items": "dynamicWorkflowActions"
+      },
+      {
+        "action": "print",
+        "label": "Print",
+        "icon": "pi-print"
+      },
+      {
+        "action": "email",
+        "label": "Email",
+        "icon": "pi-envelope",
+        "condition": "row.status !== 'draft'"
+      },
+      {
+        "action": "duplicate",
+        "label": "Duplicate",
+        "icon": "pi-copy"
+      },
+      {
+        "action": "delete",
+        "label": "Delete",
+        "icon": "pi-trash",
+        "condition": "row.status === 'draft'",
+        "severity": "danger",
+        "confirmMessage": "Are you sure you want to delete this invoice?"
+      }
+    ],
+    "bulkActions": [
+      {
+        "action": "bulkEmail",
+        "label": "Send Email",
+        "icon": "pi-send",
+        "condition": "selectedRows.every(r => r.status !== 'draft')"
+      },
+      {
+        "action": "bulkExport",
+        "label": "Export Selected",
+        "icon": "pi-download"
+      }
+    ]
+  },
+  
+  "formView": {
+    "title": "{mode === 'create' ? 'New Invoice' : 'Invoice: ' + values.invoice_number}",
+    "layout": "tabs",
+    "sections": [
+      {
+        "name": "basic",
+        "label": "Basic Info",
+        "icon": "pi-info-circle",
+        "columns": 2,
+        "fields": [
+          { "field": "invoice_number", "colSpan": 1 },
+          { "field": "status", "colSpan": 1 },
+          { "field": "customer", "colSpan": 2 },
+          { "field": "invoice_date", "colSpan": 1 },
+          { "field": "due_date", "colSpan": 1 },
+          { "field": "currency", "colSpan": 1 },
+          { "field": "payment_terms", "colSpan": 1 }
+        ]
+      },
+      {
+        "name": "items",
+        "label": "Items",
+        "icon": "pi-list",
+        "fields": [
+          { "field": "items", "colSpan": "full" }
+        ]
+      },
+      {
+        "name": "totals",
+        "label": "Totals",
+        "icon": "pi-calculator",
+        "columns": 2,
+        "fields": [
+          { 
+            "type": "group",
+            "label": "Summary",
+            "colSpan": 2,
+            "readonly": true,
+            "fields": [
+              { "field": "subtotal", "colSpan": 1 },
+              { "field": "total_discount", "colSpan": 1 },
+              { "field": "tax_total", "colSpan": 1 },
+              { "field": "grand_total", "colSpan": 1, "class": "text-2xl font-bold" }
+            ]
+          },
+          { "field": "notes", "colSpan": 2 },
+          { "field": "internal_notes", "colSpan": 2 }
+        ]
+      },
+      {
+        "name": "payment",
+        "label": "Payment",
+        "icon": "pi-wallet",
+        "dependsOn": "values.status === 'paid'",
+        "fields": [
+          { "field": "payment_date", "colSpan": 1 },
+          { "field": "payment_method", "colSpan": 1 },
+          { "field": "payment_reference", "colSpan": 2 }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "action": "save",
+        "label": "Save",
+        "icon": "pi-save",
+        "severity": "primary",
+        "condition": "values.status === 'draft'"
+      },
+      {
+        "action": "saveAndClose",
+        "label": "Save & Close",
+        "icon": "pi-check",
+        "condition": "values.status === 'draft'"
+      }
+    ]
+  },
+  
+  "access": {
+    "permissions": {
+      "invoice": {
+        "create": {
+          "label": "Create Invoice",
+          "default": ["sales_user", "sales_manager", "admin"]
+        },
+        "read": {
+          "label": "View Invoice",
+          "default": ["sales_user", "sales_manager", "accountant", "admin"],
+          "dataScope": {
+            "sales_user": "own",
+            "sales_manager": "all",
+            "accountant": "all",
+            "admin": "all"
+          }
+        },
+        "update": {
+          "label": "Edit Invoice",
+          "default": ["sales_user", "sales_manager", "admin"],
+          "conditions": [
+            {
+              "roles": ["sales_user"],
+              "rule": "doc.status === 'draft' && doc.created_by === user.id"
+            },
+            {
+              "roles": ["sales_manager"],
+              "rule": "doc.status in ['draft', 'submitted']"
+            }
+          ]
+        },
+        "delete": {
+          "label": "Delete Invoice",
+          "default": ["sales_manager", "admin"],
+          "conditions": [
+            {
+              "rule": "doc.status === 'draft'"
+            }
+          ]
+        },
+        "approve": {
+          "label": "Approve Invoice",
+          "default": ["sales_manager", "finance_manager", "admin"]
+        },
+        "markPaid": {
+          "label": "Mark Invoice as Paid",
+          "default": ["accountant", "finance_manager", "admin"]
+        },
+        "viewInternal": {
+          "label": "View Internal Notes",
+          "default": ["sales_manager", "finance_manager", "admin"]
+        },
+        "export": {
+          "label": "Export Invoices",
+          "default": ["sales_user", "sales_manager", "accountant", "admin"]
+        }
+      }
+    },
+    "fieldLevel": {
+      "unit_price": {
+        "update": {
+          "roles": ["sales_manager", "admin"],
+          "condition": "doc.status === 'draft'"
+        }
+      },
+      "tax_rate": {
+        "update": {
+          "roles": ["sales_manager", "finance_manager", "admin"]
+        }
+      },
+      "discount_percentage": {
+        "update": {
+          "roles": ["sales_manager", "admin"],
+          "condition": "value <= 20 || user.hasRole('sales_manager')"
+        }
+      }
+    }
+  },
+  
+  "actions": {
+    "print": {
+      "label": "Print Invoice",
+      "icon": "pi-print",
+      "handler": "printInvoice",
+      "template": "invoice-print"
+    },
+    "email": {
+      "label": "Email Invoice",
+      "icon": "pi-envelope",
+      "handler": "emailInvoice",
+      "dialog": {
+        "title": "Email Invoice",
+        "fields": [
+          {
+            "name": "to",
+            "label": "To",
+            "type": "email",
+            "required": true,
+            "default": "{customer.email}"
+          },
+          {
+            "name": "cc",
+            "label": "CC",
+            "type": "email"
+          },
+          {
+            "name": "subject",
+            "label": "Subject",
+            "type": "string",
+            "default": "Invoice {invoice_number} from {company_name}"
+          },
+          {
+            "name": "message",
+            "label": "Message",
+            "type": "textarea",
+            "rows": 5,
+            "default": "Please find attached invoice {invoice_number} for {grand_total}. Payment is due by {due_date}."
+          }
+        ]
+      }
+    },
+    "duplicate": {
+      "label": "Duplicate Invoice",
+      "icon": "pi-copy",
+      "handler": "duplicateInvoice",
+      "resetFields": ["invoice_number", "status", "payment_date", "payment_method", "payment_reference"]
+    }
+  },
+  
+  "validation": {
+    "rules": [
+      {
+        "field": "due_date",
+        "rule": "value >= invoice_date",
+        "message": "Due date must be on or after invoice date"
+      },
+      {
+        "field": "items",
+        "rule": "value.length > 0",
+        "message": "At least one item is required"
+      },
+      {
+        "field": "grand_total",
+        "rule": "value > 0",
+        "message": "Invoice total must be greater than zero"
+      }
+    ],
+    "uniqueConstraints": [
+      {
+        "fields": ["invoice_number"],
+        "message": "Invoice number already exists"
+      }
+    ]
+  },
+  
+  "hooks": {
+    "beforeCreate": [
+      {
+        "handler": "generateInvoiceNumber",
+        "async": true
+      }
+    ],
+    "afterStatusChange": [
+      {
+        "handler": "notifyStatusChange",
+        "async": true
+      },
+      {
+        "handler": "updateCustomerBalance",
+        "condition": "newStatus === 'paid'",
+        "async": true
+      }
+    ],
+    "beforeSave": [
+      {
+        "handler": "calculateTotals"
+      },
+      {
+        "handler": "validateCreditLimit",
+        "condition": "doc.status === 'submitted'"
+      }
+    ]
+  },
+  
+  "reports": {
+    "enabled": true,
+    "predefined": [
+      {
+        "name": "aging_report",
+        "label": "Invoice Aging Report",
+        "type": "aging",
+        "groupBy": "customer",
+        "ageField": "due_date",
+        "amountField": "grand_total",
+        "buckets": [0, 30, 60, 90]
+      },
+      {
+        "name": "sales_summary",
+        "label": "Sales Summary",
+        "type": "summary",
+        "groupBy": ["invoice_date:month", "customer"],
+        "aggregations": {
+          "total": { "field": "grand_total", "function": "sum" },
+          "count": { "field": "id", "function": "count" },
+          "average": { "field": "grand_total", "function": "avg" }
+        }
+      }
+    ]
+  },
+  
+  "search": {
+    "fields": ["invoice_number", "customer_name", "notes"],
+    "customSearch": {
+      "handler": "searchInvoices",
+      "includeItems": true
+    }
+  },
+  
+  "audit": {
+    "enabled": true,
+    "fields": ["status", "grand_total", "payment_date", "items"],
+    "retention": 365
+  }
+}
