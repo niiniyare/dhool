@@ -1898,8 +1898,1190 @@ export function useCrud<T = any>(docType: string): CrudOperations<T> {
 }
 ```
 
+# Part VI: Advanced Features & Implementation
+
+## Schema Builder & Dynamic UI
+
+### Dynamic Form Generation
+
+The schema-driven UI system generates forms automatically from JSON schemas with full validation, conditional fields, and dynamic behavior.
+
+```typescript
+// types/schema.ts
+export interface FormSchema {
+  doctype: string
+  sections: FormSection[]
+  validation?: ValidationRules
+  conditional?: ConditionalLogic
+  layout?: LayoutConfig
+}
+
+export interface FormSection {
+  title: string
+  collapsible?: boolean
+  columns?: number
+  fields: FormField[]
+}
+
+export interface FormField {
+  name: string
+  label: string
+  type: FieldType
+  required?: boolean
+  readonly?: boolean
+  hidden?: boolean
+  placeholder?: string
+  helpText?: string
+  validation?: FieldValidation
+  options?: FieldOption[]
+  conditional?: FieldConditional
+  layout?: FieldLayout
+}
+
+export type FieldType = 
+  | 'text' | 'email' | 'password' | 'number' | 'currency'
+  | 'date' | 'datetime' | 'time' | 'daterange'
+  | 'select' | 'multiselect' | 'checkbox' | 'radio'
+  | 'textarea' | 'richtext' | 'code'
+  | 'file' | 'image' | 'link' | 'table'
+
+export interface ConditionalLogic {
+  field: string
+  operator: 'equals' | 'not_equals' | 'contains' | 'greater_than' | 'less_than'
+  value: any
+  action: 'show' | 'hide' | 'require' | 'readonly'
+}
+```
+
+### Schema Engine Implementation
+
+```typescript
+// services/schemaEngine.ts
+import { FormSchema, ValidationResult } from '@/types/schema'
+
+export class SchemaEngine {
+  private schemas = new Map<string, FormSchema>()
+  
+  async loadSchema(doctype: string): Promise<FormSchema> {
+    if (this.schemas.has(doctype)) {
+      return this.schemas.get(doctype)!
+    }
+    
+    const schema = await api.get(`/api/v1/schema/${doctype}`)
+    this.schemas.set(doctype, schema)
+    return schema
+  }
+  
+  validateField(field: FormField, value: any, formData: Record<string, any>): ValidationResult {
+    const errors: string[] = []
+    
+    // Required validation
+    if (field.required && (value === null || value === undefined || value === '')) {
+      errors.push(`${field.label} is required`)
+    }
+    
+    // Type validation
+    switch (field.type) {
+      case 'email':
+        if (value && !this.isValidEmail(value)) {
+          errors.push(`${field.label} must be a valid email`)
+        }
+        break
+      case 'number':
+      case 'currency':
+        if (value && isNaN(Number(value))) {
+          errors.push(`${field.label} must be a number`)
+        }
+        break
+    }
+    
+    // Custom validation
+    if (field.validation) {
+      const customErrors = this.runCustomValidation(field.validation, value, formData)
+      errors.push(...customErrors)
+    }
+    
+    return {
+      valid: errors.length === 0,
+      errors
+    }
+  }
+  
+  evaluateConditional(conditional: ConditionalLogic, formData: Record<string, any>): boolean {
+    const fieldValue = formData[conditional.field]
+    
+    switch (conditional.operator) {
+      case 'equals':
+        return fieldValue === conditional.value
+      case 'not_equals':
+        return fieldValue !== conditional.value
+      case 'contains':
+        return String(fieldValue).includes(String(conditional.value))
+      case 'greater_than':
+        return Number(fieldValue) > Number(conditional.value)
+      case 'less_than':
+        return Number(fieldValue) < Number(conditional.value)
+      default:
+        return false
+    }
+  }
+  
+  private isValidEmail(email: string): boolean {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  }
+  
+  private runCustomValidation(validation: FieldValidation, value: any, formData: Record<string, any>): string[] {
+    // Implement custom validation logic
+    return []
+  }
+}
+```
+
+### Dynamic DataTable Configuration
+
+```typescript
+// services/tableConfig.ts
+export interface TableSchema {
+  doctype: string
+  columns: TableColumn[]
+  filters: TableFilter[]
+  actions: TableAction[]
+  sorting: SortingConfig
+  pagination: PaginationConfig
+}
+
+export interface TableColumn {
+  field: string
+  header: string
+  type: ColumnType
+  sortable?: boolean
+  filterable?: boolean
+  width?: string
+  align?: 'left' | 'center' | 'right'
+  format?: string
+  conditional?: ConditionalDisplay
+}
+
+export class TableConfigEngine {
+  async generateTableConfig(doctype: string, userPermissions: any): Promise<TableSchema> {
+    const baseSchema = await api.get(`/api/v1/table-schema/${doctype}`)
+    
+    // Filter columns based on permissions
+    const visibleColumns = baseSchema.columns.filter(col => 
+      this.canViewField(col.field, userPermissions)
+    )
+    
+    // Filter actions based on permissions
+    const availableActions = baseSchema.actions.filter(action =>
+      this.canPerformAction(action.name, userPermissions)
+    )
+    
+    return {
+      ...baseSchema,
+      columns: visibleColumns,
+      actions: availableActions
+    }
+  }
+  
+  private canViewField(fieldName: string, permissions: any): boolean {
+    // Implement field-level permission check
+    return true
+  }
+  
+  private canPerformAction(actionName: string, permissions: any): boolean {
+    // Implement action-level permission check
+    return true
+  }
+}
+```
+
 ---
 
-<function_calls>
-<invoke name="TodoWrite">
-<parameter name="todos">[{"content": "Read complete components.md file in sections to understand all content", "status": "completed", "priority": "high", "id": "merge-1"}, {"content": "Read complete ERP-UI-Documentation.md file in sections to understand structure", "status": "completed", "priority": "high", "id": "merge-2"}, {"content": "Analyze llms-full.txt for authoritative PrimeVue component information", "status": "completed", "priority": "high", "id": "merge-3"}, {"content": "Design unified document structure combining both perspectives", "status": "completed", "priority": "high", "id": "merge-4"}, {"content": "Create comprehensive merged documentation file", "status": "completed", "priority": "high", "id": "merge-5"}]
+## Multi-Tenant Theming
+
+### Theme System Architecture
+
+The system supports multiple tenants with custom branding through dynamic theme switching and design token overrides.
+
+```typescript
+// types/theme.ts
+export interface TenantTheme {
+  id: string
+  name: string
+  primary: string
+  secondary: string
+  accent: string
+  surface: string
+  background: string
+  text: string
+  logo?: string
+  favicon?: string
+  customCss?: string
+  typography?: TypographyConfig
+}
+
+export interface TypographyConfig {
+  fontFamily: string
+  fontSize: {
+    xs: string
+    sm: string
+    base: string
+    lg: string
+    xl: string
+    '2xl': string
+    '3xl': string
+  }
+  fontWeight: {
+    light: number
+    normal: number
+    medium: number
+    semibold: number
+    bold: number
+  }
+}
+```
+
+### Theme Service Implementation
+
+```typescript
+// services/themeService.ts
+export class ThemeService {
+  private currentTheme: TenantTheme | null = null
+  
+  async loadTenantTheme(tenantId: string): Promise<void> {
+    try {
+      const theme = await api.get(`/api/v1/tenants/${tenantId}/theme`)
+      await this.applyTheme(theme)
+      this.currentTheme = theme
+    } catch (error) {
+      console.warn('Failed to load tenant theme, using default')
+      await this.applyDefaultTheme()
+    }
+  }
+  
+  private async applyTheme(theme: TenantTheme): Promise<void> {
+    // Update CSS custom properties
+    const root = document.documentElement
+    
+    root.style.setProperty('--primary-50', this.generateColorScale(theme.primary)[50])
+    root.style.setProperty('--primary-100', this.generateColorScale(theme.primary)[100])
+    root.style.setProperty('--primary-200', this.generateColorScale(theme.primary)[200])
+    root.style.setProperty('--primary-300', this.generateColorScale(theme.primary)[300])
+    root.style.setProperty('--primary-400', this.generateColorScale(theme.primary)[400])
+    root.style.setProperty('--primary-500', theme.primary)
+    root.style.setProperty('--primary-600', this.generateColorScale(theme.primary)[600])
+    root.style.setProperty('--primary-700', this.generateColorScale(theme.primary)[700])
+    root.style.setProperty('--primary-800', this.generateColorScale(theme.primary)[800])
+    root.style.setProperty('--primary-900', this.generateColorScale(theme.primary)[900])
+    
+    // Apply similar for secondary, accent, etc.
+    
+    // Update typography
+    if (theme.typography) {
+      root.style.setProperty('--font-family', theme.typography.fontFamily)
+      Object.entries(theme.typography.fontSize).forEach(([key, value]) => {
+        root.style.setProperty(`--font-size-${key}`, value)
+      })
+    }
+    
+    // Apply custom CSS
+    if (theme.customCss) {
+      this.injectCustomCSS(theme.customCss)
+    }
+    
+    // Update favicon and logo
+    if (theme.favicon) {
+      this.updateFavicon(theme.favicon)
+    }
+  }
+  
+  private generateColorScale(baseColor: string): Record<number, string> {
+    // Generate color scale from base color using color manipulation library
+    // This is a simplified example
+    return {
+      50: this.lighten(baseColor, 0.95),
+      100: this.lighten(baseColor, 0.9),
+      200: this.lighten(baseColor, 0.75),
+      300: this.lighten(baseColor, 0.6),
+      400: this.lighten(baseColor, 0.3),
+      500: baseColor,
+      600: this.darken(baseColor, 0.1),
+      700: this.darken(baseColor, 0.2),
+      800: this.darken(baseColor, 0.3),
+      900: this.darken(baseColor, 0.4)
+    }
+  }
+  
+  private lighten(color: string, amount: number): string {
+    // Color manipulation logic
+    return color
+  }
+  
+  private darken(color: string, amount: number): string {
+    // Color manipulation logic
+    return color
+  }
+  
+  private injectCustomCSS(css: string): void {
+    const styleId = 'tenant-custom-styles'
+    const existingStyle = document.getElementById(styleId)
+    
+    if (existingStyle) {
+      existingStyle.remove()
+    }
+    
+    const style = document.createElement('style')
+    style.id = styleId
+    style.textContent = css
+    document.head.appendChild(style)
+  }
+  
+  private updateFavicon(faviconUrl: string): void {
+    const link = document.querySelector("link[rel~='icon']") as HTMLLinkElement
+    if (link) {
+      link.href = faviconUrl
+    }
+  }
+}
+```
+
+---
+
+## Performance Optimization
+
+### Virtual Scrolling for Large DataTables
+
+```vue
+<!-- components/organisms/VirtualDataTable.vue -->
+<template>
+  <div class="virtual-datatable" ref="containerRef">
+    <div class="table-header">
+      <div 
+        v-for="column in columns" 
+        :key="column.field"
+        class="header-cell"
+        :style="{ width: column.width }"
+      >
+        {{ column.header }}
+      </div>
+    </div>
+    
+    <div 
+      class="table-body" 
+      :style="{ height: `${containerHeight}px` }"
+      @scroll="onScroll"
+    >
+      <div :style="{ height: `${totalHeight}px`, position: 'relative' }">
+        <div 
+          v-for="(item, index) in visibleItems" 
+          :key="item.id"
+          class="table-row"
+          :style="{ 
+            position: 'absolute', 
+            top: `${(startIndex + index) * itemHeight}px`,
+            width: '100%'
+          }"
+        >
+          <div 
+            v-for="column in columns" 
+            :key="column.field"
+            class="table-cell"
+            :style="{ width: column.width }"
+          >
+            <component 
+              :is="getCellComponent(column.type)"
+              :value="item[column.field]"
+              :column="column"
+              :item="item"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+
+interface Props {
+  items: any[]
+  columns: TableColumn[]
+  itemHeight?: number
+  containerHeight?: number
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  itemHeight: 50,
+  containerHeight: 400
+})
+
+const containerRef = ref<HTMLElement>()
+const scrollTop = ref(0)
+
+const totalHeight = computed(() => props.items.length * props.itemHeight)
+const visibleCount = computed(() => Math.ceil(props.containerHeight / props.itemHeight) + 2)
+const startIndex = computed(() => Math.floor(scrollTop.value / props.itemHeight))
+const endIndex = computed(() => Math.min(startIndex.value + visibleCount.value, props.items.length))
+const visibleItems = computed(() => props.items.slice(startIndex.value, endIndex.value))
+
+const onScroll = (event: Event) => {
+  scrollTop.value = (event.target as HTMLElement).scrollTop
+}
+
+const getCellComponent = (type: string) => {
+  // Return appropriate cell component based on type
+  return 'div'
+}
+</script>
+```
+
+### Lazy Loading and Code Splitting
+
+```typescript
+// router/index.ts with lazy loading
+import { createRouter, createWebHistory } from 'vue-router'
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    {
+      path: '/',
+      component: () => import('@/views/dashboard/index.vue')
+    },
+    {
+      path: '/customers',
+      component: () => import('@/views/customers/index.vue'),
+      children: [
+        {
+          path: '',
+          component: () => import('@/views/customers/list.vue')
+        },
+        {
+          path: ':id',
+          component: () => import('@/views/customers/detail.vue')
+        }
+      ]
+    },
+    // Module-based chunking
+    {
+      path: '/accounting',
+      component: () => import('@/views/accounting/layout.vue'),
+      children: [
+        {
+          path: 'invoices',
+          component: () => import('@/views/accounting/invoices/index.vue')
+        },
+        {
+          path: 'payments',
+          component: () => import('@/views/accounting/payments/index.vue')
+        }
+      ]
+    }
+  ]
+})
+
+export default router
+```
+
+### Memory Management and Cleanup
+
+```typescript
+// composables/useMemoryManagement.ts
+export function useMemoryManagement() {
+  const observers = new Set<IntersectionObserver>()
+  const timeouts = new Set<number>()
+  const intervals = new Set<number>()
+  
+  const createIntersectionObserver = (callback: IntersectionObserverCallback, options?: IntersectionObserverInit) => {
+    const observer = new IntersectionObserver(callback, options)
+    observers.add(observer)
+    return observer
+  }
+  
+  const createTimeout = (callback: () => void, delay: number) => {
+    const timeoutId = window.setTimeout(callback, delay)
+    timeouts.add(timeoutId)
+    return timeoutId
+  }
+  
+  const createInterval = (callback: () => void, delay: number) => {
+    const intervalId = window.setInterval(callback, delay)
+    intervals.add(intervalId)
+    return intervalId
+  }
+  
+  const cleanup = () => {
+    observers.forEach(observer => observer.disconnect())
+    timeouts.forEach(timeout => clearTimeout(timeout))
+    intervals.forEach(interval => clearInterval(interval))
+    
+    observers.clear()
+    timeouts.clear()
+    intervals.clear()
+  }
+  
+  onBeforeUnmount(cleanup)
+  
+  return {
+    createIntersectionObserver,
+    createTimeout,
+    createInterval,
+    cleanup
+  }
+}
+```
+
+---
+
+## Testing Strategy
+
+### Component Testing with Vitest
+
+```typescript
+// tests/components/FormField.test.ts
+import { mount } from '@vue/test-utils'
+import { describe, it, expect, vi } from 'vitest'
+import FormField from '@/components/molecules/FormField.vue'
+import PrimeVue from 'primevue/config'
+
+describe('FormField', () => {
+  const createWrapper = (props = {}) => {
+    return mount(FormField, {
+      props: {
+        field: {
+          name: 'test',
+          label: 'Test Field',
+          type: 'text',
+          required: false
+        },
+        modelValue: '',
+        ...props
+      },
+      global: {
+        plugins: [PrimeVue]
+      }
+    })
+  }
+
+  it('renders basic text field', () => {
+    const wrapper = createWrapper()
+    expect(wrapper.find('[data-testid="form-field"]').exists()).toBe(true)
+    expect(wrapper.find('label').text()).toBe('Test Field')
+  })
+
+  it('shows required indicator', () => {
+    const wrapper = createWrapper({
+      field: {
+        name: 'test',
+        label: 'Test Field',
+        type: 'text',
+        required: true
+      }
+    })
+    expect(wrapper.find('.field-required').exists()).toBe(true)
+  })
+
+  it('emits update:modelValue on input', async () => {
+    const wrapper = createWrapper()
+    const input = wrapper.find('input')
+    
+    await input.setValue('test value')
+    
+    expect(wrapper.emitted('update:modelValue')).toEqual([['test value']])
+  })
+
+  it('displays validation errors', () => {
+    const wrapper = createWrapper({
+      error: 'This field is required'
+    })
+    expect(wrapper.find('[data-testid="field-error"]').text()).toBe('This field is required')
+  })
+})
+```
+
+### E2E Testing with Playwright
+
+```typescript
+// tests/e2e/customer-crud.spec.ts
+import { test, expect } from '@playwright/test'
+
+test.describe('Customer CRUD Operations', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/customers')
+    await page.waitForLoadState('networkidle')
+  })
+
+  test('should create new customer', async ({ page }) => {
+    // Click new customer button
+    await page.click('[data-testid="new-customer-btn"]')
+    
+    // Fill form
+    await page.fill('#customer-name', 'Test Customer')
+    await page.fill('#customer-email', 'test@example.com')
+    await page.fill('#customer-phone', '+1234567890')
+    
+    // Submit form
+    await page.click('[data-testid="save-btn"]')
+    
+    // Verify success
+    await expect(page.locator('[data-testid="success-toast"]')).toBeVisible()
+    await expect(page.locator('[data-testid="customer-list"]')).toContainText('Test Customer')
+  })
+
+  test('should edit existing customer', async ({ page }) => {
+    // Click on first customer
+    await page.click('[data-testid="customer-row"]:first-child [data-testid="edit-btn"]')
+    
+    // Update name
+    await page.fill('#customer-name', 'Updated Customer Name')
+    
+    // Save changes
+    await page.click('[data-testid="save-btn"]')
+    
+    // Verify update
+    await expect(page.locator('[data-testid="success-toast"]')).toBeVisible()
+  })
+
+  test('should delete customer', async ({ page }) => {
+    // Click delete button
+    await page.click('[data-testid="customer-row"]:first-child [data-testid="delete-btn"]')
+    
+    // Confirm deletion
+    await page.click('[data-testid="confirm-delete-btn"]')
+    
+    // Verify deletion
+    await expect(page.locator('[data-testid="success-toast"]')).toBeVisible()
+  })
+})
+```
+
+### Schema Validation Testing
+
+```typescript
+// tests/services/schemaEngine.test.ts
+import { describe, it, expect } from 'vitest'
+import { SchemaEngine } from '@/services/schemaEngine'
+
+describe('SchemaEngine', () => {
+  const schemaEngine = new SchemaEngine()
+
+  describe('field validation', () => {
+    it('validates required fields', () => {
+      const field = {
+        name: 'email',
+        label: 'Email',
+        type: 'email' as const,
+        required: true
+      }
+
+      const result = schemaEngine.validateField(field, '', {})
+      expect(result.valid).toBe(false)
+      expect(result.errors).toContain('Email is required')
+    })
+
+    it('validates email format', () => {
+      const field = {
+        name: 'email',
+        label: 'Email',
+        type: 'email' as const,
+        required: false
+      }
+
+      const result = schemaEngine.validateField(field, 'invalid-email', {})
+      expect(result.valid).toBe(false)
+      expect(result.errors).toContain('Email must be a valid email')
+    })
+  })
+
+  describe('conditional logic', () => {
+    it('evaluates equals condition', () => {
+      const conditional = {
+        field: 'type',
+        operator: 'equals' as const,
+        value: 'customer',
+        action: 'show' as const
+      }
+
+      const result = schemaEngine.evaluateConditional(conditional, { type: 'customer' })
+      expect(result).toBe(true)
+    })
+  })
+})
+```
+
+# Part VII: Best Practices & Guidelines
+
+## Development Best Practices
+
+### Code Organization
+
+```
+src/
+├── components/
+│   ├── atoms/           # Single-purpose UI elements
+│   ├── molecules/       # Composite components
+│   ├── organisms/       # Complex business components
+│   ├── templates/       # Page layouts
+│   └── renderers/       # Page-level components
+├── composables/         # Reusable composition functions
+├── services/           # Business logic and API calls
+├── stores/             # State management (Pinia)
+├── utils/              # Pure utility functions
+├── types/              # TypeScript definitions
+├── schemas/            # JSON schema definitions
+└── assets/             # Static assets
+```
+
+### Component Development Guidelines
+
+#### 1. Atomic Design Principles
+
+```vue
+<!-- ✅ Good: Atom Component -->
+<template>
+  <Button
+    :label="label"
+    :icon="icon"
+    :severity="severity"
+    :size="size"
+    :disabled="disabled"
+    :loading="loading"
+    @click="$emit('click')"
+    v-bind="$attrs"
+  />
+</template>
+
+<script setup lang="ts">
+interface Props {
+  label?: string
+  icon?: string
+  severity?: 'primary' | 'secondary' | 'success' | 'warning' | 'error'
+  size?: 'small' | 'normal' | 'large'
+  disabled?: boolean
+  loading?: boolean
+}
+
+defineProps<Props>()
+defineEmits<{
+  click: []
+}>()
+</script>
+```
+
+#### 2. Proper TypeScript Usage
+
+```typescript
+// ✅ Good: Comprehensive type definitions
+interface UserFormData {
+  id?: number
+  name: string
+  email: string
+  role: UserRole
+  permissions: Permission[]
+  profile?: UserProfile
+}
+
+interface UserFormProps {
+  user?: UserFormData
+  mode: 'create' | 'edit' | 'view'
+  loading?: boolean
+}
+
+interface UserFormEmits {
+  'submit': [data: UserFormData]
+  'cancel': []
+  'delete': [id: number]
+}
+
+// ✅ Good: Generic composable with proper typing
+export function useCrud<T extends { id: string | number }>(
+  endpoint: string
+): CrudComposable<T> {
+  // Implementation
+}
+```
+
+#### 3. Composable Patterns
+
+```typescript
+// ✅ Good: Single responsibility composable
+export function useFormValidation<T extends Record<string, any>>(
+  schema: FormSchema,
+  initialData: T
+) {
+  const data = ref<T>(initialData)
+  const errors = ref<Record<string, string[]>>({})
+  const isValid = computed(() => Object.keys(errors.value).length === 0)
+  
+  const validate = async (): Promise<boolean> => {
+    errors.value = {}
+    
+    for (const field of schema.fields) {
+      const fieldErrors = await validateField(field, data.value[field.name], data.value)
+      if (fieldErrors.length > 0) {
+        errors.value[field.name] = fieldErrors
+      }
+    }
+    
+    return isValid.value
+  }
+  
+  const validateField = async (field: FormField, value: any, formData: T): Promise<string[]> => {
+    // Validation logic
+    return []
+  }
+  
+  const reset = () => {
+    data.value = { ...initialData }
+    errors.value = {}
+  }
+  
+  return {
+    data: readonly(data),
+    errors: readonly(errors),
+    isValid,
+    validate,
+    validateField,
+    reset,
+    setData: (newData: T) => { data.value = newData },
+    setFieldValue: (field: keyof T, value: any) => { data.value[field] = value }
+  }
+}
+```
+
+### Performance Guidelines
+
+#### 1. Computed Properties vs Methods
+
+```vue
+<script setup>
+// ✅ Good: Use computed for derived state
+const filteredItems = computed(() => {
+  return items.value.filter(item => item.active)
+})
+
+const expensiveCalculation = computed(() => {
+  return heavyProcessing(data.value)
+})
+
+// ✅ Good: Use methods for actions
+const handleSubmit = async () => {
+  await submitForm()
+}
+
+// ❌ Bad: Don't use methods for derived state in template
+const getFilteredItems = () => {
+  return items.value.filter(item => item.active) // Called on every render
+}
+</script>
+```
+
+#### 2. Proper Component Splitting
+
+```vue
+<!-- ✅ Good: Split heavy components -->
+<template>
+  <div class="customer-dashboard">
+    <CustomerHeader :customer="customer" />
+    <CustomerStats :stats="customerStats" />
+    <Suspense>
+      <template #default>
+        <CustomerOrders :customer-id="customer.id" />
+      </template>
+      <template #fallback>
+        <LoadingSpinner />
+      </template>
+    </Suspense>
+  </div>
+</template>
+```
+
+#### 3. Memory Management
+
+```typescript
+// ✅ Good: Proper cleanup
+export function useWebSocket(url: string) {
+  const socket = ref<WebSocket | null>(null)
+  const isConnected = ref(false)
+  
+  const connect = () => {
+    socket.value = new WebSocket(url)
+    socket.value.onopen = () => { isConnected.value = true }
+    socket.value.onclose = () => { isConnected.value = false }
+  }
+  
+  const disconnect = () => {
+    if (socket.value) {
+      socket.value.close()
+      socket.value = null
+    }
+  }
+  
+  onBeforeUnmount(disconnect)
+  
+  return {
+    socket: readonly(socket),
+    isConnected: readonly(isConnected),
+    connect,
+    disconnect
+  }
+}
+```
+
+---
+
+## Schema Design Best Practices
+
+### 1. Schema Structure Standards
+
+```json
+{
+  "name": "customer",
+  "label": "Customer",
+  "module": "crm",
+  "description": "Customer management document type",
+  "api": {
+    "baseEndpoint": "/api/v1/customers",
+    "methods": ["GET", "POST", "PUT", "DELETE"],
+    "bulk": ["delete", "update"],
+    "search": {
+      "fields": ["name", "email", "phone"],
+      "filters": ["status", "type", "created_date"]
+    }
+  },
+  "listView": {
+    "title": "Customers",
+    "defaultSort": { "field": "name", "order": "asc" },
+    "defaultFilters": { "status": "active" },
+    "pagination": { "defaultSize": 50, "options": [25, 50, 100] },
+    "columns": [
+      {
+        "field": "name",
+        "header": "Customer Name",
+        "sortable": true,
+        "filterable": true,
+        "width": "200px"
+      }
+    ],
+    "toolbarActions": ["create", "bulk_delete", "export"],
+    "rowActions": ["view", "edit", "delete"]
+  },
+  "formView": {
+    "title": "Customer Details",
+    "layout": "sections",
+    "sections": [
+      {
+        "title": "Basic Information",
+        "collapsible": false,
+        "columns": 2,
+        "fields": ["name", "email", "phone", "status"]
+      }
+    ]
+  },
+  "fields": [
+    {
+      "name": "name",
+      "label": "Customer Name",
+      "type": "text",
+      "required": true,
+      "maxLength": 100,
+      "placeholder": "Enter customer name",
+      "helpText": "The legal name of the customer",
+      "validation": {
+        "pattern": "^[a-zA-Z\\s]+$",
+        "message": "Name can only contain letters and spaces"
+      }
+    }
+  ],
+  "access": {
+    "permissions": {
+      "create": ["sales_rep", "sales_manager"],
+      "read": ["sales_rep", "sales_manager", "customer_service"],
+      "update": ["sales_rep", "sales_manager"],
+      "delete": ["sales_manager"]
+    },
+    "fieldLevel": {
+      "credit_limit": {
+        "read": ["sales_manager", "finance"],
+        "write": ["finance"]
+      }
+    },
+    "dataScope": {
+      "sales_rep": "own",
+      "sales_manager": "team",
+      "admin": "all"
+    }
+  }
+}
+```
+
+### 2. Validation Rules
+
+```json
+{
+  "fields": [
+    {
+      "name": "email",
+      "label": "Email Address",
+      "type": "email",
+      "required": true,
+      "validation": {
+        "format": "email",
+        "unique": true,
+        "customRules": [
+          {
+            "rule": "domain_whitelist",
+            "params": ["company.com", "partner.com"],
+            "message": "Email must be from approved domain"
+          }
+        ]
+      }
+    },
+    {
+      "name": "credit_limit",
+      "label": "Credit Limit",
+      "type": "currency",
+      "validation": {
+        "min": 0,
+        "max": 1000000,
+        "conditional": {
+          "field": "customer_type",
+          "operator": "equals",
+          "value": "enterprise",
+          "rule": { "min": 10000 }
+        }
+      }
+    }
+  ]
+}
+```
+
+### 3. Conditional Logic
+
+```json
+{
+  "fields": [
+    {
+      "name": "billing_address_same",
+      "label": "Billing address same as shipping",
+      "type": "checkbox",
+      "default": true
+    },
+    {
+      "name": "billing_address",
+      "label": "Billing Address",
+      "type": "textarea",
+      "conditional": {
+        "field": "billing_address_same",
+        "operator": "equals",
+        "value": false,
+        "action": "show"
+      },
+      "required": {
+        "conditional": {
+          "field": "billing_address_same",
+          "operator": "equals",
+          "value": false
+        }
+      }
+    }
+  ]
+}
+```
+
+---
+
+## Security Guidelines
+
+### 1. Access Control Implementation
+
+```typescript
+// services/accessControl.ts
+export class AccessControlService {
+  async checkPermission(
+    user: User, 
+    action: string, 
+    resource: string, 
+    context?: any
+  ): Promise<boolean> {
+    // 1. Check subscription-level access
+    if (!await this.hasModuleAccess(user.subscription, resource)) {
+      return false
+    }
+    
+    // 2. Check role-level permissions
+    if (!await this.hasRolePermission(user.roles, action, resource)) {
+      return false
+    }
+    
+    // 3. Check data scope (own/team/all)
+    if (context?.itemId && !await this.hasDataAccess(user, resource, context.itemId)) {
+      return false
+    }
+    
+    // 4. Check field-level access for specific fields
+    if (context?.fields && !await this.hasFieldAccess(user, resource, context.fields)) {
+      return false
+    }
+    
+    return true
+  }
+  
+  async filterFields(user: User, doctype: string, fields: FormField[]): Promise<FormField[]> {
+    const accessibleFields = []
+    
+    for (const field of fields) {
+      const hasAccess = await this.checkFieldAccess(user, doctype, field.name)
+      if (hasAccess.read) {
+        accessibleFields.push({
+          ...field,
+          readonly: !hasAccess.write || field.readonly
+        })
+      }
+    }
+    
+    return accessibleFields
+  }
+}
+```
+
+### 2. Input Sanitization
+
+```typescript
+// utils/sanitizer.ts
+export class InputSanitizer {
+  static sanitizeHtml(input: string): string {
+    return DOMPurify.sanitize(input, {
+      ALLOWED_TAGS: ['b', 'i', 'u', 'strong', 'em', 'p', 'br'],
+      ALLOWED_ATTR: []
+    })
+  }
+  
+  static sanitizeSearch(query: string): string {
+    return query
+      .replace(/[<>'"&]/g, '') // Remove potentially dangerous characters
+      .trim()
+      .substring(0, 100) // Limit length
+  }
+  
+  static validateFileUpload(file: File): { valid: boolean; error?: string } {
+    const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf', 'text/csv']
+    const maxSize = 5 * 1024 * 1024 // 5MB
+    
+    if (!allowedTypes.includes(file.type)) {
+      return { valid: false, error: 'File type not allowed' }
+    }
+    
+    if (file.size > maxSize) {
+      return { valid: false, error: 'File too large' }
+    }
+    
+    return { valid: true }
+  }
+}
+```
+
+---
+
+This completes the comprehensive ERP UI framework documentation, providing both theoretical foundations and practical implementation guidance for building enterprise-grade applications with Vue 3, PrimeVue 4, and schema-driven architecture.

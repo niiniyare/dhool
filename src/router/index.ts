@@ -23,6 +23,11 @@ const router = createRouter({
       component: () => import('@/views/demo/schemas.vue')
     },
     {
+      path: '/demo/renderer',
+      name: 'demo-renderer',
+      component: () => import('@/views/demo/renderer.vue')
+    },
+    {
       path: '/showcase/molecules',
       name: 'showcase-molecules',
       component: () => import('@/views/showcase/molecules.vue')

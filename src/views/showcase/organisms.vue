@@ -302,73 +302,15 @@ import PhoneCell from '@/components/organisms/cells/PhoneCell.vue'
 import BadgeCell from '@/components/organisms/cells/BadgeCell.vue'
 import type { DocumentSchema, FormSection, FieldSchema } from '@/types/schema'
 
-// Mock schemas and data
-const customerSchema: DocumentSchema = {
-  name: 'customer',
-  label: 'Customer',
-  module: 'crm',
-  listView: {
-    columns: [
-      { field: 'name', label: 'Name', type: 'text', sortable: true },
-      { field: 'email', label: 'Email', type: 'email', sortable: true },
-      { field: 'phone', label: 'Phone', type: 'phone' },
-      { field: 'status', label: 'Status', type: 'badge', sortable: true },
-      { field: 'created_at', label: 'Created', type: 'date', sortable: true }
-    ],
-    toolbarActions: [
-      { id: 'create', label: 'New Customer', icon: 'pi pi-plus', variant: 'primary', type: 'button' }
-    ],
-    rowActions: [
-      { id: 'view', label: 'View', icon: 'pi pi-eye', type: 'button' },
-      { id: 'edit', label: 'Edit', icon: 'pi pi-pencil', type: 'button' },
-      { id: 'delete', label: 'Delete', icon: 'pi pi-trash', variant: 'danger', type: 'button' }
-    ]
-  },
-  formView: {
-    sections: []
-  },
-  api: { baseEndpoint: '/api/customers' },
-  access: { permissions: {} }
-}
+// Real schemas
+import customerSchemaImport from '@/schemas/customer.json'
+import productSchemaImport from '@/schemas/product.json'
 
-const customerFormSchema: FormSection[] = [
-  {
-    title: 'Basic Information',
-    fields: [
-      { name: 'name', label: 'Full Name', type: 'text', required: true, size: 'medium' },
-      { name: 'email', label: 'Email Address', type: 'email', required: true, size: 'medium' },
-      { name: 'phone', label: 'Phone Number', type: 'phone', size: 'medium' }
-    ]
-  },
-  {
-    title: 'Address',
-    fields: [
-      { name: 'address', label: 'Street Address', type: 'textarea', size: 'large' },
-      { name: 'city', label: 'City', type: 'text', size: 'medium' },
-      { name: 'state', label: 'State', type: 'text', size: 'small' },
-      { name: 'zip', label: 'ZIP Code', type: 'text', size: 'small' }
-    ]
-  }
-]
+const customerSchema: DocumentSchema = customerSchemaImport as DocumentSchema
 
-const productFormSchema: FormSection[] = [
-  {
-    title: 'Product Details',
-    fields: [
-      { name: 'name', label: 'Product Name', type: 'text', required: true, size: 'large' },
-      { name: 'sku', label: 'SKU', type: 'text', required: true, size: 'medium' },
-      { name: 'price', label: 'Price', type: 'number', required: true, size: 'medium' },
-      { name: 'category', label: 'Category', type: 'select', required: true, size: 'medium',
-        options: [
-          { label: 'Electronics', value: 'electronics' },
-          { label: 'Clothing', value: 'clothing' },
-          { label: 'Books', value: 'books' }
-        ]
-      },
-      { name: 'description', label: 'Description', type: 'textarea', size: 'large' }
-    ]
-  }
-]
+const customerFormSchema: FormSection[] = customerSchemaImport.formView.sections as FormSection[]
+
+const productFormSchema: FormSection[] = productSchemaImport.formView.sections as FormSection[]
 
 const compactFormSchema: FormSection[] = [
   {
@@ -425,43 +367,54 @@ const largeFormSchema: FormSection[] = [
   }
 ]
 
-// Mock data
+// Mock data based on real schemas
 const mockCustomers = [
   {
     id: 1,
-    name: 'John Doe',
-    email: 'john.doe@example.com',
+    name: 'Acme Corporation',
+    email: 'contact@acme.corp',
     phone: '+1-555-123-4567',
+    type: 'company',
     status: 'active',
-    created_at: new Date('2024-01-15')
+    contact_person: 'John Smith',
+    website: 'https://acme.corp',
+    createdAt: new Date('2024-01-15')
   },
   {
     id: 2,
-    name: 'Jane Smith',
-    email: 'jane.smith@example.com',
+    name: 'Jane Doe',
+    email: 'jane.doe@example.com',
     phone: '+1-555-987-6543',
-    status: 'pending',
-    created_at: new Date('2024-01-20')
+    type: 'individual',
+    status: 'active',
+    createdAt: new Date('2024-01-20')
   },
   {
     id: 3,
-    name: 'Bob Johnson',
-    email: 'bob.johnson@example.com',
+    name: 'TechStart Inc',
+    email: 'info@techstart.com',
     phone: '+1-555-456-7890',
+    type: 'company',
     status: 'inactive',
-    created_at: new Date('2024-01-10')
+    contact_person: 'Sarah Wilson',
+    website: 'https://techstart.com',
+    createdAt: new Date('2024-01-10')
   }
 ]
 
-// Form data
+// Form data based on real schemas
 const customerFormData = reactive({
+  type: 'individual',
   name: '',
   email: '',
   phone: '',
-  address: '',
+  status: 'active',
+  address_line1: '',
+  address_line2: '',
   city: '',
   state: '',
-  zip: ''
+  postal_code: '',
+  country: 'US'
 })
 
 const productFormData = reactive({
@@ -469,17 +422,23 @@ const productFormData = reactive({
   sku: 'SP-001',
   price: 99.99,
   category: 'electronics',
-  description: 'A sample product for demonstration'
+  description: 'A sample product for demonstration',
+  status: 'active'
 })
 
 const customerViewData = reactive({
-  name: 'John Doe',
-  email: 'john.doe@example.com',
+  type: 'company',
+  name: 'Acme Corporation',
+  email: 'contact@acme.corp',
   phone: '+1-555-123-4567',
-  address: '123 Main St',
-  city: 'Anytown',
-  state: 'CA',
-  zip: '12345'
+  status: 'active',
+  contact_person: 'John Smith',
+  website: 'https://acme.corp',
+  address_line1: '123 Business Ave',
+  city: 'New York',
+  state: 'NY',
+  postal_code: '10001',
+  country: 'US'
 })
 
 const compactFormData = reactive({
@@ -513,33 +472,42 @@ const showViewDrawer = ref(false)
 const showLargeDrawer = ref(false)
 
 const newCustomerData = reactive({
+  type: 'individual',
   name: '',
   email: '',
   phone: '',
-  address: '',
+  status: 'active',
+  address_line1: '',
   city: '',
   state: '',
-  zip: ''
+  postal_code: '',
+  country: 'US'
 })
 
 const editCustomerData = reactive({
+  type: 'individual',
   name: 'John Doe',
   email: 'john.doe@example.com',
   phone: '+1-555-123-4567',
-  address: '123 Main St',
+  status: 'active',
+  address_line1: '123 Main St',
   city: 'Anytown',
   state: 'CA',
-  zip: '12345'
+  postal_code: '12345',
+  country: 'US'
 })
 
 const viewCustomerData = reactive({
+  type: 'individual',
   name: 'Jane Smith',
   email: 'jane.smith@example.com',
   phone: '+1-555-987-6543',
-  address: '456 Oak Ave',
+  status: 'active',
+  address_line1: '456 Oak Ave',
   city: 'Springfield',
   state: 'IL',
-  zip: '62701'
+  postal_code: '62701',
+  country: 'US'
 })
 
 // Event handlers
