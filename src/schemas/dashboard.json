@@ -1,0 +1,537 @@
+{
+  "name": "dashboard",
+  "label": "Dashboard",
+  "module": "core",
+  "type": "schema",
+  "version": "1.0.0",
+  "description": "Dashboard configuration schema with widget types and grid layout",
+  "properties": {
+    "id": {
+      "type": "string",
+      "label": "Dashboard ID",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "label": "Dashboard Name",
+      "required": true,
+      "maxLength": 100
+    },
+    "description": {
+      "type": "string",
+      "label": "Description",
+      "maxLength": 500
+    },
+    "layout": {
+      "type": "object",
+      "label": "Grid Layout Configuration",
+      "required": true,
+      "properties": {
+        "columns": {
+          "type": "number",
+          "label": "Grid Columns",
+          "default": 12,
+          "minimum": 1,
+          "maximum": 24
+        },
+        "gap": {
+          "type": "number",
+          "label": "Grid Gap (px)",
+          "default": 16,
+          "minimum": 0,
+          "maximum": 50
+        },
+        "responsive": {
+          "type": "boolean",
+          "label": "Responsive Layout",
+          "default": true
+        },
+        "breakpoints": {
+          "type": "object",
+          "label": "Responsive Breakpoints",
+          "properties": {
+            "xs": {
+              "type": "number",
+              "label": "Extra Small (px)",
+              "default": 480
+            },
+            "sm": {
+              "type": "number",
+              "label": "Small (px)",
+              "default": 768
+            },
+            "md": {
+              "type": "number",
+              "label": "Medium (px)",
+              "default": 1024
+            },
+            "lg": {
+              "type": "number",
+              "label": "Large (px)",
+              "default": 1280
+            },
+            "xl": {
+              "type": "number",
+              "label": "Extra Large (px)",
+              "default": 1920
+            }
+          }
+        }
+      }
+    },
+    "widgets": {
+      "type": "array",
+      "label": "Dashboard Widgets",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "label": "Widget ID",
+            "required": true
+          },
+          "type": {
+            "type": "string",
+            "label": "Widget Type",
+            "required": true,
+            "enum": ["stat", "chart", "table", "list"]
+          },
+          "title": {
+            "type": "string",
+            "label": "Widget Title",
+            "required": true,
+            "maxLength": 100
+          },
+          "position": {
+            "type": "object",
+            "label": "Grid Position",
+            "required": true,
+            "properties": {
+              "x": {
+                "type": "number",
+                "label": "Column Start",
+                "minimum": 0
+              },
+              "y": {
+                "type": "number",
+                "label": "Row Start",
+                "minimum": 0
+              },
+              "width": {
+                "type": "number",
+                "label": "Column Span",
+                "minimum": 1,
+                "default": 1
+              },
+              "height": {
+                "type": "number",
+                "label": "Row Span",
+                "minimum": 1,
+                "default": 1
+              }
+            }
+          },
+          "config": {
+            "type": "object",
+            "label": "Widget Configuration",
+            "oneOf": [
+              {
+                "title": "Stat Widget",
+                "properties": {
+                  "type": {
+                    "const": "stat"
+                  },
+                  "value": {
+                    "type": ["string", "number"],
+                    "label": "Stat Value"
+                  },
+                  "label": {
+                    "type": "string",
+                    "label": "Stat Label"
+                  },
+                  "icon": {
+                    "type": "string",
+                    "label": "Icon Class"
+                  },
+                  "color": {
+                    "type": "string",
+                    "label": "Color Scheme",
+                    "enum": ["primary", "secondary", "success", "info", "warn", "danger", "help", "contrast"]
+                  },
+                  "trend": {
+                    "type": "object",
+                    "label": "Trend Indicator",
+                    "properties": {
+                      "value": {
+                        "type": "number",
+                        "label": "Trend Value"
+                      },
+                      "direction": {
+                        "type": "string",
+                        "label": "Trend Direction",
+                        "enum": ["up", "down", "neutral"]
+                      },
+                      "period": {
+                        "type": "string",
+                        "label": "Trend Period"
+                      }
+                    }
+                  },
+                  "dataSource": {
+                    "type": "string",
+                    "label": "Data Source URL"
+                  }
+                }
+              },
+              {
+                "title": "Chart Widget",
+                "properties": {
+                  "type": {
+                    "const": "chart"
+                  },
+                  "chartType": {
+                    "type": "string",
+                    "label": "Chart Type",
+                    "enum": ["line", "bar", "pie", "doughnut", "area", "scatter"],
+                    "required": true
+                  },
+                  "dataSource": {
+                    "type": "string",
+                    "label": "Data Source URL",
+                    "required": true
+                  },
+                  "xAxis": {
+                    "type": "string",
+                    "label": "X-Axis Field"
+                  },
+                  "yAxis": {
+                    "type": "string",
+                    "label": "Y-Axis Field"
+                  },
+                  "series": {
+                    "type": "array",
+                    "label": "Data Series",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "field": {
+                          "type": "string",
+                          "label": "Field Name"
+                        },
+                        "label": {
+                          "type": "string",
+                          "label": "Series Label"
+                        },
+                        "color": {
+                          "type": "string",
+                          "label": "Series Color"
+                        }
+                      }
+                    }
+                  },
+                  "options": {
+                    "type": "object",
+                    "label": "Chart Options",
+                    "properties": {
+                      "responsive": {
+                        "type": "boolean",
+                        "default": true
+                      },
+                      "legend": {
+                        "type": "object",
+                        "properties": {
+                          "display": {
+                            "type": "boolean",
+                            "default": true
+                          },
+                          "position": {
+                            "type": "string",
+                            "enum": ["top", "bottom", "left", "right"],
+                            "default": "top"
+                          }
+                        }
+                      },
+                      "animation": {
+                        "type": "boolean",
+                        "default": true
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "title": "Table Widget",
+                "properties": {
+                  "type": {
+                    "const": "table"
+                  },
+                  "dataSource": {
+                    "type": "string",
+                    "label": "Data Source URL",
+                    "required": true
+                  },
+                  "columns": {
+                    "type": "array",
+                    "label": "Table Columns",
+                    "required": true,
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "field": {
+                          "type": "string",
+                          "label": "Field Name",
+                          "required": true
+                        },
+                        "header": {
+                          "type": "string",
+                          "label": "Column Header",
+                          "required": true
+                        },
+                        "sortable": {
+                          "type": "boolean",
+                          "label": "Sortable",
+                          "default": false
+                        },
+                        "width": {
+                          "type": "string",
+                          "label": "Column Width"
+                        },
+                        "format": {
+                          "type": "string",
+                          "label": "Value Format",
+                          "enum": ["text", "number", "currency", "percentage", "date", "datetime"]
+                        }
+                      }
+                    }
+                  },
+                  "pageSize": {
+                    "type": "number",
+                    "label": "Page Size",
+                    "default": 5,
+                    "minimum": 1,
+                    "maximum": 50
+                  },
+                  "showHeader": {
+                    "type": "boolean",
+                    "label": "Show Header",
+                    "default": true
+                  },
+                  "striped": {
+                    "type": "boolean",
+                    "label": "Striped Rows",
+                    "default": false
+                  }
+                }
+              },
+              {
+                "title": "List Widget",
+                "properties": {
+                  "type": {
+                    "const": "list"
+                  },
+                  "dataSource": {
+                    "type": "string",
+                    "label": "Data Source URL",
+                    "required": true
+                  },
+                  "itemTemplate": {
+                    "type": "object",
+                    "label": "Item Template",
+                    "required": true,
+                    "properties": {
+                      "title": {
+                        "type": "string",
+                        "label": "Title Field",
+                        "required": true
+                      },
+                      "subtitle": {
+                        "type": "string",
+                        "label": "Subtitle Field"
+                      },
+                      "description": {
+                        "type": "string",
+                        "label": "Description Field"
+                      },
+                      "avatar": {
+                        "type": "string",
+                        "label": "Avatar Field"
+                      },
+                      "timestamp": {
+                        "type": "string",
+                        "label": "Timestamp Field"
+                      },
+                      "status": {
+                        "type": "string",
+                        "label": "Status Field"
+                      }
+                    }
+                  },
+                  "maxItems": {
+                    "type": "number",
+                    "label": "Maximum Items",
+                    "default": 10,
+                    "minimum": 1,
+                    "maximum": 100
+                  },
+                  "showAvatar": {
+                    "type": "boolean",
+                    "label": "Show Avatar",
+                    "default": true
+                  },
+                  "clickAction": {
+                    "type": "object",
+                    "label": "Click Action",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": ["navigate", "modal", "drawer", "none"],
+                        "default": "none"
+                      },
+                      "url": {
+                        "type": "string",
+                        "label": "Navigation URL"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "refreshInterval": {
+            "type": "number",
+            "label": "Auto Refresh Interval (seconds)",
+            "minimum": 0,
+            "default": 0
+          },
+          "visible": {
+            "type": "boolean",
+            "label": "Widget Visible",
+            "default": true
+          }
+        }
+      }
+    },
+    "filters": {
+      "type": "object",
+      "label": "Global Dashboard Filters",
+      "properties": {
+        "dateRange": {
+          "type": "object",
+          "label": "Date Range Filter",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "defaultRange": {
+              "type": "string",
+              "enum": ["today", "week", "month", "quarter", "year", "custom"],
+              "default": "month"
+            }
+          }
+        },
+        "customFilters": {
+          "type": "array",
+          "label": "Custom Filters",
+          "items": {
+            "type": "object",
+            "properties": {
+              "field": {
+                "type": "string",
+                "label": "Filter Field"
+              },
+              "type": {
+                "type": "string",
+                "enum": ["select", "multiselect", "text", "number", "date"],
+                "label": "Filter Type"
+              },
+              "label": {
+                "type": "string",
+                "label": "Filter Label"
+              },
+              "options": {
+                "type": "array",
+                "label": "Filter Options",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "access": {
+      "type": "object",
+      "label": "Access Control",
+      "properties": {
+        "roles": {
+          "type": "array",
+          "label": "Allowed Roles",
+          "items": {
+            "type": "string"
+          }
+        },
+        "permissions": {
+          "type": "object",
+          "label": "Permission Requirements",
+          "properties": {
+            "view": {
+              "type": "array",
+              "label": "View Permissions",
+              "items": {
+                "type": "string"
+              }
+            },
+            "edit": {
+              "type": "array",
+              "label": "Edit Permissions",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "label": "Dashboard Metadata",
+      "properties": {
+        "createdBy": {
+          "type": "string",
+          "label": "Created By"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "label": "Created At"
+        },
+        "updatedBy": {
+          "type": "string",
+          "label": "Updated By"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "label": "Updated At"
+        },
+        "tags": {
+          "type": "array",
+          "label": "Tags",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

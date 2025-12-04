@@ -3,9 +3,9 @@ import { schemaService } from '@/services/schema'
 import { useAccess } from '@/composables/useAccess'
 import type { 
   DocumentSchema, 
-  SchemaFieldSchema, 
-  ListColumn, 
-  SchemaActionSchema 
+  FieldSchema, 
+  ColumnSchema, 
+  ActionSchema 
 } from '@/types/schema'
 
 /**
@@ -37,22 +37,22 @@ export function useSchema(docType: MaybeRef<string>) {
   }
 
   // Filter fields based on access control
-  const filterFields = (fields: Record<string, SchemaFieldSchema> | undefined) => {
+  const filterFields = (fields: FieldSchema[] | undefined) => {
     if (!fields) return {}
     
     const docTypeValue = toValue(docType)
-    if (!docTypeValue) return fields
+    if (!docTypeValue) return {}
 
-    const filteredFields: Record<string, SchemaFieldSchema> = {}
+    const filteredFields: Record<string, FieldSchema> = {}
     
-    for (const [fieldName, field] of Object.entries(fields)) {
-      const fieldAccess = canAccessField(docTypeValue, fieldName)
+    for (const field of fields) {
+      const fieldAccess = canAccessField.value(docTypeValue, field.name)
       if (fieldAccess.read) {
-        filteredFields[fieldName] = {
+        filteredFields[field.name] = {
           ...field,
           // Add access metadata for UI components
           _access: fieldAccess
-        } as SchemaFieldSchema & { _access: any }
+        } as FieldSchema & { _access: any }
       }
     }
 
@@ -60,20 +60,20 @@ export function useSchema(docType: MaybeRef<string>) {
   }
 
   // Filter columns based on access control
-  const filterColumns = (columns: ListColumn[] | undefined) => {
+  const filterColumns = (columns: ColumnSchema[] | undefined) => {
     if (!columns) return []
     
     const docTypeValue = toValue(docType)
     if (!docTypeValue) return columns
 
     return columns.filter(column => {
-      const fieldAccess = canAccessField(docTypeValue, column.field)
+      const fieldAccess = canAccessField.value(docTypeValue, column.field)
       return fieldAccess.read
     })
   }
 
   // Filter actions based on access control
-  const filterSchemaActions = (actions: SchemaActionSchema[] | undefined) => {
+  const filterSchemaActions = (actions: ActionSchema[] | undefined) => {
     if (!actions) return []
     
     const docTypeValue = toValue(docType)
@@ -81,9 +81,9 @@ export function useSchema(docType: MaybeRef<string>) {
 
     return actions.filter(action => {
       // Check if user has required permissions for this action
-      if (action.requires) {
-        const allowedActions = filterActions(docTypeValue, action.requires)
-        if (allowedActions.length !== action.requires.length) {
+      if (action.permissions) {
+        const allowedActions = filterActions.value(docTypeValue, action.permissions)
+        if (allowedActions.length !== action.permissions.length) {
           return false
         }
       }
@@ -102,7 +102,7 @@ export function useSchema(docType: MaybeRef<string>) {
   // Check if module is accessible
   const isModuleAccessible = computed(() => {
     if (!schema.value) return false
-    return hasModule(schema.value.module)
+    return hasModule.value(schema.value.module)
   })
 
   // Computed properties for reactive access-filtered data
@@ -115,7 +115,7 @@ export function useSchema(docType: MaybeRef<string>) {
   const rowActions = computed(() => filterSchemaActions(schema.value?.listView.rowActions))
 
   // Get field by name with access checking
-  const getField = (fieldName: string): SchemaFieldSchema | null => {
+  const getField = (fieldName: string): FieldSchema | null => {
     const filteredFields = fields.value
     return filteredFields[fieldName] || null
   }
@@ -125,16 +125,16 @@ export function useSchema(docType: MaybeRef<string>) {
     const docTypeValue = toValue(docType)
     if (!docTypeValue) return false
     
-    const fieldAccess = canAccessField(docTypeValue, fieldName)
+    const fieldAccess = canAccessField.value(docTypeValue, fieldName)
     return fieldAccess.write
   }
 
   // Get fields for a specific section
-  const getSectionFields = (sectionId: string): Record<string, SchemaFieldSchema> => {
+  const getSectionFields = (sectionId: string): Record<string, FieldSchema> => {
     const section = schema.value?.formView.sections.find(s => s.id === sectionId)
     if (!section) return {}
 
-    const sectionFields: Record<string, SchemaFieldSchema> = {}
+    const sectionFields: Record<string, FieldSchema> = {}
     const allFields = fields.value
 
     for (const fieldName of section.fields) {

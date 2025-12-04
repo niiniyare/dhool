@@ -1,0 +1,322 @@
+{
+  "name": "product",
+  "label": "Product",
+  "labelPlural": "Products",
+  "icon": "pi pi-box",
+  "module": "inventory",
+  "api": {
+    "baseEndpoint": "/api/v1/products",
+    "endpoints": {
+      "list": "/api/v1/products",
+      "get": "/api/v1/products/{id}",
+      "create": "/api/v1/products",
+      "update": "/api/v1/products/{id}",
+      "delete": "/api/v1/products/{id}",
+      "search": "/api/v1/products/search"
+    },
+    "pagination": {
+      "pageSize": 25,
+      "pageSizeOptions": [10, 25, 50, 100]
+    }
+  },
+  "listView": {
+    "columns": [
+      {
+        "field": "id",
+        "header": "ID",
+        "type": "text",
+        "sortable": true,
+        "width": "80px"
+      },
+      {
+        "field": "sku",
+        "header": "SKU",
+        "type": "text",
+        "sortable": true,
+        "searchable": true,
+        "filter": true,
+        "filterType": "text"
+      },
+      {
+        "field": "name",
+        "header": "Product Name",
+        "type": "text",
+        "sortable": true,
+        "searchable": true,
+        "filter": true,
+        "filterType": "text"
+      },
+      {
+        "field": "category",
+        "header": "Category",
+        "type": "text",
+        "sortable": true,
+        "filter": true,
+        "filterType": "text"
+      },
+      {
+        "field": "price",
+        "header": "Price",
+        "type": "currency",
+        "sortable": true,
+        "width": "120px"
+      },
+      {
+        "field": "stock_qty",
+        "header": "Stock",
+        "type": "number",
+        "sortable": true,
+        "width": "100px"
+      },
+      {
+        "field": "status",
+        "header": "Status",
+        "type": "badge",
+        "sortable": true,
+        "filter": true,
+        "filterType": "select",
+        "filterOptions": [
+          { "label": "Active", "value": "active" },
+          { "label": "Discontinued", "value": "discontinued" }
+        ]
+      },
+      {
+        "field": "createdAt",
+        "header": "Created",
+        "type": "date",
+        "sortable": true,
+        "width": "120px"
+      }
+    ],
+    "filters": [
+      {
+        "field": "category",
+        "type": "text"
+      },
+      {
+        "field": "status",
+        "type": "select",
+        "options": [
+          { "value": "active", "label": "Active" },
+          { "value": "discontinued", "label": "Discontinued" }
+        ]
+      },
+      {
+        "field": "dateRange",
+        "type": "dateRange",
+        "field_start": "createdAt",
+        "field_end": "createdAt"
+      }
+    ],
+    "searchFields": ["name", "sku", "description"],
+    "toolbarActions": [
+      {
+        "id": "create",
+        "label": "Add Product",
+        "icon": "pi pi-plus",
+        "variant": "primary",
+        "action": "create"
+      },
+      {
+        "id": "export",
+        "label": "Export",
+        "icon": "pi pi-download",
+        "variant": "secondary",
+        "action": "export"
+      },
+      {
+        "id": "import",
+        "label": "Import",
+        "icon": "pi pi-upload",
+        "variant": "secondary",
+        "action": "import"
+      }
+    ],
+    "rowActions": [
+      {
+        "id": "view",
+        "label": "View",
+        "icon": "pi pi-eye",
+        "action": "view"
+      },
+      {
+        "id": "edit",
+        "label": "Edit",
+        "icon": "pi pi-pencil",
+        "action": "edit"
+      },
+      {
+        "id": "delete",
+        "label": "Delete",
+        "icon": "pi pi-trash",
+        "severity": "danger",
+        "action": "delete",
+        "confirmation": true
+      }
+    ],
+    "pagination": {
+      "defaultPageSize": 25,
+      "pageSizeOptions": [10, 25, 50, 100]
+    }
+  },
+  "formView": {
+    "sections": [
+      {
+        "title": "Basic Information",
+        "description": "Product identification and details",
+        "columns": 2,
+        "fields": ["name", "sku", "description", "category", "status"]
+      },
+      {
+        "title": "Pricing",
+        "description": "Product pricing and cost information",
+        "columns": 2,
+        "fields": ["price", "cost", "margin"]
+      },
+      {
+        "title": "Inventory",
+        "description": "Stock management settings",
+        "columns": 2,
+        "fields": ["stock_qty", "reorder_level"]
+      }
+    ],
+    "fields": [
+      {
+        "name": "name",
+        "label": "Product Name",
+        "type": "text",
+        "required": true,
+        "validation": {
+          "minLength": 2,
+          "maxLength": 200
+        },
+        "placeholder": "Enter product name"
+      },
+      {
+        "name": "sku",
+        "label": "SKU",
+        "type": "text",
+        "required": true,
+        "unique": true,
+        "validation": {
+          "pattern": "^[A-Z0-9-_]+$",
+          "message": "SKU must contain only uppercase letters, numbers, hyphens and underscores"
+        },
+        "placeholder": "PRODUCT-001"
+      },
+      {
+        "name": "description",
+        "label": "Description",
+        "type": "textarea",
+        "required": false,
+        "validation": {
+          "maxLength": 1000
+        },
+        "placeholder": "Product description...",
+        "rows": 4
+      },
+      {
+        "name": "category",
+        "label": "Category",
+        "type": "text",
+        "required": true,
+        "placeholder": "Enter product category"
+      },
+      {
+        "name": "status",
+        "label": "Status",
+        "type": "select",
+        "required": true,
+        "options": [
+          { "label": "Active", "value": "active" },
+          { "label": "Discontinued", "value": "discontinued" }
+        ],
+        "default": "active"
+      },
+      {
+        "name": "price",
+        "label": "Selling Price",
+        "type": "number",
+        "currency": true,
+        "required": true,
+        "validation": {
+          "min": 0,
+          "max": 999999
+        },
+        "placeholder": "0.00"
+      },
+      {
+        "name": "cost",
+        "label": "Cost",
+        "type": "number",
+        "currency": true,
+        "required": true,
+        "validation": {
+          "min": 0,
+          "max": 999999
+        },
+        "placeholder": "0.00"
+      },
+      {
+        "name": "margin",
+        "label": "Margin",
+        "type": "number",
+        "readonly": true,
+        "formula": "price > 0 && cost >= 0 ? ((price - cost) / price * 100).toFixed(2) : 0",
+        "suffix": "%",
+        "placeholder": "0.00"
+      },
+      {
+        "name": "stock_qty",
+        "label": "Stock Quantity",
+        "type": "number",
+        "required": true,
+        "validation": {
+          "min": 0,
+          "max": 999999
+        },
+        "default": 0,
+        "placeholder": "0"
+      },
+      {
+        "name": "reorder_level",
+        "label": "Reorder Level",
+        "type": "number",
+        "required": true,
+        "validation": {
+          "min": 0,
+          "max": 999999
+        },
+        "default": 10,
+        "placeholder": "10"
+      }
+    ]
+  },
+  "access": {
+    "requiredModule": "inventory",
+    "permissions": {
+      "create": ["admin", "inventory_manager", "inventory_clerk"],
+      "read": ["admin", "inventory_manager", "inventory_clerk", "sales_rep"],
+      "update": ["admin", "inventory_manager", "inventory_clerk"],
+      "delete": ["admin", "inventory_manager"],
+      "export": ["admin", "inventory_manager", "inventory_clerk"],
+      "import": ["admin", "inventory_manager"]
+    },
+    "fieldAccess": {
+      "cost": {
+        "read": ["admin", "inventory_manager"],
+        "write": ["admin", "inventory_manager"]
+      },
+      "margin": {
+        "read": ["admin", "inventory_manager", "sales_manager"],
+        "write": []
+      }
+    },
+    "dataScope": {
+      "admin": "all",
+      "inventory_manager": "all",
+      "inventory_clerk": "all",
+      "sales_rep": "all"
+    }
+  }
+}

@@ -1,11 +1,16 @@
 import { api } from './api'
 import type { 
   DocumentSchema, 
-  SchemaFieldSchema, 
-  DependencyConfig, 
-  SchemaCache,
+  FieldSchema, 
+  DependencyConfig,
   FieldType 
 } from '@/types/schema'
+
+interface SchemaCache {
+  data: DocumentSchema
+  timestamp: number
+  ttl: number
+}
 
 export class SchemaService {
   private cache = new Map<string, SchemaCache>()
@@ -48,28 +53,34 @@ export class SchemaService {
     }
 
     // Validate API config
-    if (!s.api?.baseEndpoint) {
+    if (!s.api || typeof s.api !== 'object' || !(s.api as any).baseEndpoint) {
       return false
     }
 
     // Validate listView
-    if (!Array.isArray(s.listView?.columns) || 
-        !Array.isArray(s.listView?.toolbarActions) || 
-        !Array.isArray(s.listView?.rowActions)) {
+    if (!s.listView || typeof s.listView !== 'object') {
+      return false
+    }
+    
+    const listView = s.listView as any
+    if (!Array.isArray(listView.columns)) {
       return false
     }
 
     // Validate formView
-    if (!Array.isArray(s.formView?.sections) || 
-        !s.formView?.fields || 
-        typeof s.formView.fields !== 'object') {
+    if (!s.formView || typeof s.formView !== 'object') {
+      return false
+    }
+    
+    const formView = s.formView as any
+    if (!Array.isArray(formView.sections) || !Array.isArray(formView.fields)) {
       return false
     }
 
     // Validate each field schema
-    for (const [fieldName, field] of Object.entries(s.formView.fields)) {
+    for (const field of formView.fields) {
       if (!this.validateFieldSchema(field)) {
-        console.warn(`Invalid field schema for ${fieldName}`)
+        console.warn(`Invalid field schema for ${field.name || 'unknown'}`)
         return false
       }
     }
@@ -80,19 +91,19 @@ export class SchemaService {
   generateDefaults(schema: DocumentSchema): Record<string, unknown> {
     const defaults: Record<string, unknown> = {}
 
-    for (const [fieldName, field] of Object.entries(schema.formView.fields)) {
-      if (field.defaultValue !== undefined) {
-        defaults[fieldName] = field.defaultValue
+    for (const field of schema.formView.fields) {
+      if (field.default !== undefined) {
+        defaults[field.name] = field.default
       } else {
-        defaults[fieldName] = this.getFieldTypeDefault(field.type)
+        defaults[field.name] = this.getFieldTypeDefault(field.type)
       }
     }
 
     return defaults
   }
 
-  getFieldDependencies(field: SchemaFieldSchema): DependencyConfig[] {
-    return field.dependencies || []
+  getFieldDependencies(field: FieldSchema): DependencyConfig[] {
+    return field.depends || []
   }
 
   invalidateCache(docType?: string): void {
@@ -161,10 +172,12 @@ export class SchemaService {
     // Validate field type
     const validTypes: FieldType[] = [
       'text', 'textarea', 'email', 'password', 'number', 'date', 'datetime',
-      'boolean', 'select', 'multiselect', 'file', 'image', 'currency', 'json'
+      'boolean', 'select', 'multiselect', 'file', 'image', 'currency', 'json',
+      'time', 'percent', 'autocomplete', 'link', 'table', 'color', 'rating',
+      'slider', 'editor', 'code'
     ]
     
-    if (!validTypes.includes(f.type)) {
+    if (!validTypes.includes(f.type as FieldType)) {
       return false
     }
 
@@ -182,8 +195,8 @@ export class SchemaService {
     }
 
     // Validate dependencies if present
-    if (f.dependencies && Array.isArray(f.dependencies)) {
-      for (const dep of f.dependencies) {
+    if (f.depends && Array.isArray(f.depends)) {
+      for (const dep of f.depends) {
         if (!this.validateDependency(dep)) {
           return false
         }
@@ -200,14 +213,14 @@ export class SchemaService {
 
     const d = dependency as Record<string, unknown>
 
-    if (!d.field || !d.condition || !d.action) {
+    if (!d.field || !d.operator || !d.action) {
       return false
     }
 
-    const validConditions = ['equals', 'not_equals', 'contains', 'not_contains', 'greater_than', 'less_than']
-    const validActions = ['show', 'hide', 'require', 'optional', 'enable', 'disable']
+    const validOperators = ['=', '!=', '>', '<', '>=', '<=', 'in', 'not_in', 'contains']
+    const validActions = ['show', 'hide', 'require', 'optional', 'readonly', 'editable']
 
-    return validConditions.includes(d.condition) && validActions.includes(d.action)
+    return validOperators.includes(d.operator as string) && validActions.includes(d.action as string)
   }
 
   private getFieldTypeDefault(type: FieldType): unknown {
@@ -216,16 +229,25 @@ export class SchemaService {
       case 'textarea':
       case 'email':
       case 'password':
+      case 'color':
+      case 'editor':
+      case 'code':
         return ''
       case 'number':
       case 'currency':
+      case 'percent':
+      case 'rating':
+      case 'slider':
         return 0
       case 'boolean':
         return false
       case 'date':
       case 'datetime':
+      case 'time':
         return null
       case 'select':
+      case 'autocomplete':
+      case 'link':
         return null
       case 'multiselect':
         return []
@@ -233,6 +255,7 @@ export class SchemaService {
       case 'image':
         return null
       case 'json':
+      case 'table':
         return {}
       default:
         return null

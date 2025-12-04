@@ -3,40 +3,59 @@
   "label": "Customer",
   "labelPlural": "Customers",
   "icon": "pi pi-users",
-  "module": "sales",
+  "module": "crm",
   "api": {
     "baseEndpoint": "/api/v1/customers",
+    "endpoints": {
+      "list": "/api/v1/customers",
+      "get": "/api/v1/customers/{id}",
+      "create": "/api/v1/customers",
+      "update": "/api/v1/customers/{id}",
+      "delete": "/api/v1/customers/{id}",
+      "search": "/api/v1/customers/search"
+    },
     "pagination": {
-      "pageSize": 20,
-      "pageSizeOptions": [10, 20, 50, 100]
+      "pageSize": 25,
+      "pageSizeOptions": [10, 25, 50, 100]
     }
   },
   "listView": {
     "columns": [
       {
-        "field": "name",
-        "header": "Name",
+        "field": "id",
+        "header": "ID",
+        "type": "text",
         "sortable": true,
+        "width": "80px"
+      },
+      {
+        "field": "name",
+        "header": "Customer Name",
+        "type": "text",
+        "sortable": true,
+        "searchable": true,
         "filter": true,
         "filterType": "text"
       },
       {
         "field": "email",
         "header": "Email",
+        "type": "email",
         "sortable": true,
+        "searchable": true,
         "filter": true,
         "filterType": "text"
       },
       {
         "field": "phone",
         "header": "Phone",
-        "sortable": true,
-        "filter": true,
-        "filterType": "text"
+        "type": "phone",
+        "sortable": false
       },
       {
         "field": "type",
         "header": "Type",
+        "type": "badge",
         "sortable": true,
         "filter": true,
         "filterType": "select",
@@ -48,6 +67,7 @@
       {
         "field": "status",
         "header": "Status",
+        "type": "badge",
         "sortable": true,
         "filter": true,
         "filterType": "select",
@@ -56,66 +76,114 @@
           { "label": "Inactive", "value": "inactive" },
           { "label": "Blocked", "value": "blocked" }
         ]
+      },
+      {
+        "field": "createdAt",
+        "header": "Created",
+        "type": "date",
+        "sortable": true,
+        "width": "120px"
+      }
+    ],
+    "filters": [
+      {
+        "field": "type",
+        "type": "select",
+        "options": [
+          { "value": "individual", "label": "Individual" },
+          { "value": "company", "label": "Company" }
+        ]
+      },
+      {
+        "field": "status",
+        "type": "select",
+        "options": [
+          { "value": "active", "label": "Active" },
+          { "value": "inactive", "label": "Inactive" },
+          { "value": "blocked", "label": "Blocked" }
+        ]
+      },
+      {
+        "field": "dateRange",
+        "type": "dateRange",
+        "field_start": "createdAt",
+        "field_end": "createdAt"
       }
     ],
     "searchFields": ["name", "email", "phone"],
     "toolbarActions": [
       {
-        "label": "New Customer",
+        "id": "create",
+        "label": "Add Customer",
         "icon": "pi pi-plus",
-        "action": "create",
-        "variant": "primary"
+        "variant": "primary",
+        "action": "create"
       },
       {
-        "label": "Import",
-        "icon": "pi pi-upload",
-        "action": "import"
-      },
-      {
+        "id": "export",
         "label": "Export",
         "icon": "pi pi-download",
+        "variant": "secondary",
         "action": "export"
+      },
+      {
+        "id": "import",
+        "label": "Import",
+        "icon": "pi pi-upload",
+        "variant": "secondary",
+        "action": "import"
       }
     ],
     "rowActions": [
       {
+        "id": "view",
         "label": "View",
         "icon": "pi pi-eye",
         "action": "view"
       },
       {
+        "id": "edit",
         "label": "Edit",
         "icon": "pi pi-pencil",
         "action": "edit"
       },
       {
+        "id": "delete",
         "label": "Delete",
         "icon": "pi pi-trash",
+        "severity": "danger",
         "action": "delete",
-        "variant": "danger",
-        "confirm": true
+        "confirmation": true
       }
-    ]
+    ],
+    "pagination": {
+      "defaultPageSize": 25,
+      "pageSizeOptions": [10, 25, 50, 100]
+    }
   },
   "formView": {
     "sections": [
       {
-        "title": "General Information",
+        "title": "Basic Information",
+        "description": "Primary customer details",
         "columns": 2,
-        "fields": ["type", "name", "email", "phone", "status"]
+        "fields": ["name", "email", "phone", "type", "status"]
       },
       {
         "title": "Contact Details",
+        "description": "Additional contact information",
         "columns": 2,
         "fields": ["contact_person", "alternate_phone", "website", "tax_id"]
       },
       {
-        "title": "Address",
-        "columns": 1,
+        "title": "Address Information", 
+        "description": "Customer address details",
+        "columns": 2,
         "fields": ["address_line1", "address_line2", "city", "state", "postal_code", "country"]
       },
       {
-        "title": "Additional Information",
+        "title": "Business Settings",
+        "description": "Account settings and preferences",
         "columns": 2,
         "fields": ["tags", "notes", "credit_limit", "payment_terms"]
       }
@@ -200,10 +268,10 @@
       {
         "name": "website",
         "label": "Website",
-        "type": "text",
+        "type": "link",
+        "required": false,
         "validation": {
-          "pattern": "^https?://.*",
-          "message": "Please enter a valid URL starting with http:// or https://"
+          "format": "url"
         },
         "placeholder": "https://example.com"
       },
@@ -273,11 +341,14 @@
       },
       {
         "name": "notes",
-        "label": "Notes",
-        "type": "text",
-        "multiline": true,
-        "rows": 3,
-        "placeholder": "Additional notes about the customer"
+        "label": "Internal Notes",
+        "type": "textarea",
+        "required": false,
+        "placeholder": "Additional notes about this customer...",
+        "validation": {
+          "maxLength": 1000
+        },
+        "rows": 4
       },
       {
         "name": "credit_limit",
@@ -311,32 +382,50 @@
     ]
   },
   "access": {
-    "requiredModule": "sales",
+    "requiredModule": "crm",
     "permissions": {
-      "create": {
-        "roles": ["admin", "sales_manager", "sales_rep"]
+      "create": ["admin", "sales_manager", "sales_rep"],
+      "read": ["admin", "sales_manager", "sales_rep", "support"],
+      "update": ["admin", "sales_manager", "sales_rep"],
+      "delete": ["admin", "sales_manager"],
+      "export": ["admin", "sales_manager", "sales_rep"],
+      "import": ["admin", "sales_manager"]
+    },
+    "fieldAccess": {
+      "credit_limit": {
+        "read": ["admin", "sales_manager"],
+        "write": ["admin", "sales_manager"]
       },
-      "read": {
-        "roles": ["admin", "sales_manager", "sales_rep", "viewer"],
-        "scope": {
-          "sales_rep": "own",
-          "viewer": "team"
-        }
+      "payment_terms": {
+        "read": ["admin", "sales_manager", "accounting"],
+        "write": ["admin", "sales_manager"]
       },
-      "update": {
-        "roles": ["admin", "sales_manager", "sales_rep"],
-        "scope": {
-          "sales_rep": "own"
-        }
+      "notes": {
+        "read": ["admin", "sales_manager", "sales_rep"],
+        "write": ["admin", "sales_manager", "sales_rep"]
       },
-      "delete": {
-        "roles": ["admin", "sales_manager"]
+      "tax_id": {
+        "read": ["admin", "sales_manager", "accounting"],
+        "write": ["admin", "sales_manager"]
+      }
+    },
+    "dataScope": {
+      "admin": "all",
+      "sales_manager": "team",
+      "sales_rep": "own",
+      "support": "all",
+      "accounting": "all"
+    },
+    "conditions": {
+      "edit_active_only": {
+        "field": "status",
+        "operator": "equals",
+        "value": "active"
       },
-      "export": {
-        "roles": ["admin", "sales_manager", "sales_rep"]
-      },
-      "import": {
-        "roles": ["admin", "sales_manager"]
+      "delete_inactive_only": {
+        "field": "status",
+        "operator": "not_equals",
+        "value": "active"
       }
     }
   }

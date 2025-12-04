@@ -122,7 +122,7 @@ export class AccessService {
    */
   evaluateABAC(context: AccessContext, docType: string, field: string): FieldAccess {
     const policies = this.abacPolicies.get(`${docType}.${field}`) || []
-    let fieldAccess: FieldAccess = {
+    const fieldAccess: FieldAccess = {
       readable: false,
       writable: false,
       required: false
