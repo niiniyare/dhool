@@ -1,0 +1,118 @@
+{
+  "atoms": [
+    { "name": "InputText", "description": "Basic text input", "importance": "essential" },
+    { "name": "Textarea", "description": "Multi-line input", "importance": "essential" },
+    { "name": "InputNumber", "description": "Numeric input with formatting", "importance": "essential" },
+    { "name": "Checkbox", "description": "Boolean selector", "importance": "essential" },
+    { "name": "RadioButton", "description": "Single-choice option", "importance": "essential" },
+    { "name": "Password", "description": "Password input with strength meter", "importance": "essential" },
+    { "name": "Button", "description": "Primary or secondary action", "importance": "essential" },
+    { "name": "PrimeIcons", "description": "PrimeVue icon library", "importance": "essential" },
+    { "name": "Tag", "description": "Categorization label", "importance": "recommended" },
+    { "name": "Badge", "description": "Small status indicator", "importance": "recommended" },
+    { "name": "Chip", "description": "Compact entity/label token", "importance": "recommended" },
+    { "name": "Avatar", "description": "User profile image/icon", "importance": "recommended" },
+    { "name": "AvatarGroup", "description": "Grouped avatars", "importance": "optional" },
+    { "name": "Divider", "description": "Horizontal or vertical separator", "importance": "optional" },
+    { "name": "Ripple", "description": "Click ripple effect", "importance": "optional" },
+    { "name": "StyleClass", "description": "Dynamic class toggling", "importance": "optional" },
+    { "name": "AnimateOnScroll", "description": "Scroll animations", "importance": "optional" }
+  ],
+
+  "molecules": [
+    { "name": "InputMask", "description": "Masked input format", "importance": "important" },
+    { "name": "InputSwitch", "description": "Toggle switch", "importance": "important" },
+    { "name": "Dropdown", "description": "Single-select dropdown", "importance": "essential" },
+    { "name": "MultiSelect", "description": "Multi-select dropdown", "importance": "essential" },
+    { "name": "Listbox", "description": "Scrollable option list", "importance": "important" },
+    { "name": "SelectButton", "description": "Button-styled selector", "importance": "optional" },
+    { "name": "ToggleButton", "description": "Toggleable button", "importance": "optional" },
+    { "name": "AutoComplete", "description": "Type-ahead search input", "importance": "essential" },
+    { "name": "Calendar", "description": "Date input", "importance": "essential" },
+    { "name": "DatePicker", "description": "Compact date picker", "importance": "essential" },
+    { "name": "TimePicker", "description": "Time input selector", "importance": "important" },
+    { "name": "Chips", "description": "Multi-value token input", "importance": "optional" },
+    { "name": "Slider", "description": "Slide-based value selector", "importance": "optional" },
+    { "name": "Knob", "description": "Circular dial input", "importance": "optional" },
+    { "name": "Rating", "description": "Star rating input", "importance": "optional" },
+    { "name": "Editor", "description": "WYSIWYG text editor", "importance": "essential" },
+    { "name": "FileUpload", "description": "File upload UI", "importance": "essential" },
+    { "name": "ProgressBar", "description": "Progress indicator", "importance": "important" },
+    { "name": "ProgressSpinner", "description": "Loading indicator", "importance": "essential" },
+    { "name": "InlineMessage", "description": "Form validation message", "importance": "essential" },
+    { "name": "Message", "description": "Status message", "importance": "essential" },
+    { "name": "Toast", "description": "App-wide notification", "importance": "essential" },
+    { "name": "Skeleton", "description": "Loading placeholder", "importance": "recommended" },
+    { "name": "BlockUI", "description": "Disable UI during operations", "importance": "essential" }
+  ],
+
+  "organisms": [
+    { "name": "DataTable", "description": "Advanced data table", "importance": "critical" },
+    { "name": "Tree", "description": "Hierarchical data structure", "importance": "important" },
+    { "name": "TreeTable", "description": "Tree combined with table", "importance": "important" },
+    { "name": "DataView", "description": "Flexible list/grid display", "importance": "important" },
+    { "name": "VirtualScroller", "description": "Optimized list rendering", "importance": "important" },
+    { "name": "OrderList", "description": "Reorderable list", "importance": "optional" },
+    { "name": "PickList", "description": "Dual-list transfer", "importance": "optional" },
+    { "name": "Timeline", "description": "Event timeline", "importance": "optional" },
+    { "name": "Chart", "description": "Data visualization", "importance": "essential" },
+    { "name": "OrganizationChart", "description": "Hierarchy display", "importance": "optional" },
+    { "name": "Accordion", "description": "Expandable panels", "importance": "important" },
+    { "name": "Card", "description": "Content container", "importance": "important" },
+    { "name": "Panel", "description": "Section wrapper", "importance": "important" },
+    { "name": "Fieldset", "description": "Grouped fields section", "importance": "recommended" },
+    { "name": "ScrollPanel", "description": "Custom scroll container", "importance": "optional" },
+    { "name": "Toolbar", "description": "Action header", "importance": "essential" },
+    { "name": "Splitter", "description": "Resizable panel layout", "importance": "recommended" }
+  ],
+
+  "overlays": [
+    { "name": "Dialog", "description": "Modal dialog", "importance": "essential" },
+    { "name": "ConfirmDialog", "description": "Confirmation modal", "importance": "essential" },
+    { "name": "ConfirmPopup", "description": "Inline confirmation popup", "importance": "recommended" },
+    { "name": "Sidebar", "description": "Slide-panel", "importance": "important" },
+    { "name": "OverlayPanel", "description": "Context overlay", "importance": "optional" },
+    { "name": "Tooltip", "description": "Hover tooltip", "importance": "optional" },
+    { "name": "Menu", "description": "Basic popup menu", "importance": "important" },
+    { "name": "ContextMenu", "description": "Right-click menu", "importance": "optional" },
+    { "name": "Menubar", "description": "Top navigation bar", "importance": "essential" },
+    { "name": "TieredMenu", "description": "Multi-level menu", "importance": "important" },
+    { "name": "MegaMenu", "description": "Mega navigation menu", "importance": "optional" },
+    { "name": "Breadcrumb", "description": "Navigation trail", "importance": "essential" },
+    { "name": "Steps", "description": "Multi-step workflow", "importance": "important" },
+    { "name": "TabMenu", "description": "Tab navigation", "importance": "important" },
+    { "name": "Dock", "description": "Floating dock menu", "importance": "optional" }
+  ],
+
+  "media": [
+    { "name": "Image", "description": "Optimized image component", "importance": "optional" },
+    { "name": "Galleria", "description": "Rich image gallery", "importance": "optional" },
+    { "name": "Carousel", "description": "Carousel slider", "importance": "optional" }
+  ],
+
+  "misc": [
+    { "name": "Terminal", "description": "CLI-like UI", "importance": "optional" },
+    { "name": "DeferredContent", "description": "Lazy content loader", "importance": "optional" }
+  ],
+
+  "utilities": [
+    { "name": "PrimeFlex", "description": "Utility CSS grid & flexbox", "importance": "essential" },
+    { "name": "PrimeIcons", "description": "Icons for all components", "importance": "essential" }
+  ],
+
+  "templates": [
+    { "name": "DashboardTemplate", "description": "Charts & KPIs layout", "importance": "essential" },
+    { "name": "ListPageTemplate", "description": "DataTable + filters + toolbar", "importance": "essential" },
+    { "name": "FormPageTemplate", "description": "Form + actions layout", "importance": "essential" },
+    { "name": "WizardTemplate", "description": "Multi-step process layout", "importance": "important" },
+    { "name": "SplitViewTemplate", "description": "Master-detail layout", "importance": "important" }
+  ],
+
+  "pages": [
+    { "name": "CustomerListPage", "description": "Customer CRUD list", "importance": "essential" },
+    { "name": "InvoiceEntryPage", "description": "Complex form + uploads", "importance": "essential" },
+    { "name": "InventoryDashboard", "description": "KPIs and charts", "importance": "essential" },
+    { "name": "UserManagementPage", "description": "Users + permissions", "importance": "essential" },
+    { "name": "ReportsPage", "description": "Charts + filters + exports", "importance": "essential" }
+  ]
+}
