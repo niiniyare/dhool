@@ -49,10 +49,88 @@
         </ul>
       </div>
 
-      <div v-if="moduleNavItems.length > 0" class="nav-section">
-        <div v-if="!collapsed" class="nav-section-title">Modules</div>
+      <div v-if="crmNavItems.length > 0" class="nav-section">
+        <div v-if="!collapsed" class="nav-section-title">CRM</div>
         <ul class="nav-list">
-          <li v-for="item in moduleNavItems" :key="item.to" class="nav-item">
+          <li v-for="item in crmNavItems" :key="item.to" class="nav-item">
+            <router-link :to="item.to" class="nav-link" active-class="active">
+              <i :class="item.icon" />
+              <span v-if="!collapsed" class="nav-text">{{ item.label }}</span>
+              <Badge
+                v-if="item.badge && !collapsed"
+                :value="item.badge"
+                severity="info"
+                size="small"
+              />
+            </router-link>
+          </li>
+        </ul>
+      </div>
+
+      <div v-if="salesNavItems.length > 0" class="nav-section">
+        <div v-if="!collapsed" class="nav-section-title">Sales</div>
+        <ul class="nav-list">
+          <li v-for="item in salesNavItems" :key="item.to" class="nav-item">
+            <router-link :to="item.to" class="nav-link" active-class="active">
+              <i :class="item.icon" />
+              <span v-if="!collapsed" class="nav-text">{{ item.label }}</span>
+              <Badge
+                v-if="item.badge && !collapsed"
+                :value="item.badge"
+                severity="info"
+                size="small"
+              />
+            </router-link>
+          </li>
+        </ul>
+      </div>
+
+      <div v-if="inventoryNavItems.length > 0" class="nav-section">
+        <div v-if="!collapsed" class="nav-section-title">Inventory</div>
+        <ul class="nav-list">
+          <li v-for="item in inventoryNavItems" :key="item.to" class="nav-item">
+            <router-link :to="item.to" class="nav-link" active-class="active">
+              <i :class="item.icon" />
+              <span v-if="!collapsed" class="nav-text">{{ item.label }}</span>
+              <Badge
+                v-if="item.badge && !collapsed"
+                :value="item.badge"
+                severity="info"
+                size="small"
+              />
+            </router-link>
+          </li>
+        </ul>
+      </div>
+
+      <div v-if="accountingNavItems.length > 0" class="nav-section">
+        <div v-if="!collapsed" class="nav-section-title">Accounting</div>
+        <ul class="nav-list">
+          <li v-for="item in accountingNavItems" :key="item.to" class="nav-item">
+            <router-link :to="item.to" class="nav-link" active-class="active">
+              <i :class="item.icon" />
+              <span v-if="!collapsed" class="nav-text">{{ item.label }}</span>
+            </router-link>
+          </li>
+        </ul>
+      </div>
+
+      <div v-if="hrNavItems.length > 0" class="nav-section">
+        <div v-if="!collapsed" class="nav-section-title">HR</div>
+        <ul class="nav-list">
+          <li v-for="item in hrNavItems" :key="item.to" class="nav-item">
+            <router-link :to="item.to" class="nav-link" active-class="active">
+              <i :class="item.icon" />
+              <span v-if="!collapsed" class="nav-text">{{ item.label }}</span>
+            </router-link>
+          </li>
+        </ul>
+      </div>
+
+      <div v-if="settingsNavItems.length > 0" class="nav-section">
+        <div v-if="!collapsed" class="nav-section-title">Settings</div>
+        <ul class="nav-list">
+          <li v-for="item in settingsNavItems" :key="item.to" class="nav-item">
             <router-link :to="item.to" class="nav-link" active-class="active">
               <i :class="item.icon" />
               <span v-if="!collapsed" class="nav-text">{{ item.label }}</span>
@@ -87,7 +165,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 interface NavItem {
@@ -120,7 +198,7 @@ const isDarkMode = ref(false)
 
 // Navigation items
 const mainNavItems = ref<NavItem[]>([
-  { to: '/', label: 'Dashboard', icon: 'pi pi-home' },
+  { to: '/dashboard', label: 'Dashboard', icon: 'pi pi-home' },
   { to: '/showcase', label: 'Showcase', icon: 'pi pi-palette' }
 ])
 
@@ -130,10 +208,46 @@ const demoNavItems = ref<NavItem[]>([
   { to: '/demo/renderer', label: 'Renderer', icon: 'pi pi-eye' }
 ])
 
-const moduleNavItems = ref<NavItem[]>([
-  { to: '/modules/contacts', label: 'Contacts', icon: 'pi pi-users' },
-  { to: '/modules/sales', label: 'Sales', icon: 'pi pi-shopping-cart' },
-  { to: '/modules/inventory', label: 'Inventory', icon: 'pi pi-box' }
+const crmNavItems = ref<NavItem[]>([
+  { to: '/customers', label: 'Customers', icon: 'pi pi-users' },
+  { to: '/leads', label: 'Leads', icon: 'pi pi-star', badge: '12' },
+  { to: '/contacts', label: 'Contacts', icon: 'pi pi-phone' },
+  { to: '/opportunities', label: 'Opportunities', icon: 'pi pi-chart-line' }
+])
+
+const salesNavItems = ref<NavItem[]>([
+  { to: '/quotes', label: 'Quotes', icon: 'pi pi-file' },
+  { to: '/orders', label: 'Orders', icon: 'pi pi-shopping-bag', badge: '3' },
+  { to: '/invoices', label: 'Invoices', icon: 'pi pi-receipt' },
+  { to: '/payments', label: 'Payments', icon: 'pi pi-credit-card' }
+])
+
+const inventoryNavItems = ref<NavItem[]>([
+  { to: '/products', label: 'Products', icon: 'pi pi-tag' },
+  { to: '/stock', label: 'Stock', icon: 'pi pi-database' },
+  { to: '/warehouses', label: 'Warehouses', icon: 'pi pi-building' },
+  { to: '/suppliers', label: 'Suppliers', icon: 'pi pi-truck' }
+])
+
+const accountingNavItems = ref<NavItem[]>([
+  { to: '/accounts', label: 'Chart of Accounts', icon: 'pi pi-list' },
+  { to: '/journal', label: 'Journal Entries', icon: 'pi pi-book' },
+  { to: '/reports', label: 'Reports', icon: 'pi pi-chart-bar' },
+  { to: '/taxes', label: 'Taxes', icon: 'pi pi-percentage' }
+])
+
+const hrNavItems = ref<NavItem[]>([
+  { to: '/employees', label: 'Employees', icon: 'pi pi-users' },
+  { to: '/payroll', label: 'Payroll', icon: 'pi pi-money-bill' },
+  { to: '/attendance', label: 'Attendance', icon: 'pi pi-clock' },
+  { to: '/leave', label: 'Leave', icon: 'pi pi-calendar' }
+])
+
+const settingsNavItems = ref<NavItem[]>([
+  { to: '/settings/general', label: 'General', icon: 'pi pi-sliders-h' },
+  { to: '/settings/users', label: 'Users & Roles', icon: 'pi pi-users' },
+  { to: '/settings/integrations', label: 'Integrations', icon: 'pi pi-link' },
+  { to: '/settings/security', label: 'Security', icon: 'pi pi-shield' }
 ])
 
 // Computed properties

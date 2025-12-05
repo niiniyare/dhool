@@ -563,23 +563,32 @@ run_phase() {
 start_dev() {
 	log_info "Starting dev server..."
 
-	if [[ -n "$DEV_SERVER_PID" ]] && kill -0 "$DEV_SERVER_PID" 2>/dev/null; then
-		log_info "Dev server already running (PID: $DEV_SERVER_PID)"
-		return 0
+	# Check if already running
+	if [[ -f "$PWD/.dev_server.pid" ]]; then
+		local saved_pid=$(cat "$PWD/.dev_server.pid" 2>/dev/null)
+		if [[ -n "$saved_pid" ]] && kill -0 "$saved_pid" 2>/dev/null; then
+			log_info "Dev server already running (PID: $saved_pid)"
+			DEV_SERVER_PID=$saved_pid
+			save_state
+			log_success "Dev server: http://localhost:$DEV_PORT"
+			return 0
+		fi
 	fi
 
-	$(pnpm dev --port "$DEV_PORT" &)
+	# Start server completely detached
+	setsid pnpm dev --port "$DEV_PORT" >"$PWD/dev_server.log" 2>&1 &
 	DEV_SERVER_PID=$!
+
+	# Save to file and variable
+	echo "$DEV_SERVER_PID" >"$PWD/.dev_server.pid"
 	save_state
 
-	sleep 3
+	log_success "Dev server starting in background..."
+	log_info "URL: http://localhost:$DEV_PORT"
+	log_info "PID: $DEV_SERVER_PID"
+	log_info "Logs: tail -f $PWD/dev_server.log"
 
-	if kill -0 "$DEV_SERVER_PID" 2>/dev/null; then
-		log_success "Dev server: http://localhost:$DEV_PORT"
-	else
-		log_error "Failed to start dev server"
-		return 1
-	fi
+	return 0
 }
 
 stop_dev() {
