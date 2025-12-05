@@ -60,6 +60,7 @@ declare global {
   const shallowReactive: typeof import('vue').shallowReactive
   const shallowReadonly: typeof import('vue').shallowReadonly
   const shallowRef: typeof import('vue').shallowRef
+  const sidebarStore: typeof import('./src/composables/useSidebar').sidebarStore
   const storeToRefs: typeof import('pinia').storeToRefs
   const toRaw: typeof import('vue').toRaw
   const toRef: typeof import('vue').toRef
@@ -78,6 +79,7 @@ declare global {
   const useRoute: typeof import('vue-router').useRoute
   const useRouter: typeof import('vue-router').useRouter
   const useSchema: typeof import('./src/composables/useSchema').useSchema
+  const useSidebar: typeof import('./src/composables/useSidebar').useSidebar
   const useSlots: typeof import('vue').useSlots
   const useTemplateRef: typeof import('vue').useTemplateRef
   const watch: typeof import('vue').watch
@@ -96,4 +98,7 @@ declare global {
   // @ts-ignore
   export type { UseSchemaReturn } from './src/composables/useSchema'
   import('./src/composables/useSchema')
+  // @ts-ignore
+  export type { SidebarState } from './src/composables/useSidebar'
+  import('./src/composables/useSidebar')
 }

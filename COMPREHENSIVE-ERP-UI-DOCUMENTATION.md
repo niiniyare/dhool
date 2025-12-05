@@ -9,9 +9,7 @@
 ## Table of Contents
 
 
-- [PrimeVue 4 + Vue 3 Schema-Driven Enterprise Architecture](#primevue-4--vue-3-schema-driven-enterprise-architecture)
-- [Table of Contents](#table-of-contents)
-  - [Foundation & Philosophy](#part-i-foundation--philosophy)
+- [Foundation & Philosophy](#part-i-foundation--philosophy)
   - [Architecture & Design](#part-ii-architecture--design)
   - [PrimeVue Components & Implementation](#part-iii-primevue-components--implementation)
   - [Project Setup & Configuration](#part-iv-project-setup--configuration)
