@@ -568,7 +568,7 @@ start_dev() {
 		return 0
 	fi
 
-	pnpm dev --port "$DEV_PORT" &
+	$(pnpm dev --port "$DEV_PORT" &)
 	DEV_SERVER_PID=$!
 	save_state
 
@@ -625,12 +625,12 @@ task_T0_3() {
 
 task_T1_1() {
 	log_info "Creating basic TypeScript types for UI components..."
-	
+
 	# NOTE: Read documentation first before implementation
 	log_info "📚 Please read @COMPREHENSIVE-ERP-UI-DOCUMENTATION.md and @llms-full.txt"
-	
+
 	# Create basic UI-focused types
-	cat > "$TYPES_DIR/ui.ts" <<'EOF'
+	cat >"$TYPES_DIR/ui.ts" <<'EOF'
 /**
  * UI Component Types for Dhool ERP
  * Based on PrimeVue 4 and Atomic Design principles
@@ -691,7 +691,7 @@ export interface LayoutProps {
 }
 EOF
 
-	cat > "$TYPES_DIR/forms.ts" <<'EOF'
+	cat >"$TYPES_DIR/forms.ts" <<'EOF'
 /**
  * Form Component Types
  * Focuses on form validation and structure
@@ -743,7 +743,7 @@ export interface ValidationRule {
 }
 EOF
 
-	cat > "$TYPES_DIR/data.ts" <<'EOF'
+	cat >"$TYPES_DIR/data.ts" <<'EOF'
 /**
  * Data Types for API and State Management
  */
@@ -808,7 +808,7 @@ export interface TableFilter {
 }
 EOF
 
-	cat > "$TYPES_DIR/index.ts" <<'EOF'
+	cat >"$TYPES_DIR/index.ts" <<'EOF'
 /**
  * Main Types Export
  * Re-exports all type definitions for easy importing
@@ -1045,8 +1045,8 @@ Schema browser demo:
 task_T2_1() {
 	log_info "📚 Before starting, read @COMPREHENSIVE-ERP-UI-DOCUMENTATION.md and @llms-full.txt"
 	log_info "Creating FormField molecule component..."
-	
-	cat > "$MOLECULES_DIR/FormField.vue" <<'EOF'
+
+	cat >"$MOLECULES_DIR/FormField.vue" <<'EOF'
 <template>
   <div class="form-field" :class="fieldClasses">
     <!-- Label -->
@@ -1345,8 +1345,8 @@ EOF
 task_T2_2() {
 	log_info "📚 Before starting, read @COMPREHENSIVE-ERP-UI-DOCUMENTATION.md and @llms-full.txt"
 	log_info "Creating StatCard molecule component..."
-	
-	cat > "$MOLECULES_DIR/StatCard.vue" <<'EOF'
+
+	cat >"$MOLECULES_DIR/StatCard.vue" <<'EOF'
 <template>
   <Card class="stat-card" :class="cardClasses">
     <template #content>
@@ -1595,8 +1595,8 @@ EOF
 task_T2_3() {
 	log_info "📚 Before starting, read @COMPREHENSIVE-ERP-UI-DOCUMENTATION.md and @llms-full.txt"
 	log_info "Creating ActionMenu molecule component..."
-	
-	cat > "$MOLECULES_DIR/ActionMenu.vue" <<'EOF'
+
+	cat >"$MOLECULES_DIR/ActionMenu.vue" <<'EOF'
 <template>
   <div class="action-menu" :class="menuClasses">
     <!-- Button Layout -->
@@ -1854,7 +1854,7 @@ EOF
 	log_info "✅ ActionMenu molecule created"
 	log_info "🔍 Running type check..."
 	pnpm type-check || log_warn "Type check issues detected"
-	
+
 	log_info "📝 Adding to git..."
 	git add "$MOLECULES_DIR/ActionMenu.vue"
 	git commit -m "feat(molecules): Add ActionMenu component
@@ -1867,15 +1867,15 @@ EOF
 🤖 Generated with Claude Code
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
-	
+
 	return 0
 }
 
 task_T2_4() {
 	log_info "📚 Before starting, read @COMPREHENSIVE-ERP-UI-DOCUMENTATION.md and @llms-full.txt"
 	log_info "Creating EmptyState molecule component..."
-	
-	cat > "$MOLECULES_DIR/EmptyState.vue" <<'EOF'
+
+	cat >"$MOLECULES_DIR/EmptyState.vue" <<'EOF'
 <template>
   <div class="empty-state text-center py-12 px-6">
     <!-- Icon -->
@@ -2066,7 +2066,7 @@ EOF
 	log_info "✅ EmptyState molecule created"
 	log_info "🔍 Running type check..."
 	pnpm type-check || log_warn "Type check issues detected"
-	
+
 	log_info "📝 Adding to git..."
 	git add "$MOLECULES_DIR/EmptyState.vue"
 	git commit -m "feat(molecules): Add EmptyState component
@@ -2079,21 +2079,21 @@ EOF
 🤖 Generated with Claude Code
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
-	
+
 	return 0
 }
 
 task_T2_5() {
 	log_info "📚 Before starting, read @COMPREHENSIVE-ERP-UI-DOCUMENTATION.md and @llms-full.txt"
 	log_info "Creating molecules showcase page..."
-	
+
 	# Check if molecules showcase already exists
 	if [[ -f "$VIEWS_DIR/showcase/molecules.vue" ]]; then
 		log_info "✅ Molecules showcase page already exists"
 		return 0
 	fi
-	
-	cat > "$VIEWS_DIR/showcase/molecules.vue" <<'EOF'
+
+	cat >"$VIEWS_DIR/showcase/molecules.vue" <<'EOF'
 <template>
   <div class="molecules-showcase">
     <!-- Header -->
@@ -2395,7 +2395,7 @@ EOF
 	log_info "✅ Molecules showcase page created"
 	log_info "🔍 Running type check..."
 	pnpm type-check || log_warn "Type check issues detected"
-	
+
 	log_info "📝 Adding to git..."
 	git add "$VIEWS_DIR/showcase/molecules.vue"
 	git commit -m "feat(molecules): Add comprehensive molecules showcase page
@@ -2408,7 +2408,7 @@ EOF
 🤖 Generated with Claude Code
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
-	
+
 	return 0
 }
 
@@ -2419,7 +2419,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 task_T3_1() {
 	log_info "📚 Before starting, read @COMPREHENSIVE-ERP-UI-DOCUMENTATION.md and @llms-full.txt"
 	log_info "Creating DataTableCrud organism component..."
-	
+
 	# This will be implemented by creating a schema-driven DataTable with CRUD operations
 	# For now, we skip the claude command and return success since the component already exists
 	if [[ -f "$ORGANISMS_DIR/DataTableCrud.vue" ]]; then
@@ -2427,7 +2427,7 @@ task_T3_1() {
 	else
 		log_info "🔨 Creating basic DataTableCrud structure..."
 		# Add basic structure that can be expanded later
-		cat > "$ORGANISMS_DIR/DataTableCrud.vue" <<'EOF'
+		cat >"$ORGANISMS_DIR/DataTableCrud.vue" <<'EOF'
 <template>
   <div class="data-table-crud">
     <!-- TODO: Implement schema-driven DataTable with CRUD operations -->
@@ -2457,11 +2457,11 @@ const loading = ref(false)
 </script>
 EOF
 	fi
-	
+
 	log_info "✅ DataTableCrud organism structure created"
 	log_info "🔍 Running type check..."
 	pnpm type-check || log_warn "Type check issues detected"
-	
+
 	log_info "📝 Adding to git..."
 	git add "$ORGANISMS_DIR/DataTableCrud.vue"
 	git commit -m "feat(organisms): Add DataTableCrud structure
@@ -2474,19 +2474,19 @@ EOF
 🤖 Generated with Claude Code
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
-	
+
 	return 0
 }
 
 task_T3_2() {
 	log_info "📚 Before starting, read @COMPREHENSIVE-ERP-UI-DOCUMENTATION.md and @llms-full.txt"
 	log_info "Creating FormBuilder organism component..."
-	
+
 	if [[ -f "$ORGANISMS_DIR/FormBuilder.vue" ]]; then
 		log_info "✅ FormBuilder organism already exists"
 	else
 		log_info "🔨 Creating basic FormBuilder structure..."
-		cat > "$ORGANISMS_DIR/FormBuilder.vue" <<'EOF'
+		cat >"$ORGANISMS_DIR/FormBuilder.vue" <<'EOF'
 <template>
   <div class="form-builder">
     <!-- TODO: Implement schema-driven form generator -->
@@ -2509,11 +2509,11 @@ const handleSubmit = () => {
 </script>
 EOF
 	fi
-	
+
 	log_info "✅ FormBuilder organism structure created"
 	log_info "🔍 Running type check..."
 	pnpm type-check || log_warn "Type check issues detected"
-	
+
 	log_info "📝 Adding to git..."
 	git add "$ORGANISMS_DIR/FormBuilder.vue"
 	git commit -m "feat(organisms): Add FormBuilder structure
@@ -2526,19 +2526,19 @@ EOF
 🤖 Generated with Claude Code
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
-	
+
 	return 0
 }
 
 task_T3_3() {
 	log_info "📚 Before starting, read @COMPREHENSIVE-ERP-UI-DOCUMENTATION.md and @llms-full.txt"
 	log_info "Creating FormDrawer organism component..."
-	
+
 	if [[ -f "$ORGANISMS_DIR/FormDrawer.vue" ]]; then
 		log_info "✅ FormDrawer organism already exists"
 	else
 		log_info "🔨 Creating basic FormDrawer structure..."
-		cat > "$ORGANISMS_DIR/FormDrawer.vue" <<'EOF'
+		cat >"$ORGANISMS_DIR/FormDrawer.vue" <<'EOF'
 <template>
   <Sidebar
     v-model:visible="visible"
@@ -2624,11 +2624,11 @@ const handleCancel = () => {
 </style>
 EOF
 	fi
-	
+
 	log_info "✅ FormDrawer organism structure created"
 	log_info "🔍 Running type check..."
 	pnpm type-check || log_warn "Type check issues detected"
-	
+
 	log_info "📝 Adding to git..."
 	git add "$ORGANISMS_DIR/FormDrawer.vue"
 	git commit -m "feat(organisms): Add FormDrawer structure
@@ -2641,19 +2641,19 @@ EOF
 🤖 Generated with Claude Code
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
-	
+
 	return 0
 }
 
 task_T3_4() {
 	log_info "📚 Before starting, read @COMPREHENSIVE-ERP-UI-DOCUMENTATION.md and @llms-full.txt"
 	log_info "Creating organisms showcase page..."
-	
+
 	if [[ -f "$VIEWS_DIR/showcase/organisms.vue" ]]; then
 		log_info "✅ Organisms showcase page already exists"
 	else
 		log_info "🔨 Creating basic organisms showcase structure..."
-		cat > "$VIEWS_DIR/showcase/organisms.vue" <<'EOF'
+		cat >"$VIEWS_DIR/showcase/organisms.vue" <<'EOF'
 <template>
   <div class="organisms-showcase">
     <!-- Header -->
@@ -2700,11 +2700,11 @@ task_T3_4() {
 </style>
 EOF
 	fi
-	
+
 	log_info "✅ Organisms showcase structure created"
 	log_info "🔍 Running type check..."
 	pnpm type-check || log_warn "Type check issues detected"
-	
+
 	log_info "📝 Adding to git..."
 	git add "$VIEWS_DIR/showcase/organisms.vue"
 	git commit -m "feat(organisms): Add organisms showcase structure
@@ -2717,7 +2717,7 @@ EOF
 🤖 Generated with Claude Code
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
-	
+
 	return 0
 }
 
@@ -2725,25 +2725,25 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 # PHASE 4: Extended Components
 # =============================================================================
 
-task_T4_1() { 
+task_T4_1() {
 	log_info "📚 Before starting, read @COMPREHENSIVE-ERP-UI-DOCUMENTATION.md and @llms-full.txt"
 	log_info "Creating LinkField extended component..."
 	# TODO: Implement extended component with type-check and git commit
 	return 0
 }
-task_T4_2() { 
+task_T4_2() {
 	log_info "📚 Before starting, read @COMPREHENSIVE-ERP-UI-DOCUMENTATION.md and @llms-full.txt"
 	log_info "Creating CurrencyInput extended component..."
-	# TODO: Implement extended component with type-check and git commit  
+	# TODO: Implement extended component with type-check and git commit
 	return 0
 }
-task_T4_3() { 
+task_T4_3() {
 	log_info "📚 Before starting, read @COMPREHENSIVE-ERP-UI-DOCUMENTATION.md and @llms-full.txt"
 	log_info "Creating DateRangePicker extended component..."
 	# TODO: Implement extended component with type-check and git commit
 	return 0
 }
-task_T4_4() { 
+task_T4_4() {
 	log_info "📚 Before starting, read @COMPREHENSIVE-ERP-UI-DOCUMENTATION.md and @llms-full.txt"
 	log_info "Creating extended components showcase..."
 	# TODO: Implement showcase with type-check and git commit

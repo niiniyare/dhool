@@ -529,6 +529,968 @@ const showCompanyFields = evaluateCondition({
 }); // CORRECT - simple UI logic
 ```
 
+## Component Hierarchy & Organization
+
+### Atomic Design in Enterprise Context
+
+The system follows atomic design principles adapted for enterprise ERP complexity:
+
+**Atoms (PrimeVue Foundation):**
+- Direct PrimeVue components with minimal customization
+- Basic styling and theme integration
+- No business logic, purely presentational
+
+**Molecules (Business Components):**
+- Combine atoms with light business logic
+- Form fields, action buttons, status indicators
+- Reusable across multiple organisms
+
+**Organisms (Feature Components):**
+- Complex business components with heavy logic
+- DataTables, forms, dashboards, wizards
+- Integrated with services and state management
+
+**Templates (Layout Components):**
+- Page structure and navigation
+- Authentication layouts, main layouts
+- responsive breakpoints and mobile considerations
+
+**Renderers (Page Components):**
+- Full page implementations
+- Route-level components
+- Schema-driven page generation
+
+### Component Communication Patterns
+
+```typescript
+// ✅ Good: Props down, events up
+// Parent → Child: Props
+// Child → Parent: Events
+interface ChildComponent {
+  props: {
+    data: Customer[]
+    loading: boolean
+  }
+  emits: {
+    'update:selection': [Customer[]]
+    'action:edit': [Customer]
+    'action:delete': [Customer]
+  }
+}
+
+// ✅ Good: Provide/Inject for deep tree
+// Avoid prop drilling in complex hierarchies
+const CustomerContext = Symbol('customer')
+
+// Provider (ancestor)
+provide(CustomerContext, {
+  customer: ref(customerData),
+  permissions: ref(userPermissions)
+})
+
+// Consumer (deep descendant)
+const { customer, permissions } = inject(CustomerContext)
+```
+
+### Directory Structure Standards
+
+```
+src/components/
+├── atoms/
+│   ├── DhButton.vue           # Extended PrimeVue Button
+│   ├── DhInput.vue            # Extended PrimeVue InputText
+│   └── DhChip.vue             # Extended PrimeVue Chip
+├── molecules/
+│   ├── FormField.vue          # Label + Input + Error
+│   ├── ActionMenu.vue         # Dropdown with actions
+│   ├── StatCard.vue           # Metric display card
+│   └── EmptyState.vue         # No data placeholder
+├── organisms/
+│   ├── DataTableCrud.vue      # Full CRUD table
+│   ├── FormBuilder.vue        # Dynamic form generator
+│   ├── DashboardGrid.vue      # Widget grid system
+│   └── FilterPanel.vue        # Advanced filtering UI
+├── templates/
+│   ├── MainLayout.vue         # Primary app layout
+│   ├── AuthLayout.vue         # Login/register layout
+│   └── ModalLayout.vue        # Modal container template
+├── renderers/
+│   ├── DocumentPage.vue       # Schema-driven document renderer
+│   ├── DashboardPage.vue      # Schema-driven dashboard renderer
+│   └── ReportPage.vue         # Schema-driven report renderer
+└── extended/
+    ├── DateRangePicker.vue    # Complex date selection
+    ├── CurrencyInput.vue      # Multi-currency input
+    └── LinkField.vue          # Smart link component
+```
+
+---
+
+## Schema System Design
+
+### Schema Architecture Overview
+
+The schema system provides a declarative approach to defining UI behavior, validation, and access control through JSON configurations.
+
+```typescript
+// types/schema.ts
+export interface DocumentSchema {
+  // Core identification
+  name: string                    // Unique document type identifier
+  label: string                   // Human-readable name
+  module: string                  // Business module (crm, accounting, etc.)
+  version: string                 // Schema version for compatibility
+  
+  // API configuration
+  api: APIConfig
+  
+  // UI configurations
+  listView: ListViewConfig
+  formView: FormViewConfig
+  
+  // Data definition
+  fields: FieldDefinition[]
+  
+  // Business logic
+  validation: ValidationConfig
+  conditional: ConditionalConfig
+  
+  // Security and access
+  access: AccessConfig
+  
+  // Workflow integration
+  workflow?: WorkflowConfig
+}
+
+export interface APIConfig {
+  baseEndpoint: string
+  methods: HTTPMethod[]
+  relationships?: RelationshipConfig[]
+  search: SearchConfig
+  bulk?: BulkOperationConfig
+}
+
+export interface FieldDefinition {
+  name: string
+  type: FieldType
+  label: string
+  
+  // UI presentation
+  placeholder?: string
+  helpText?: string
+  icon?: string
+  
+  // Validation
+  required?: boolean | ConditionalLogic
+  readonly?: boolean | ConditionalLogic
+  hidden?: boolean | ConditionalLogic
+  
+  // Data constraints
+  minLength?: number
+  maxLength?: number
+  pattern?: string
+  options?: SelectOption[]
+  
+  // Relationships
+  reference?: ReferenceConfig
+  
+  // Conditional behavior
+  conditional?: ConditionalLogic[]
+  
+  // Access control
+  permissions?: FieldPermissions
+}
+```
+
+### Schema Processing Pipeline
+
+```typescript
+// services/schemaProcessor.ts
+export class SchemaProcessor {
+  async processSchema(
+    schema: DocumentSchema, 
+    context: ProcessingContext
+  ): Promise<ProcessedSchema> {
+    
+    // 1. Validate schema structure
+    await this.validateSchema(schema)
+    
+    // 2. Apply user permissions
+    const filteredSchema = await this.applyPermissions(schema, context.user)
+    
+    // 3. Process conditional logic
+    const conditionalSchema = await this.processConditionals(filteredSchema, context.data)
+    
+    // 4. Generate UI metadata
+    const uiMetadata = await this.generateUIMetadata(conditionalSchema)
+    
+    // 5. Compile validation rules
+    const validationRules = await this.compileValidation(conditionalSchema)
+    
+    return {
+      schema: conditionalSchema,
+      uiMetadata,
+      validationRules,
+      permissions: context.user.permissions
+    }
+  }
+  
+  private async applyPermissions(
+    schema: DocumentSchema, 
+    user: User
+  ): Promise<DocumentSchema> {
+    const accessibleFields = schema.fields.filter(field => 
+      this.checkFieldPermission(field, user, 'read')
+    ).map(field => ({
+      ...field,
+      readonly: field.readonly || !this.checkFieldPermission(field, user, 'write')
+    }))
+    
+    return {
+      ...schema,
+      fields: accessibleFields
+    }
+  }
+}
+```
+
+### Conditional Logic Integration
+
+Building on the Go backend condition engine concepts, the frontend implements a TypeScript equivalent for UI conditional logic:
+
+```typescript
+// types/conditional.ts
+export interface ConditionalLogic {
+  field: string
+  operator: ConditionalOperator
+  value: any
+  action: ConditionalAction
+  conjunction?: 'AND' | 'OR'
+  negate?: boolean
+}
+
+export type ConditionalOperator = 
+  | 'equals' | 'not_equals'
+  | 'greater' | 'greater_or_equal' 
+  | 'less' | 'less_or_equal'
+  | 'contains' | 'not_contains'
+  | 'starts_with' | 'ends_with'
+  | 'in' | 'not_in'
+  | 'between' | 'not_between'
+  | 'is_empty' | 'is_not_empty'
+  | 'matches_pattern'
+
+export type ConditionalAction =
+  | 'show' | 'hide' 
+  | 'require' | 'optional'
+  | 'enable' | 'disable'
+  | 'readonly' | 'editable'
+
+// services/conditionalEngine.ts
+export class ConditionalEngine {
+  private cache = new Map<string, boolean>()
+  
+  evaluateCondition(
+    condition: ConditionalLogic,
+    formData: Record<string, any>
+  ): boolean {
+    const cacheKey = this.getCacheKey(condition, formData)
+    
+    if (this.cache.has(cacheKey)) {
+      return this.cache.get(cacheKey)!
+    }
+    
+    const result = this.evaluate(condition, formData)
+    this.cache.set(cacheKey, result)
+    
+    return result
+  }
+  
+  private evaluate(
+    condition: ConditionalLogic,
+    formData: Record<string, any>
+  ): boolean {
+    const fieldValue = this.getNestedValue(formData, condition.field)
+    const targetValue = condition.value
+    
+    let result: boolean
+    
+    switch (condition.operator) {
+      case 'equals':
+        result = fieldValue === targetValue
+        break
+      case 'not_equals':
+        result = fieldValue !== targetValue
+        break
+      case 'greater':
+        result = this.compareNumeric(fieldValue, targetValue) > 0
+        break
+      case 'contains':
+        result = String(fieldValue).includes(String(targetValue))
+        break
+      case 'in':
+        result = Array.isArray(targetValue) && targetValue.includes(fieldValue)
+        break
+      case 'is_empty':
+        result = this.isEmpty(fieldValue)
+        break
+      case 'matches_pattern':
+        result = new RegExp(targetValue).test(String(fieldValue))
+        break
+      default:
+        result = false
+    }
+    
+    return condition.negate ? !result : result
+  }
+  
+  evaluateGroup(
+    conditions: ConditionalLogic[],
+    formData: Record<string, any>
+  ): boolean {
+    if (conditions.length === 0) return true
+    
+    // Default to AND logic
+    if (conditions[0].conjunction === 'OR') {
+      return conditions.some(condition => 
+        this.evaluateCondition(condition, formData)
+      )
+    } else {
+      return conditions.every(condition => 
+        this.evaluateCondition(condition, formData)
+      )
+    }
+  }
+}
+```
+
+---
+
+## Type System & TypeScript Integration
+
+### Schema-First Type Generation
+
+The system uses JSON schemas as the single source of truth for both runtime behavior and TypeScript types:
+
+```typescript
+// types/generated.ts (Auto-generated from schemas)
+export interface Customer {
+  id: string
+  name: string
+  email: string
+  phone?: string
+  status: 'active' | 'inactive' | 'pending'
+  createdDate: Date
+  updatedDate: Date
+  
+  // Relationship types
+  contacts: Contact[]
+  orders: Order[]
+  
+  // Computed fields
+  totalOrders?: number
+  lastOrderDate?: Date
+}
+
+export interface CustomerFormData extends Partial<Customer> {
+  // Form-specific fields
+  confirmEmail?: string
+  agreedToTerms?: boolean
+}
+
+export interface CustomerListFilters {
+  status?: Customer['status'][]
+  createdDateRange?: [Date, Date]
+  searchTerm?: string
+}
+
+// Schema metadata types
+export interface CustomerSchema extends DocumentSchema {
+  name: 'customer'
+  fields: CustomerFieldDefinitions
+}
+
+type CustomerFieldDefinitions = {
+  [K in keyof Customer]: FieldDefinition & {
+    name: K
+    type: InferFieldType<Customer[K]>
+  }
+}
+```
+
+### Type-Safe Schema Definition
+
+```typescript
+// schemas/customer.ts
+import { defineDocumentSchema } from '@/utils/schemaUtils'
+
+export const customerSchema = defineDocumentSchema({
+  name: 'customer',
+  label: 'Customer',
+  module: 'crm',
+  version: '1.0.0',
+  
+  fields: [
+    {
+      name: 'name',
+      type: 'text',
+      label: 'Customer Name',
+      required: true,
+      maxLength: 100,
+      validation: {
+        pattern: '^[a-zA-Z\\s]+$',
+        message: 'Name can only contain letters and spaces'
+      }
+    },
+    {
+      name: 'email',
+      type: 'email',
+      label: 'Email Address',
+      required: true,
+      validation: {
+        unique: true,
+        domain: ['company.com', 'partner.com']
+      }
+    },
+    {
+      name: 'status',
+      type: 'select',
+      label: 'Status',
+      required: true,
+      options: [
+        { value: 'active', label: 'Active' },
+        { value: 'inactive', label: 'Inactive' },
+        { value: 'pending', label: 'Pending Approval' }
+      ],
+      default: 'pending'
+    }
+  ] as const,  // ← Important: const assertion for type inference
+  
+  validation: {
+    rules: [
+      {
+        field: 'email',
+        operator: 'is_not_empty',
+        message: 'Email is required for active customers',
+        condition: {
+          field: 'status',
+          operator: 'equals',
+          value: 'active'
+        }
+      }
+    ]
+  },
+  
+  access: {
+    permissions: {
+      create: ['sales_rep', 'sales_manager'],
+      read: ['sales_rep', 'sales_manager', 'customer_service'],
+      update: ['sales_rep', 'sales_manager'],
+      delete: ['sales_manager']
+    }
+  }
+}) satisfies DocumentSchema  // ← Type checking without widening
+```
+
+### Utility Types for Schema Operations
+
+```typescript
+// types/schemaUtils.ts
+export type SchemaFieldType<T extends DocumentSchema, K extends keyof T['fields']> = 
+  T['fields'][K]['type']
+
+export type SchemaToInterface<T extends DocumentSchema> = {
+  [K in T['fields'][number] as K['name']]: K['type'] extends 'text' 
+    ? string 
+    : K['type'] extends 'number'
+    ? number
+    : K['type'] extends 'boolean'
+    ? boolean
+    : K['type'] extends 'date'
+    ? Date
+    : K['type'] extends 'select'
+    ? K['options'][number]['value']
+    : unknown
+}
+
+export type RequiredFields<T extends DocumentSchema> = {
+  [K in T['fields'][number] as K['required'] extends true ? K['name'] : never]: 
+    SchemaToInterface<T>[K]
+}
+
+export type OptionalFields<T extends DocumentSchema> = {
+  [K in T['fields'][number] as K['required'] extends true ? never : K['name']]?: 
+    SchemaToInterface<T>[K]
+}
+
+export type DocumentType<T extends DocumentSchema> = 
+  RequiredFields<T> & OptionalFields<T>
+
+// Usage example
+type Customer = DocumentType<typeof customerSchema>
+// Result: { name: string; email: string; status: 'active' | 'inactive' | 'pending'; phone?: string }
+```
+
+### Runtime Type Validation
+
+```typescript
+// utils/typeValidation.ts
+import { z } from 'zod'
+
+export function createZodSchemaFromDocumentSchema(schema: DocumentSchema) {
+  const zodFields: Record<string, z.ZodTypeAny> = {}
+  
+  for (const field of schema.fields) {
+    let zodType: z.ZodTypeAny
+    
+    switch (field.type) {
+      case 'text':
+      case 'email':
+        zodType = z.string()
+        if (field.maxLength) zodType = zodType.max(field.maxLength)
+        if (field.pattern) zodType = zodType.regex(new RegExp(field.pattern))
+        break
+        
+      case 'number':
+      case 'currency':
+        zodType = z.number()
+        if (field.min) zodType = zodType.min(field.min)
+        if (field.max) zodType = zodType.max(field.max)
+        break
+        
+      case 'boolean':
+        zodType = z.boolean()
+        break
+        
+      case 'date':
+        zodType = z.date()
+        break
+        
+      case 'select':
+        const options = field.options?.map(opt => opt.value) || []
+        zodType = z.enum(options as [string, ...string[]])
+        break
+        
+      default:
+        zodType = z.unknown()
+    }
+    
+    if (!field.required) {
+      zodType = zodType.optional()
+    }
+    
+    zodFields[field.name] = zodType
+  }
+  
+  return z.object(zodFields)
+}
+
+// Usage
+const customerZodSchema = createZodSchemaFromDocumentSchema(customerSchema)
+type InferredCustomer = z.infer<typeof customerZodSchema>
+
+// Runtime validation
+function validateCustomer(data: unknown): Customer {
+  return customerZodSchema.parse(data)
+}
+```
+
+### Type-Safe API Client
+
+```typescript
+// services/typedApiClient.ts
+export class TypedApiClient {
+  async get<T extends DocumentSchema>(
+    schema: T,
+    id: string
+  ): Promise<DocumentType<T>> {
+    const response = await api.get(`/api/v1/${schema.name}/${id}`)
+    return this.validateResponse(schema, response.data)
+  }
+  
+  async list<T extends DocumentSchema>(
+    schema: T,
+    filters?: Partial<DocumentType<T>>
+  ): Promise<{
+    items: DocumentType<T>[]
+    total: number
+    page: number
+  }> {
+    const response = await api.get(`/api/v1/${schema.name}`, {
+      params: filters
+    })
+    return {
+      items: response.data.items.map(item => this.validateResponse(schema, item)),
+      total: response.data.total,
+      page: response.data.page
+    }
+  }
+  
+  async create<T extends DocumentSchema>(
+    schema: T,
+    data: Partial<DocumentType<T>>
+  ): Promise<DocumentType<T>> {
+    const validatedData = this.validateRequest(schema, data)
+    const response = await api.post(`/api/v1/${schema.name}`, validatedData)
+    return this.validateResponse(schema, response.data)
+  }
+  
+  private validateResponse<T extends DocumentSchema>(
+    schema: T,
+    data: unknown
+  ): DocumentType<T> {
+    const zodSchema = createZodSchemaFromDocumentSchema(schema)
+    return zodSchema.parse(data)
+  }
+  
+  private validateRequest<T extends DocumentSchema>(
+    schema: T,
+    data: Partial<DocumentType<T>>
+  ): Partial<DocumentType<T>> {
+    const zodSchema = createZodSchemaFromDocumentSchema(schema).partial()
+    return zodSchema.parse(data)
+  }
+}
+```
+
+### PrimeVue Sub-Package Organization
+
+Understanding PrimeVue's package structure is crucial for optimal imports and build optimization:
+
+#### 1. Main Package Structure
+
+```typescript
+// ✅ Optimal: Direct component imports (tree-shakeable)
+import Button from 'primevue/button'
+import InputText from 'primevue/inputtext'
+import DataTable from 'primevue/datatable'
+import Dialog from 'primevue/dialog'
+import Dropdown from 'primevue/dropdown'
+import Calendar from 'primevue/calendar'
+import Toast from 'primevue/toast'
+import ConfirmDialog from 'primevue/confirmdialog'
+
+// ❌ Avoid: Barrel imports (bundles entire library)
+import { Button, InputText } from 'primevue'  // Don't do this
+```
+
+#### 2. Services and Composables
+
+```typescript
+// Services (Global registration required)
+import ToastService from 'primevue/toastservice'
+import ConfirmationService from 'primevue/confirmationservice'
+import DialogService from 'primevue/dialogservice'
+
+// Composables (Use in components)
+import { useToast } from 'primevue/usetoast'
+import { useConfirm } from 'primevue/useconfirm'
+import { useOverlay } from 'primevue/useoverlay'
+
+// main.ts
+app.use(ToastService)
+app.use(ConfirmationService)
+
+// Component usage
+const toast = useToast()
+const confirm = useConfirm()
+```
+
+#### 3. Directives
+
+```typescript
+// Directive imports
+import Ripple from 'primevue/ripple'
+import Tooltip from 'primevue/tooltip'
+import FocusTrap from 'primevue/focustrap'
+import StyleClass from 'primevue/styleclass'
+
+// Global registration
+app.directive('ripple', Ripple)
+app.directive('tooltip', Tooltip)
+
+// Component usage
+<template>
+  <Button 
+    label="Click Me" 
+    v-ripple 
+    v-tooltip="'Helpful tooltip'"
+  />
+</template>
+```
+
+#### 4. Theme and Icon Integration
+
+```typescript
+// vite.config.ts - Optimized PrimeVue setup
+import { defineConfig } from 'vite'
+import Components from 'unplugin-vue-components/vite'
+import { PrimeVueResolver } from '@primevue/auto-import-resolver'
+
+export default defineConfig({
+  plugins: [
+    Components({
+      resolvers: [
+        PrimeVueResolver()
+      ]
+    })
+  ],
+  optimizeDeps: {
+    include: [
+      'primevue/usetoast',
+      'primevue/useconfirm',
+      'primevue/api'
+    ]
+  }
+})
+
+// main.ts - Theme configuration
+import 'primevue/resources/themes/aura-light-blue/theme.css'
+import 'primevue/resources/primevue.min.css'
+import 'primeicons/primeicons.css'
+
+// or use dynamic theme switching
+import { $dt } from '@primevue/themes'
+
+const switchTheme = (theme: string) => {
+  import(`primevue/resources/themes/${theme}/theme.css`)
+}
+```
+
+#### 5. Advanced PrimeVue Patterns
+
+```typescript
+// Custom PrimeVue component wrapper
+// atoms/DhButton.vue
+<template>
+  <Button
+    :label="label"
+    :icon="icon"
+    :severity="computedSeverity"
+    :size="size"
+    :loading="loading"
+    :disabled="disabled || loading"
+    v-bind="$attrs"
+    @click="handleClick"
+  />
+</template>
+
+<script setup lang="ts">
+interface Props {
+  label?: string
+  icon?: string
+  variant?: 'primary' | 'secondary' | 'danger' | 'success'
+  size?: 'small' | 'normal' | 'large'
+  loading?: boolean
+  disabled?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  variant: 'primary',
+  size: 'normal'
+})
+
+const computedSeverity = computed(() => {
+  const severityMap = {
+    primary: 'primary',
+    secondary: 'secondary', 
+    danger: 'danger',
+    success: 'success'
+  }
+  return severityMap[props.variant]
+})
+
+const emit = defineEmits<{
+  click: [event: MouseEvent]
+}>()
+
+const handleClick = (event: MouseEvent) => {
+  if (!props.loading && !props.disabled) {
+    emit('click', event)
+  }
+}
+</script>
+```
+
+#### 6. Performance Optimization with PrimeVue
+
+```typescript
+// utils/primeVueOptimization.ts
+export const lazyLoadPrimeComponents = {
+  // Lazy load heavy components
+  Calendar: () => import('primevue/calendar'),
+  Chart: () => import('primevue/chart'),
+  DataTable: () => import('primevue/datatable'),
+  FileUpload: () => import('primevue/fileupload'),
+  
+  // Pre-load common components
+  Button: () => Promise.resolve(import('primevue/button')),
+  InputText: () => Promise.resolve(import('primevue/inputtext'))
+}
+
+// Component using lazy loading
+<script setup lang="ts">
+const Calendar = defineAsyncComponent(() => import('primevue/calendar'))
+</script>
+```
+
+### API Design Best Practices for Conditional Logic
+
+Based on the Go backend conditional engine, here are frontend API design patterns:
+
+#### 1. Condition Builder Pattern
+
+```typescript
+// composables/useConditionBuilder.ts
+export function useConditionBuilder() {
+  const conditions = ref<ConditionalLogic[]>([])
+  
+  const addCondition = (condition: ConditionalLogic) => {
+    conditions.value.push(condition)
+    return this
+  }
+  
+  const addRule = (field: string, operator: ConditionalOperator, value: any) => {
+    return addCondition({
+      field,
+      operator,
+      value,
+      action: 'show' // default action
+    })
+  }
+  
+  const addGroup = (groupConditions: ConditionalLogic[], conjunction: 'AND' | 'OR' = 'AND') => {
+    groupConditions.forEach(condition => {
+      condition.conjunction = conjunction
+      addCondition(condition)
+    })
+    return this
+  }
+  
+  const evaluate = (formData: Record<string, any>) => {
+    return conditionalEngine.evaluateGroup(conditions.value, formData)
+  }
+  
+  return {
+    conditions: readonly(conditions),
+    addCondition,
+    addRule,
+    addGroup,
+    evaluate,
+    clear: () => conditions.value = []
+  }
+}
+
+// Usage
+const { addRule, addGroup, evaluate } = useConditionBuilder()
+
+// Simple condition
+addRule('status', 'equals', 'active')
+
+// Complex nested condition
+addGroup([
+  { field: 'premium', operator: 'equals', value: true, action: 'show' },
+  { field: 'vip', operator: 'equals', value: true, action: 'show' }
+], 'OR')
+
+const shouldShow = evaluate(formData)
+```
+
+#### 2. Performance-Optimized Conditional Evaluation
+
+```typescript
+// services/optimizedConditionalEngine.ts
+export class OptimizedConditionalEngine extends ConditionalEngine {
+  private memoizationCache = new LRUCache<string, boolean>(1000)
+  private regexCache = new LRUCache<string, RegExp>(100)
+  
+  evaluateCondition(
+    condition: ConditionalLogic,
+    formData: Record<string, any>
+  ): boolean {
+    // Memoization with stable cache key
+    const cacheKey = this.getStableCacheKey(condition, formData)
+    
+    if (this.memoizationCache.has(cacheKey)) {
+      return this.memoizationCache.get(cacheKey)!
+    }
+    
+    const result = super.evaluate(condition, formData)
+    this.memoizationCache.set(cacheKey, result)
+    
+    return result
+  }
+  
+  private getStableCacheKey(
+    condition: ConditionalLogic, 
+    formData: Record<string, any>
+  ): string {
+    const relevantData = this.extractRelevantData(condition, formData)
+    return `${JSON.stringify(condition)}_${JSON.stringify(relevantData)}`
+  }
+  
+  private extractRelevantData(
+    condition: ConditionalLogic,
+    formData: Record<string, any>
+  ): any {
+    // Only include data that affects this condition
+    return this.getNestedValue(formData, condition.field)
+  }
+  
+  // Optimized regex handling
+  protected matchesPattern(value: string, pattern: string): boolean {
+    if (!this.regexCache.has(pattern)) {
+      this.regexCache.set(pattern, new RegExp(pattern))
+    }
+    
+    const regex = this.regexCache.get(pattern)!
+    return regex.test(value)
+  }
+}
+```
+
+#### 3. Type-Safe Condition Configuration
+
+```typescript
+// types/conditionalAPI.ts
+export interface TypedConditionalLogic<T extends Record<string, any>> {
+  field: keyof T
+  operator: ConditionalOperator
+  value: T[keyof T] | T[keyof T][]
+  action: ConditionalAction
+}
+
+export type ConditionalConfig<T> = {
+  [K in keyof T]?: TypedConditionalLogic<T>[]
+}
+
+// Usage with schema
+interface CustomerForm {
+  type: 'individual' | 'company'
+  companyName?: string
+  vatNumber?: string
+}
+
+const customerConditionals: ConditionalConfig<CustomerForm> = {
+  companyName: [
+    {
+      field: 'type',
+      operator: 'equals', 
+      value: 'company',
+      action: 'require'
+    }
+  ],
+  vatNumber: [
+    {
+      field: 'type',
+      operator: 'equals',
+      value: 'company', 
+      action: 'show'
+    }
+  ]
+}
+```
+
 ---
 
 # Part III: PrimeVue Components & Implementation
