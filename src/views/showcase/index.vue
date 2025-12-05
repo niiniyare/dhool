@@ -1,13 +1,56 @@
 <template>
   <div class="min-h-screen surface-ground">
     <div class="surface-0 p-6 border-bottom-1 surface-border">
-      <div class="max-w-6xl mx-auto">
-        <h1 class="text-4xl font-bold text-900 mb-3">PrimeVue 4 Component Showcase</h1>
-        <p class="text-600 text-lg">Explore all PrimeVue 4 components with proper usage patterns</p>
+      <div class="max-w-7xl mx-auto">
+        <h1 class="text-4xl font-bold text-900 mb-3">Dhool Component Showcase</h1>
+        <p class="text-600 text-lg mb-6">Explore all components from PrimeVue 4, custom molecules, organisms, and widgets</p>
+
+        <!-- Quick Navigation Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <router-link to="/showcase/extended" class="showcase-nav-card">
+            <div class="flex items-center gap-3">
+              <i class="pi pi-box text-3xl text-blue-500"></i>
+              <div>
+                <h3 class="font-semibold text-lg">Extended</h3>
+                <p class="text-sm text-600">Advanced components</p>
+              </div>
+            </div>
+          </router-link>
+
+          <router-link to="/showcase/molecules" class="showcase-nav-card">
+            <div class="flex items-center gap-3">
+              <i class="pi pi-objects-column text-3xl text-green-500"></i>
+              <div>
+                <h3 class="font-semibold text-lg">Molecules</h3>
+                <p class="text-sm text-600">Composite components</p>
+              </div>
+            </div>
+          </router-link>
+
+          <router-link to="/showcase/organisms" class="showcase-nav-card">
+            <div class="flex items-center gap-3">
+              <i class="pi pi-table text-3xl text-orange-500"></i>
+              <div>
+                <h3 class="font-semibold text-lg">Organisms</h3>
+                <p class="text-sm text-600">Complex components</p>
+              </div>
+            </div>
+          </router-link>
+
+          <router-link to="/showcase/widgets" class="showcase-nav-card">
+            <div class="flex items-center gap-3">
+              <i class="pi pi-chart-bar text-3xl text-purple-500"></i>
+              <div>
+                <h3 class="font-semibold text-lg">Widgets</h3>
+                <p class="text-sm text-600">Dashboard widgets</p>
+              </div>
+            </div>
+          </router-link>
+        </div>
       </div>
     </div>
-    
-    <div class="max-w-6xl mx-auto p-6">
+
+    <div class="max-w-7xl mx-auto p-6">
 
     <TabView class="mt-6">
       <TabPanel value="0" header="Forms">
@@ -1147,6 +1190,16 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.showcase-nav-card {
+  @apply block p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg transition-all duration-200 hover:shadow-lg hover:border-blue-500 dark:hover:border-blue-400 hover:-translate-y-1;
+  text-decoration: none;
+  color: inherit;
+}
+
+.showcase-nav-card:hover {
+  text-decoration: none;
+}
+
 .grid {
   display: grid;
 }
@@ -1170,6 +1223,9 @@ onMounted(() => {
   }
   .lg\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 </style>
