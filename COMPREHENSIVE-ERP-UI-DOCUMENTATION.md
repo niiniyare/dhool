@@ -1,4 +1,5 @@
 # Comprehensive ERP UI Framework Documentation
+
 ## PrimeVue 4 + Vue 3 Schema-Driven Enterprise Architecture
 
 > **Complete Guide**: A unified documentation combining theoretical architecture with practical implementation for building enterprise ERP systems using Vue 3, PrimeVue 4, and schema-driven UI generation.
@@ -7,51 +8,147 @@
 
 ## Table of Contents
 
-### Part I: Foundation & Philosophy
-1. [Introduction & Vision](#introduction--vision)
-2. [Why Schema-Driven UI Architecture](#why-schema-driven-ui-architecture)
-3. [PrimeVue 4 Foundation & Design System](#primevue-4-foundation--design-system)
-4. [Atomic Design Methodology](#atomic-design-methodology)
-5. [Multi-Level Access Control](#multi-level-access-control)
 
-### Part II: Architecture & Design
-6. [System Architecture Overview](#system-architecture-overview)
-7. [Backend vs Frontend Processing](#backend-vs-frontend-processing)
-8. [Component Hierarchy & Organization](#component-hierarchy--organization)
-9. [Schema System Design](#schema-system-design)
-10. [Type System & TypeScript Integration](#type-system--typescript-integration)
+- [PrimeVue 4 + Vue 3 Schema-Driven Enterprise Architecture](#primevue-4--vue-3-schema-driven-enterprise-architecture)
+- [Table of Contents](#table-of-contents)
+  - [Foundation & Philosophy](#part-i-foundation--philosophy)
+  - [Architecture & Design](#part-ii-architecture--design)
+  - [PrimeVue Components & Implementation](#part-iii-primevue-components--implementation)
+  - [Project Setup & Configuration](#part-iv-project-setup--configuration)
+  - [Services & State Management](#part-v-services--state-management)
+  - [Advanced Features & Implementation](#part-vi-advanced-features--implementation)
+  - [Best Practices & Guidelines](#part-vii-best-practices--guidelines)
+- [Introduction & Vision](#introduction--vision)
+  - [What This Documentation Covers](#what-this-documentation-covers)
+  - [Why This Approach Was Chosen](#why-this-approach-was-chosen)
+- [Why Schema-Driven UI Architecture](#why-schema-driven-ui-architecture)
+  - [The Enterprise ERP Challenge](#the-enterprise-erp-challenge)
+  - [Problems with Traditional Approach](#problems-with-traditional-approach)
+  - [The Schema-Driven Solution](#the-schema-driven-solution)
+  - [Benefits of Schema-Driven Approach](#benefits-of-schema-driven-approach)
+- [PrimeVue 4 Foundation & Design System](#primevue-4-foundation--design-system)
+  - [Why PrimeVue 4?](#why-primevue-4)
+  - [PrimeVue 4 Architecture](#primevue-4-architecture)
+  - [Key Features for ERP Development](#key-features-for-erp-development)
+- [Atomic Design Methodology](#atomic-design-methodology)
+  - [Component Hierarchy](#component-hierarchy)
+  - [Design Principles](#design-principles)
+  - [Why This Approach Works](#why-this-approach-works)
+- [Multi-Level Access Control](#multi-level-access-control)
+  - [Access Control Implementation](#access-control-implementation)
+- [System Architecture Overview](#system-architecture-overview)
+  - [Complete System Architecture](#complete-system-architecture)
+  - [Key Architectural Decisions](#key-architectural-decisions)
+- [Backend vs Frontend Processing](#backend-vs-frontend-processing)
+  - [Backend Responsibilities (Go)](#backend-responsibilities-go)
+  - [Frontend Responsibilities (Vue)](#frontend-responsibilities-vue)
+  - [Critical Security Principle](#critical-security-principle)
+  - [What the Frontend Should NEVER Do](#what-the-frontend-should-never-do)
+- [Component Hierarchy & Organization](#component-hierarchy--organization)
+  - [Atomic Design in Enterprise Context](#atomic-design-in-enterprise-context)
+  - [Component Communication Patterns](#component-communication-patterns)
+  - [Directory Structure Standards](#directory-structure-standards)
+- [Schema System Design](#schema-system-design)
+  - [Schema Architecture Overview](#schema-architecture-overview)
+  - [Schema Processing Pipeline](#schema-processing-pipeline)
+  - [Conditional Logic Integration](#conditional-logic-integration)
+- [Type System & TypeScript Integration](#type-system--typescript-integration)
+  - [Schema-First Type Generation](#schema-first-type-generation)
+  - [Type-Safe Schema Definition](#type-safe-schema-definition)
+  - [Utility Types for Schema Operations](#utility-types-for-schema-operations)
+  - [Runtime Type Validation](#runtime-type-validation)
+  - [Type-Safe API Client](#type-safe-api-client)
+  - [PrimeVue Sub-Package Organization](#primevue-sub-package-organization)
+    - [1. Main Package Structure](#1-main-package-structure)
+    - [2. Services and Composables](#2-services-and-composables)
+    - [3. Directives](#3-directives)
+    - [4. Theme and Icon Integration](#4-theme-and-icon-integration)
+    - [5. Advanced PrimeVue Patterns](#5-advanced-primevue-patterns)
+    - [6. Performance Optimization with PrimeVue](#6-performance-optimization-with-primevue)
+  - [API Design Best Practices for Conditional Logic](#api-design-best-practices-for-conditional-logic)
+    - [1. Condition Builder Pattern](#1-condition-builder-pattern)
+    - [2. Performance-Optimized Conditional Evaluation](#2-performance-optimized-conditional-evaluation)
+    - [3. Type-Safe Condition Configuration](#3-type-safe-condition-configuration)
+- [PrimeVue Component Library Strategy](#primevue-component-library-strategy)
+  - [Component Integration Philosophy](#component-integration-philosophy)
+  - [Installation & Setup](#installation--setup)
+    - [Basic Installation](#basic-installation)
+    - [Auto-Import Setup (Recommended)](#auto-import-setup-recommended)
+    - [PrimeVue Configuration](#primevue-configuration)
+- [Atoms: Core UI Elements](#atoms-core-ui-elements)
+  - [Basic Form Elements](#basic-form-elements)
+    - [ERP Implementation Tips:](#erp-implementation-tips)
+  - [Button Elements](#button-elements)
+    - [Enhanced Button Example:](#enhanced-button-example)
+  - [Display Elements](#display-elements)
+    - [ERP Use Cases:](#erp-use-cases)
+- [Molecules: Composite Components](#molecules-composite-components)
+  - [Advanced Form Components](#advanced-form-components)
+    - [Advanced Dropdown Example:](#advanced-dropdown-example)
+  - [ERP Best Practices:](#erp-best-practices)
+  - [Message Components](#message-components)
+    - [Toast Service Example:](#toast-service-example)
+- [Organisms: Complex Components](#organisms-complex-components)
+  - [Navigation Components](#navigation-components)
+    - [ERP Navigation Example:](#erp-navigation-example)
+- [DataTable: The Heart of ERP Systems](#datatable-the-heart-of-erp-systems)
+  - [Essential DataTable Features for ERP:](#essential-datatable-features-for-erp)
+    - [1. Pagination & Lazy Loading](#1-pagination--lazy-loading)
+    - [2. Advanced Filtering](#2-advanced-filtering)
+    - [3. Selection & Bulk Operations](#3-selection--bulk-operations)
+    - [4. Export Functionality](#4-export-functionality)
+  - [DataTable Performance Tips:](#datatable-performance-tips)
+- [Project Setup & Installation](#project-setup--installation)
+  - [Prerequisites](#prerequisites)
+  - [Create New Project](#create-new-project)
+  - [Install Dependencies](#install-dependencies)
+- [PrimeVue 4 Configuration & Theming](#primevue-4-configuration--theming)
+  - [Main Application Setup](#main-application-setup)
+  - [Auto-Import Configuration](#auto-import-configuration)
+  - [Tailwind CSS Integration](#tailwind-css-integration)
+  - [Theme Customization Example](#theme-customization-example)
+- [Access Control Service](#access-control-service)
+- [Schema Engine Service](#schema-engine-service)
+- [Composables & State Management](#composables--state-management)
+  - [useSchema Composable](#useschema-composable)
+  - [useCrud Composable](#usecrud-composable)
+- [Schema Builder & Dynamic UI](#schema-builder--dynamic-ui)
+  - [Dynamic Form Generation](#dynamic-form-generation)
+  - [Schema Engine Implementation](#schema-engine-implementation)
+  - [Dynamic DataTable Configuration](#dynamic-datatable-configuration)
+- [Multi-Tenant Theming](#multi-tenant-theming)
+  - [Theme System Architecture](#theme-system-architecture)
+  - [Theme Service Implementation](#theme-service-implementation)
+- [Performance Optimization](#performance-optimization)
+  - [Virtual Scrolling for Large DataTables](#virtual-scrolling-for-large-datatables)
+  - [Lazy Loading and Code Splitting](#lazy-loading-and-code-splitting)
+  - [Memory Management and Cleanup](#memory-management-and-cleanup)
+- [Testing Strategy](#testing-strategy)
+  - [Component Testing with Vitest](#component-testing-with-vitest)
+  - [E2E Testing with Playwright](#e2e-testing-with-playwright)
+  - [Schema Validation Testing](#schema-validation-testing)
+- [Development Best Practices](#development-best-practices)
+  - [Code Organization](#code-organization)
+  - [Component Development Guidelines](#component-development-guidelines)
+    - [1. Atomic Design Principles](#1-atomic-design-principles)
+    - [2. Proper TypeScript Usage](#2-proper-typescript-usage)
+    - [3. Composable Patterns](#3-composable-patterns)
+  - [Performance Guidelines](#performance-guidelines)
+    - [1. Computed Properties vs Methods](#1-computed-properties-vs-methods)
+    - [2. Proper Component Splitting](#2-proper-component-splitting)
+    - [3. Memory Management](#3-memory-management)
+- [Schema Design Best Practices](#schema-design-best-practices)
+  - [1. Schema Structure Standards](#1-schema-structure-standards)
+  - [2. Validation Rules](#2-validation-rules)
+  - [3. Conditional Logic](#3-conditional-logic)
+- [Security Guidelines](#security-guidelines)
+  - [1. Access Control Implementation](#1-access-control-implementation)
+  - [2. Input Sanitization](#2-input-sanitization)
 
-### Part III: PrimeVue Components & Implementation
-11. [PrimeVue Component Library Strategy](#primevue-component-library-strategy)
-12. [Atoms: Core UI Elements](#atoms-core-ui-elements)
-13. [Molecules: Composite Components](#molecules-composite-components)
-14. [Organisms: Complex Components](#organisms-complex-components)
-15. [DataTable: The Heart of ERP Systems](#datatable-the-heart-of-erp-systems)
-
-### Part IV: Project Setup & Configuration
-16. [Project Setup & Installation](#project-setup--installation)
-17. [PrimeVue 4 Configuration & Theming](#primevue-4-configuration--theming)
-18. [Development Environment Setup](#development-environment-setup)
-
-### Part V: Services & State Management
-19. [Access Control Service](#access-control-service)
-20. [Schema Engine Service](#schema-engine-service)
-21. [Composables & State Management](#composables--state-management)
-
-### Part VI: Advanced Features & Implementation
-22. [Schema Builder & Dynamic UI](#schema-builder--dynamic-ui)
-23. [Multi-Tenant Theming](#multi-tenant-theming)
-24. [Performance Optimization](#performance-optimization)
-25. [Testing Strategy](#testing-strategy)
-
-### Part VII: Best Practices & Guidelines
-26. [Development Best Practices](#development-best-practices)
-27. [Schema Design Best Practices](#schema-design-best-practices)
-28. [Component Development Guidelines](#component-development-guidelines)
 
 ---
 
-# Part I: Foundation & Philosophy
+# Foundation & Philosophy
 
 ## Introduction & Vision
 
@@ -381,7 +478,7 @@ Enterprise ERP systems require sophisticated access control at multiple levels:
 
 ---
 
-# Part II: Architecture & Design
+# Architecture & Design
 
 ## System Architecture Overview
 
@@ -1493,7 +1590,7 @@ const customerConditionals: ConditionalConfig<CustomerForm> = {
 
 ---
 
-# Part III: PrimeVue Components & Implementation
+# PrimeVue Components & Implementation
 
 ## PrimeVue Component Library Strategy
 
@@ -1950,7 +2047,7 @@ const exportExcel = () => {
 
 ---
 
-# Part IV: Project Setup & Configuration
+# Project Setup & Configuration
 
 ## Project Setup & Installation
 
@@ -2163,7 +2260,7 @@ export const CustomPreset = definePreset(Aura, {
 
 ---
 
-# Part V: Services & State Management
+# Services & State Management
 
 ## Access Control Service
 
@@ -2860,7 +2957,7 @@ export function useCrud<T = any>(docType: string): CrudOperations<T> {
 }
 ```
 
-# Part VI: Advanced Features & Implementation
+# Advanced Features & Implementation
 
 ## Schema Builder & Dynamic UI
 
@@ -3572,7 +3669,7 @@ describe('SchemaEngine', () => {
 })
 ```
 
-# Part VII: Best Practices & Guidelines
+# Best Practices & Guidelines
 
 ## Development Best Practices
 
